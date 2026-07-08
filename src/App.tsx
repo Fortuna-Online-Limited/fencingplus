@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
 import HomePage from './pages/HomePage';
-import ServicesPage from './pages/ServicesPage';
-import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
+import CoursesPage from './pages/CoursesPage';
+import TeamPage from './pages/TeamPage';
+import FacilitiesContactPage from './pages/FacilitiesContactPage';
 
-type Page = 'home' | 'services' | 'contact';
+type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
-function App() {
+export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
 
-  const navigate = (page: string) => {
-    setCurrentPage(page as Page);
+  const navigate = (page: Page) => {
+    setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -19,17 +22,20 @@ function App() {
     window.scrollTo({ top: 0 });
   }, [currentPage]);
 
+  const pageComponents: Record<Page, React.ReactNode> = {
+    home: <HomePage onNavigate={navigate} />,
+    about: <AboutPage onNavigate={navigate} />,
+    courses: <CoursesPage />,
+    team: <TeamPage onNavigate={navigate} />,
+    facilities: <FacilitiesContactPage />,
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar currentPage={currentPage} onNavigate={navigate} />
-      <main className="flex-1">
-        {currentPage === 'home' && <HomePage onNavigate={navigate} />}
-        {currentPage === 'services' && <ServicesPage onNavigate={navigate} />}
-        {currentPage === 'contact' && <ContactPage />}
-      </main>
+      <main className="flex-1">{pageComponents[currentPage]}</main>
       <Footer onNavigate={navigate} />
+      <WhatsAppButton />
     </div>
   );
 }
-
-export default App;

@@ -1,268 +1,269 @@
-import { ArrowRight, CheckCircle, Star } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowRight, Brain, Trophy, Shield, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+
+type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
 interface HomePageProps {
-  onNavigate: (page: string) => void;
+  onNavigate: (page: Page) => void;
 }
 
-const stats = [
-  { value: '15+', label: 'Years Experience' },
-  { value: '2,400+', label: 'Projects Completed' },
-  { value: '98%', label: 'Customer Satisfaction' },
-  { value: '50+', label: 'Expert Installers' },
+const WA_LINK = 'https://wa.me/85298765432';
+
+const values = [
+  {
+    icon: Brain,
+    title: '專注力',
+    subtitle: 'Focus & Concentration',
+    desc: '劍擊需要高度集中精神，每一次交鋒都是對注意力的訓練，幫助孩子在學業與生活中同樣保持專注。',
+    color: 'bg-primary-50 border-primary-100',
+    iconBg: 'bg-primary',
+  },
+  {
+    icon: Trophy,
+    title: '自信心',
+    subtitle: 'Confidence & Growth',
+    desc: '從第一次握劍到第一場友誼賽，每一個進步都是自信的積累，讓孩子學懂欣賞自己的成長。',
+    color: 'bg-gold-50 border-gold-100',
+    iconBg: 'bg-gold',
+  },
+  {
+    icon: Shield,
+    title: '堅毅力',
+    subtitle: 'Resilience & Character',
+    desc: '劍道上的跌倒與爬起，磨練孩子面對挫折的韌性，培育永不放棄的運動員精神與正面人生態度。',
+    color: 'bg-primary-50 border-primary-100',
+    iconBg: 'bg-primary',
+  },
 ];
 
-const highlights = [
-  'Licensed & Fully Insured',
-  'Free On-Site Estimates',
-  'Lifetime Workmanship Warranty',
-  'Same-Week Installation Available',
-  'Eco-Friendly Material Options',
-  'Custom Design Consultations',
+const news = [
+  {
+    date: '2026年5月',
+    badge: '比賽成績',
+    title: '學員於學界劍擊錦標賽奪得銀牌',
+    desc: '恭賀本中心學員陳小明於本年度學界劍擊錦標賽花劍項目勇奪銀牌，為自己及中心爭光！',
+    img: 'https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=600',
+  },
+  {
+    date: '2026年4月',
+    badge: '新課程',
+    title: '幼兒啟蒙班正式開班，名額有限！',
+    desc: '全新幼兒劍擊啟蒙班（3.5-6歲）正式招生，以遊戲化教學培養小朋友對劍擊的興趣，歡迎查詢。',
+    img: 'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=600',
+  },
+  {
+    date: '2026年3月',
+    badge: '中心活動',
+    title: '免費體驗日圓滿結束，逾50組家庭參與',
+    desc: '感謝各位家長及小朋友的踴躍參與，免費劍擊體驗日反應熱烈，下次體驗日詳情敬請留意。',
+    img: 'https://images.pexels.com/photos/8815943/pexels-photo-8815943.jpeg?auto=compress&cs=tinysrgb&w=600',
+  },
 ];
 
 const testimonials = [
   {
-    name: 'James Harrington',
-    role: 'Homeowner',
-    text: 'Fencing Plus transformed our backyard completely. The craftsmanship is outstanding and the team was professional from start to finish. Would recommend to anyone.',
-    rating: 5,
-    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1',
+    name: '陳媽媽',
+    child: '兒子 7 歲，就讀兒童恆常班',
+    text: '兒子本來很內向，參加劍擊班後明顯自信了很多，在課堂上也更敢於表達自己。教練非常有耐心，每次上課回來他都很開心，強力推薦！',
+    stars: 5,
+    avatar: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=100',
   },
   {
-    name: 'Sarah Mitchell',
-    role: 'Property Manager',
-    text: 'We have used Fencing Plus for three commercial properties now. Their consistency and quality are unmatched. Fast, reliable, and competitively priced.',
-    rating: 5,
-    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1',
+    name: '李爸爸',
+    child: '女兒 10 歲，就讀兒童恆常班',
+    text: '起初擔心劍擊危險，但來參觀後發現安全措施非常完善，教練也耐心解釋每個動作。女兒學了三個月已愛上這項運動，成績進步了不少！',
+    stars: 5,
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
   },
   {
-    name: 'Robert Castillo',
-    role: 'Ranch Owner',
-    text: 'The agricultural fencing they installed has held up perfectly over two years. Excellent value and the crew was incredibly knowledgeable about what we needed.',
-    rating: 5,
-    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=1',
+    name: '張媽媽',
+    child: '女兒 5 歲，就讀幼兒啟蒙班',
+    text: '五歲的女兒在啟蒙班玩得非常開心！課程以遊戲為主，完全沒有壓力，老師很懂得跟小朋友溝通。最重要是她每週都迫不及待想去上課！',
+    stars: 5,
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+  },
+  {
+    name: '王爸爸',
+    child: '兒子 14 歲，就讀精英班',
+    text: '兒子在FENCING PLUS接受精英班訓練後，技術突飛猛進，今年成功代表學校參加學界比賽並獲獎。教練的指導非常專業，針對每個學員的弱點制訂訓練計劃。',
+    stars: 5,
+    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100',
   },
 ];
 
 export default function HomePage({ onNavigate }: HomePageProps) {
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(
+      () => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length),
+      5000
+    );
+    return () => clearInterval(timer);
+  }, []);
+
+  const prev = () =>
+    setCurrentTestimonial((p) => (p - 1 + testimonials.length) % testimonials.length);
+  const next = () =>
+    setCurrentTestimonial((p) => (p + 1) % testimonials.length);
+
   return (
-    <div className="bg-slate-50">
-      {/* Hero */}
+    <div className="bg-[#F8F9FA]">
+      {/* ── Hero ── */}
       <section
         className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
         style={{
           backgroundImage:
-            'url(https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1600)',
+            'url(https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=1920)',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/75 to-slate-800/60" />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/40 rounded-full px-4 py-1.5 mb-8">
-            <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
-            <span className="text-amber-300 text-sm font-medium tracking-wide">
-              Professional Fencing Solutions
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/92 via-primary-800/80 to-primary-700/60" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 bg-gold/20 border border-gold/40 rounded-full px-5 py-2 mb-8">
+            <span className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+            <span className="text-gold text-sm font-semibold tracking-wide">
+              香港專業兒童及青少年劍擊培訓中心
             </span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
-            Built to Last.{' '}
-            <span className="text-amber-400">Designed to Impress.</span>
+
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6 text-balance">
+            FENCING PLUS
+            <span className="block text-gold mt-1 text-3xl md:text-4xl lg:text-5xl font-bold">
+              讓劍擊成為孩子成長的自信基石
+            </span>
           </h1>
-          <p className="text-slate-300 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
-            From residential privacy fences to commercial security installations,
-            Fencing Plus delivers premium craftsmanship backed by over 15 years of
-            trusted expertise.
+
+          <p className="text-white/80 text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-4">
+            無論有沒有運動底子，<strong className="text-white">3.5歲起</strong>即可加入。
+            專業教練以遊戲化教學，讓孩子在快樂中建立{' '}
+            <span className="text-gold font-semibold">專注力、自信心與堅毅力</span>。
           </p>
+          <p className="text-white/60 text-sm mb-10">
+            安全裝備齊全 · 小班教學 · 絕無隱藏收費
+          </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onNavigate('contact')}
-              className="group inline-flex items-center gap-2 px-8 py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl transition-all duration-200 shadow-lg shadow-amber-500/30 hover:shadow-amber-400/40 hover:-translate-y-0.5"
+              onClick={() => onNavigate('courses')}
+              className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold hover:bg-gold-400 text-primary-900 font-black text-base rounded-2xl transition-all duration-200 shadow-xl shadow-gold/30 hover:-translate-y-0.5"
             >
-              Get Your Free Quote
+              了解核心課程
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button
-              onClick={() => onNavigate('services')}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all duration-200 backdrop-blur-sm"
+            <a
+              href={WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-base rounded-2xl border border-white/25 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5"
             >
-              View Our Services
-            </button>
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-gold">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              免費 WhatsApp 查詢
+            </a>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400">
+        {/* scroll cue */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/40">
           <span className="text-xs tracking-widest uppercase">Scroll</span>
-          <div className="w-px h-10 bg-gradient-to-b from-slate-400 to-transparent animate-pulse" />
+          <div className="w-px h-8 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="bg-slate-900 py-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-amber-400 mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-slate-400 text-sm font-medium tracking-wide">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ── Quick Stats ── */}
+      <section className="bg-primary py-12">
+        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { n: '3.5歲+', label: '最小學員年齡' },
+            { n: '8:1', label: '師生比例' },
+            { n: '100%', label: '裝備齊備，零自費' },
+            { n: '全年', label: '持續招生' },
+          ].map((s) => (
+            <div key={s.label}>
+              <div className="text-gold font-black text-3xl md:text-4xl mb-1">{s.n}</div>
+              <div className="text-white/70 text-sm font-medium">{s.label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* ── Core Values ── */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <span className="text-amber-500 font-semibold text-sm tracking-widest uppercase">
-                Why Choose Us
-              </span>
-              <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
-                Quality You Can Count On, Every Time
-              </h2>
-              <p className="mt-5 text-slate-600 text-lg leading-relaxed">
-                We believe a fence is more than a boundary — it's an investment in
-                your property's value, security, and curb appeal. Every project
-                receives our full commitment to excellence.
-              </p>
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {highlights.map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-amber-500 shrink-0" />
-                    <span className="text-slate-700 text-sm font-medium">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={() => onNavigate('services')}
-                className="mt-10 group inline-flex items-center gap-2 px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl transition-all duration-200 hover:-translate-y-0.5"
-              >
-                Explore All Services
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-            <div className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-2xl shadow-slate-300">
-                <img
-                  src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Professional fence installation"
-                  className="w-full h-[480px] object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 bg-amber-500 rounded-2xl p-6 shadow-xl">
-                <div className="text-slate-900 font-bold text-3xl">15+</div>
-                <div className="text-slate-900/80 text-sm font-medium">Years of Excellence</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Preview */}
-      <section className="py-24 bg-slate-900">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-amber-400 font-semibold text-sm tracking-widest uppercase">
-              Our Services
+          <div className="text-center mb-14">
+            <span className="text-primary font-semibold text-sm tracking-widest uppercase">
+              核心理念
             </span>
-            <h2 className="mt-3 text-4xl md:text-5xl font-bold text-white">
-              A Fence for Every Need
+            <h2 className="mt-3 text-3xl md:text-4xl font-black text-slate-900">
+              劍擊，不只是運動
             </h2>
-            <p className="mt-4 text-slate-400 text-lg max-w-2xl mx-auto">
-              From classic wood to modern steel, we offer the full spectrum of
-              fencing solutions for residential and commercial clients.
+            <p className="mt-4 text-slate-500 max-w-xl mx-auto leading-relaxed">
+              每一堂課，都在塑造孩子終身受用的品格與能力
             </p>
           </div>
-
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                img: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600',
-                title: 'Residential Fencing',
-                desc: 'Beautiful, durable fences that add privacy, security, and value to your home.',
-              },
-              {
-                img: 'https://images.pexels.com/photos/3609851/pexels-photo-3609851.jpeg?auto=compress&cs=tinysrgb&w=600',
-                title: 'Commercial & Industrial',
-                desc: 'High-security perimeter fencing for businesses, warehouses, and facilities.',
-              },
-              {
-                img: 'https://images.pexels.com/photos/280229/pexels-photo-280229.jpeg?auto=compress&cs=tinysrgb&w=600',
-                title: 'Custom Metalwork',
-                desc: 'Ornamental iron and custom steel fabrication for gates, railings, and more.',
-              },
-            ].map((item) => (
-              <button
-                key={item.title}
-                onClick={() => onNavigate('services')}
-                className="group relative rounded-2xl overflow-hidden text-left focus:outline-none"
+            {values.map((v) => (
+              <div
+                key={v.title}
+                className={`rounded-2xl border p-8 hover:-translate-y-1 transition-transform duration-300 ${v.color}`}
               >
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white font-bold text-xl mb-1">{item.title}</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">{item.desc}</p>
-                  <span className="mt-3 inline-flex items-center gap-1 text-amber-400 text-sm font-medium group-hover:gap-2 transition-all">
-                    Learn more <ArrowRight className="w-4 h-4" />
-                  </span>
+                <div className={`w-14 h-14 ${v.iconBg} rounded-2xl flex items-center justify-center mb-5`}>
+                  <v.icon className="w-7 h-7 text-white" />
                 </div>
-              </button>
+                <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">
+                  {v.subtitle}
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 mb-3">{v.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{v.desc}</p>
+              </div>
             ))}
-          </div>
-          <div className="text-center mt-10">
-            <button
-              onClick={() => onNavigate('services')}
-              className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/20 hover:border-amber-400 text-white hover:text-amber-400 font-semibold rounded-xl transition-all duration-200"
-            >
-              View All Services
-              <ArrowRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24">
+      {/* ── Latest News ── */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-amber-500 font-semibold text-sm tracking-widest uppercase">
-              Testimonials
-            </span>
-            <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-900">
-              What Our Customers Say
-            </h2>
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <span className="text-primary font-semibold text-sm tracking-widest uppercase">
+                最新動態
+              </span>
+              <h2 className="mt-2 text-3xl md:text-4xl font-black text-slate-900">
+                榮譽牆與中心消息
+              </h2>
+            </div>
+            <button
+              onClick={() => onNavigate('about')}
+              className="hidden md:flex items-center gap-1 text-primary font-semibold text-sm hover:gap-2 transition-all"
+            >
+              查看更多 <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
+          <div className="grid md:grid-cols-3 gap-6">
+            {news.map((n) => (
               <div
-                key={t.name}
-                className="bg-white rounded-2xl p-8 shadow-lg shadow-slate-100 border border-slate-100 hover:-translate-y-1 transition-transform duration-300"
+                key={n.title}
+                className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white group"
               >
-                <div className="flex gap-1 mb-5">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-slate-600 leading-relaxed mb-6">"{t.text}"</p>
-                <div className="flex items-center gap-3">
+                <div className="h-48 overflow-hidden">
                   <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="w-12 h-12 rounded-full object-cover"
+                    src={n.img}
+                    alt={n.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div>
-                    <div className="font-semibold text-slate-900">{t.name}</div>
-                    <div className="text-slate-500 text-sm">{t.role}</div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="px-2.5 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                      {n.badge}
+                    </span>
+                    <span className="text-slate-400 text-xs">{n.date}</span>
                   </div>
+                  <h3 className="font-bold text-slate-900 text-base mb-2 leading-snug">{n.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{n.desc}</p>
                 </div>
               </div>
             ))}
@@ -270,23 +271,93 @@ export default function HomePage({ onNavigate }: HomePageProps) {
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="py-20 bg-amber-500">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Ready to Start Your Project?
+      {/* ── Testimonials ── */}
+      <section className="py-24 bg-primary-50">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <span className="text-primary font-semibold text-sm tracking-widest uppercase">
+              學員見證
+            </span>
+            <h2 className="mt-3 text-3xl md:text-4xl font-black text-slate-900">
+              家長怎麼說
+            </h2>
+          </div>
+
+          <div className="relative">
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-lg shadow-primary/8 border border-primary-100 min-h-[220px]">
+              <div className="flex gap-1 mb-6">
+                {Array.from({ length: testimonials[currentTestimonial].stars }).map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-gold text-gold" />
+                ))}
+              </div>
+              <blockquote className="text-slate-700 text-lg leading-relaxed mb-8 italic">
+                「{testimonials[currentTestimonial].text}」
+              </blockquote>
+              <div className="flex items-center gap-4">
+                <img
+                  src={testimonials[currentTestimonial].avatar}
+                  alt={testimonials[currentTestimonial].name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-gold"
+                />
+                <div>
+                  <div className="font-bold text-slate-900">{testimonials[currentTestimonial].name}</div>
+                  <div className="text-slate-500 text-sm">{testimonials[currentTestimonial].child}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center justify-between mt-6">
+              <div className="flex gap-2">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentTestimonial(i)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === currentTestimonial ? 'bg-primary w-6' : 'bg-slate-300 w-2'
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={prev}
+                  className="w-9 h-9 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={next}
+                  className="w-9 h-9 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA Banner ── */}
+      <section className="py-20 bg-primary">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+            為孩子踏出第一步
           </h2>
-          <p className="text-slate-800 text-lg mb-8">
-            Contact us today for a free, no-obligation estimate. Our team is ready to
-            bring your vision to life.
+          <p className="text-white/75 text-lg mb-8">
+            立即WhatsApp查詢，了解最適合孩子的課程方案，首堂體驗課歡迎免費試堂。
           </p>
-          <button
-            onClick={() => onNavigate('contact')}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-slate-900/30"
+          <a
+            href={WA_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-9 py-4 bg-gold hover:bg-gold-400 text-primary-900 font-black text-lg rounded-2xl transition-all duration-200 hover:-translate-y-0.5 shadow-2xl shadow-black/20"
           >
-            Contact Us Today
-            <ArrowRight className="w-5 h-5" />
-          </button>
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            立即 WhatsApp 查詢
+          </a>
         </div>
       </section>
     </div>
