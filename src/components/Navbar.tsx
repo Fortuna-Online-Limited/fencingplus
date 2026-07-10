@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Sword } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -43,14 +43,12 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
         <div className="flex items-center justify-between h-18 py-3">
 
           {/* Logo */}
-          <button onClick={() => handleNav('home')} className="flex items-center gap-3 group shrink-0">
-            <div className="w-10 h-10 bg-gold rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Sword className="w-5 h-5 text-primary-900 rotate-45" />
-            </div>
-            <div className="text-left leading-tight">
-              <span className="block text-white font-black text-base tracking-wide">FENCING</span>
-              <span className="block text-gold font-bold text-xs tracking-[0.25em] uppercase">Plus</span>
-            </div>
+          <button onClick={() => handleNav('home')} className="flex items-center shrink-0 group">
+            <img
+              src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Forest_Green_Main_Color_Version/FENCING_PLUS.jpeg"
+              alt="FENCING PLUS"
+              className="h-12 w-auto object-contain group-hover:opacity-90 transition-opacity"
+            />
           </button>
 
           {/* Desktop links */}

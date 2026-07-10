@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowRight, Brain, Trophy, Shield, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -9,30 +9,34 @@ interface HomePageProps {
 
 const WA_LINK = 'https://wa.me/85298765432';
 
+const HERO_SLIDES = [
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scenario%201:%20Two-person%20sparring%20practice/Scenario1_Two-person_sparring%20practice_16-9.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scene%202:%20Close-up%20of%20an%20individual%20hero/Scene2_Close-up_of_an_individual_hero_boy.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scene%202:%20Close-up%20of%20an%20individual%20hero/Scene2_Close-up_of_an_individual_hero_girl.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scene%203:%20Warm%20Interaction%20Between%20Coach%20and%20Child/Scene3_Warm_Interaction_Between_Coach_and_Child.png',
+];
+
 const values = [
   {
-    icon: Brain,
+    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Focus/Focus.png',
     title: '專注力',
     subtitle: 'Focus & Concentration',
     desc: '劍擊需要高度集中精神，每一次交鋒都是對注意力的訓練，幫助孩子在學業與生活中同樣保持專注。',
     color: 'bg-primary-50 border-primary-100',
-    iconBg: 'bg-primary',
   },
   {
-    icon: Trophy,
+    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Confidence/Confidence.png',
     title: '自信心',
     subtitle: 'Confidence & Growth',
     desc: '從第一次握劍到第一場友誼賽，每一個進步都是自信的積累，讓孩子學懂欣賞自己的成長。',
     color: 'bg-gold-50 border-gold-100',
-    iconBg: 'bg-gold',
   },
   {
-    icon: Shield,
+    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Perseverance/Perseverance.png',
     title: '堅毅力',
     subtitle: 'Resilience & Character',
     desc: '劍道上的跌倒與爬起，磨練孩子面對挫折的韌性，培育永不放棄的運動員精神與正面人生態度。',
     color: 'bg-primary-50 border-primary-100',
-    iconBg: 'bg-primary',
   },
 ];
 
@@ -92,33 +96,63 @@ const testimonials = [
 ];
 
 export default function HomePage({ onNavigate }: HomePageProps) {
+  const [slideIndex, setSlideIndex] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
+  // Auto-advance hero slideshow every 4 s
   useEffect(() => {
     const timer = setInterval(
-      () => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length),
+      () => setSlideIndex((p) => (p + 1) % HERO_SLIDES.length),
+      4000
+    );
+    return () => clearInterval(timer);
+  }, []);
+
+  // Auto-advance testimonials every 5 s
+  useEffect(() => {
+    const timer = setInterval(
+      () => setCurrentTestimonial((p) => (p + 1) % testimonials.length),
       5000
     );
     return () => clearInterval(timer);
   }, []);
 
-  const prev = () =>
-    setCurrentTestimonial((p) => (p - 1 + testimonials.length) % testimonials.length);
-  const next = () =>
-    setCurrentTestimonial((p) => (p + 1) % testimonials.length);
+  const prevT = () => setCurrentTestimonial((p) => (p - 1 + testimonials.length) % testimonials.length);
+  const nextT = () => setCurrentTestimonial((p) => (p + 1) % testimonials.length);
 
   return (
     <div className="bg-[#F8F9FA]">
-      {/* ── Hero ── */}
-      <section
-        className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-        style={{
-          backgroundImage:
-            'url(https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=1920)',
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/92 via-primary-800/80 to-primary-700/60" />
+      {/* ── Hero Slideshow ── */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Slides */}
+        {HERO_SLIDES.map((src, i) => (
+          <div
+            key={src}
+            className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+            style={{
+              backgroundImage: `url(${src})`,
+              opacity: i === slideIndex ? 0.9 : 0,
+            }}
+          />
+        ))}
 
+        {/* Dark overlay so text stays readable */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-primary-800/65 to-primary-700/50" />
+
+        {/* Slide dots */}
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {HERO_SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlideIndex(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === slideIndex ? 'w-6 h-2 bg-gold' : 'w-2 h-2 bg-white/40 hover:bg-white/70'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-gold/20 border border-gold/40 rounded-full px-5 py-2 mb-8">
             <span className="w-2 h-2 bg-gold rounded-full animate-pulse" />
@@ -165,8 +199,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           </div>
         </div>
 
-        {/* scroll cue */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/40">
+        {/* Scroll cue */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/40 z-10">
           <span className="text-xs tracking-widest uppercase">Scroll</span>
           <div className="w-px h-8 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
         </div>
@@ -209,8 +243,12 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                 key={v.title}
                 className={`rounded-2xl border p-8 hover:-translate-y-1 transition-transform duration-300 ${v.color}`}
               >
-                <div className={`w-14 h-14 ${v.iconBg} rounded-2xl flex items-center justify-center mb-5`}>
-                  <v.icon className="w-7 h-7 text-white" />
+                <div className="w-20 h-20 mb-5 flex items-center justify-center">
+                  <img
+                    src={v.iconImg}
+                    alt={v.title}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">
                   {v.subtitle}
@@ -306,7 +344,6 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               </div>
             </div>
 
-            {/* Controls */}
             <div className="flex items-center justify-between mt-6">
               <div className="flex gap-2">
                 {testimonials.map((_, i) => (
@@ -321,13 +358,13 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={prev}
+                  onClick={prevT}
                   className="w-9 h-9 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={next}
+                  onClick={nextT}
                   className="w-9 h-9 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
                 >
                   <ChevronRight className="w-4 h-4" />

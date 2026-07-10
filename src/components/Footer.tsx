@@ -1,4 +1,4 @@
-import { Sword, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -23,14 +23,12 @@ export default function Footer({ onNavigate }: FooterProps) {
         <div className="grid md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
-            <button onClick={() => onNavigate('home')} className="flex items-center gap-3 mb-5 group">
-              <div className="w-10 h-10 bg-gold rounded-xl flex items-center justify-center">
-                <Sword className="w-5 h-5 text-primary-900 rotate-45" />
-              </div>
-              <div className="leading-tight">
-                <span className="block text-white font-black text-base tracking-wide">FENCING</span>
-                <span className="block text-gold font-bold text-xs tracking-[0.25em] uppercase">Plus</span>
-              </div>
+            <button onClick={() => onNavigate('home')} className="flex items-center mb-5 group">
+              <img
+                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Forest_Green_Main_Color_Version/FENCING_PLUS.jpeg"
+                alt="FENCING PLUS"
+                className="h-12 w-auto object-contain brightness-0 invert group-hover:opacity-90 transition-opacity"
+              />
             </button>
             <p className="text-white/60 text-sm leading-relaxed max-w-xs">
               讓劍擊成為孩子成長的自信基石。專業兒童及青少年劍擊培訓，由啟蒙到競技，陪伴每一個孩子成長。

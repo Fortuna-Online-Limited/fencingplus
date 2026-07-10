@@ -10,64 +10,72 @@ const WA_LINK = 'https://wa.me/85298765432';
 
 const coaches = [
   {
-    name: '陳志明 教練',
-    nameEn: 'Coach Chan Chi-Ming',
-    role: '創辦人 / 首席教練',
-    img: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400',
-    quote: '「我相信每個孩子都有屬於自己的劍道，教練的責任是找到那條路。」',
-    credentials: [
-      '前香港劍擊代表隊成員（花劍）',
-      '香港劍擊總會認可一級教練',
-      '兒童及青少年教練資歷逾10年',
-      '香港理工大學運動科學學士',
+    name: '李啟源',
+    role: '總教練',
+    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/1.LKY/LKY.jpeg',
+    qualifications: ['香港劍擊總會一級教練'],
+    achievements: [
+      '2025年保良局男子公開組重劍冠軍 🏆',
+      'Academy of Fencing 2018 Q4 U23 Men\'s Epee Champion 🏆',
+      '香港劍擊學院 2018 Q4公開組冠軍 🏆',
+      '2014–2018年台灣全國大專運動會重劍四年霸亞軍',
+      '103年台中市市長盃重劍冠軍 🏆',
+      '103年TFC盃擊劍分齡賽（II）季軍',
+      '仁愛堂劍擊大賽2014年重劍組冠軍 🏆',
+      '2014禮悅劍擊隊際邀請賽重劍公開男子組亞軍',
+      '2013年廣州市粵港澳重劍團體冠軍 🏆',
+      '2013年全國劍擊劍俱樂部聯賽（深圳站）季軍',
+      '2013–2014年首屆深圳劍劍公開賽季賽',
+      'New Territories Secondary School Fencing Competition (Team) Boy Foil: 3rd',
+      'New Territories Secondary School Fencing Competition (Team) Boy Foil: 2nd',
     ],
-    specialty: '花劍 / 幼兒啟蒙',
     specialtyColor: 'bg-gold text-primary-900',
+    specialtyLabel: '總教練 · 重劍',
   },
   {
-    name: '李美琪 教練',
-    nameEn: 'Coach Li Mei-Kei',
-    role: '資深兒童教練',
-    img: 'https://images.pexels.com/photos/3777943/pexels-photo-3777943.jpeg?auto=compress&cs=tinysrgb&w=400',
-    quote: '「耐心是最好的教材。看見孩子一點一滴進步，是我最大的滿足。」',
-    credentials: [
-      '前全港學界劍擊錦標賽冠軍（花劍）',
-      '香港劍擊總會認可教練',
-      '兒童心理學進修課程結業',
-      '執教兒童劍擊班逾7年',
+    name: '鄭樂晴',
+    role: '精英教練',
+    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/2.CLC/CLC.jpeg',
+    qualifications: [],
+    achievements: [
+      '2021年一劍擊劍擊錦標賽季軍 🥉',
+      '2022年全港中學生劍擊錦標賽季軍 🥉',
+      '2023年香港劍擊學院季度劍擊比賽季軍 🥉',
+      '2022新界區學界劍擊比賽團體賽亞軍 🥈',
+      '2023新界區學界劍擊比賽團體賽季軍 🥉',
+      '2024新界區學界劍擊比賽團體賽季軍 🥉',
     ],
-    specialty: '花劍 / 兒童教學',
     specialtyColor: 'bg-primary text-white',
+    specialtyLabel: '精英教練',
   },
   {
-    name: '張浩然 教練',
-    nameEn: 'Coach Cheung Ho-Yin',
-    role: '競技訓練教練',
-    img: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=400',
-    quote: '「競技劍擊是一門思考的運動。我幫助學員學習如何在壓力下冷靜判斷。」',
-    credentials: [
-      '前港代表隊成員（重劍），出戰亞洲錦標賽',
-      '香港劍擊總會認可一級教練',
-      '體能訓練師 (HKCSEP) 認證',
-      '執教精英班及競賽培訓逾8年',
+    name: '劉宇軒',
+    role: '精英教練',
+    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/3.LYH/LYH.jpeg',
+    qualifications: [],
+    achievements: [
+      '2022新界區學界劍擊比賽個人賽季軍 🥉',
+      '2022新界區學界劍擊比賽團體賽亞軍 🥈',
+      '2023新界區學界劍擊比賽團體賽季軍 🥉',
+      '2024新界區學界劍擊比賽團體賽季軍 🥉',
     ],
-    specialty: '重劍 / 精英培訓',
-    specialtyColor: 'bg-slate-800 text-white',
+    specialtyColor: 'bg-primary text-white',
+    specialtyLabel: '精英教練',
   },
   {
-    name: '黃曉彤 教練',
-    nameEn: 'Coach Wong Hiu-Tung',
-    role: '幼兒及初階教練',
-    img: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=400',
-    quote: '「每個小朋友都是第一次，我的工作是讓這個第一次充滿驚喜和笑聲。」',
-    credentials: [
-      '香港劍擊總會認可教練',
-      '幼兒體育教育文憑（HKIED）',
-      '執教幼兒班及小學組逾5年',
-      '持急救護理證書（HKRC）',
+    name: '王愉龍',
+    role: '精英教練',
+    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/4.WYL/WYL.jpeg',
+    qualifications: [],
+    achievements: [
+      '帶領學生於2025年本地賽事 U10男子（個人）奪冠 🏆',
+      '帶領學生於2025年本地賽事 U12男子（個人）奪季軍 🥉',
+      '帶領學生於2025年本地賽事 U10女子（個人）奪季軍 🥉',
+      '帶領學生於2025年本地賽事 U7男子（個人）奪冠 🏆',
+      '帶領學生於2024年本地賽事 U8男子（個人）奪冠 🏆',
     ],
-    specialty: '花劍 / 幼兒教學',
     specialtyColor: 'bg-gold text-primary-900',
+    specialtyLabel: '精英教練 · 幼兒',
   },
 ];
 
@@ -136,39 +144,56 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
                 key={coach.name}
                 className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col"
               >
-                <div className="relative h-64 overflow-hidden">
+                {/* Photo */}
+                <div className="relative h-72 overflow-hidden bg-slate-100">
                   <img
                     src={coach.img}
                     alt={coach.name}
-                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-3">
                     <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${coach.specialtyColor}`}>
-                      {coach.specialty}
+                      {coach.specialtyLabel}
                     </span>
                   </div>
                 </div>
 
+                {/* Info */}
                 <div className="p-6 flex flex-col flex-1">
                   <div className="mb-4">
-                    <h3 className="font-black text-slate-900 text-lg">{coach.name}</h3>
+                    <h3 className="font-black text-slate-900 text-xl">{coach.name}</h3>
                     <p className="text-primary font-semibold text-sm">{coach.role}</p>
-                    <p className="text-slate-400 text-xs mt-0.5">{coach.nameEn}</p>
                   </div>
 
-                  <blockquote className="text-slate-600 text-xs italic leading-relaxed mb-4 border-l-2 border-gold pl-3">
-                    {coach.quote}
-                  </blockquote>
+                  {/* Qualifications */}
+                  {coach.qualifications.length > 0 && (
+                    <div className="mb-3">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">
+                        註冊資格
+                      </p>
+                      {coach.qualifications.map((q) => (
+                        <p key={q} className="text-xs text-primary-700 font-medium bg-primary-50 border border-primary-100 rounded-lg px-2.5 py-1 mb-1">
+                          {q}
+                        </p>
+                      ))}
+                    </div>
+                  )}
 
-                  <ul className="space-y-1.5 flex-1">
-                    {coach.credentials.map((c) => (
-                      <li key={c} className="flex items-start gap-1.5 text-xs text-slate-600">
-                        <span className="text-primary font-bold mt-0.5 shrink-0">✓</span>
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Achievements */}
+                  <div className="flex-1">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
+                      {coach.name === '王愉龍' ? '帶領學生榮譽' : '個人獎項'}
+                    </p>
+                    <ul className="space-y-1.5 max-h-48 overflow-y-auto pr-1 scrollbar-thin">
+                      {coach.achievements.map((a) => (
+                        <li key={a} className="flex items-start gap-1.5 text-xs text-slate-600 leading-relaxed">
+                          <span className="text-gold font-bold mt-0.5 shrink-0">▸</span>
+                          {a}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             ))}
