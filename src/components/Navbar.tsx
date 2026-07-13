@@ -107,10 +107,11 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               <button
                 key={link.key}
                 onClick={() => handleNav(link.key)}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${
+                style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
+                className={`px-4 py-2 rounded-lg text-sm transition-all duration-200 ${
                   currentPage === link.key
-                    ? 'text-[#F2A900] bg-black/8'
-                    : 'text-[#0A5C36] hover:text-[#F2A900] hover:bg-black/6'
+                    ? 'text-[#0A5C36] font-bold bg-black/8 underline underline-offset-4 decoration-2'
+                    : 'text-[#333333] font-semibold hover:text-[#0A5C36] hover:bg-black/6 hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-[#0A5C36]'
                 }`}
               >
                 {link.label}
@@ -187,10 +188,11 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               <button
                 key={link.key}
                 onClick={() => handleNav(link.key)}
-                className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-bold transition-colors ${
+                style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
+                className={`block w-full text-left px-4 py-3 rounded-xl text-sm transition-colors ${
                   currentPage === link.key
-                    ? 'text-[#F2A900] bg-black/8'
-                    : 'text-[#0A5C36] hover:text-[#F2A900] hover:bg-black/6'
+                    ? 'text-[#0A5C36] font-bold bg-black/8 underline underline-offset-4 decoration-2'
+                    : 'text-[#333333] font-semibold hover:text-[#0A5C36] hover:bg-black/6'
                 }`}
               >
                 {link.label}
