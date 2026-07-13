@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
+import { useLocale, type Locale } from '../lib/locale';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -10,14 +11,6 @@ interface NavbarProps {
 
 const LOGO_URL =
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/BG_removed_PNG/FENCING_plus_BGremover_628x397-removebg-preview.png';
-
-const links: { label: string; key: Page }[] = [
-  { label: '首頁', key: 'home' },
-  { label: '關於我們', key: 'about' },
-  { label: '課程介紹', key: 'courses' },
-  { label: '教練團隊', key: 'team' },
-  { label: '場地 & 聯絡', key: 'facilities' },
-];
 
 const WA_LINK = 'https://wa.me/85298765432';
 
@@ -30,7 +23,6 @@ const WA_ICON = (
 const WOOD_BG_URL =
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Forest_Green_Main_Color_Version/Background.png';
 
-// Real wood-grain photo as navbar background
 const WOOD_STYLE: React.CSSProperties = {
   backgroundImage: `url("${WOOD_BG_URL}")`,
   backgroundSize: 'cover',
@@ -38,7 +30,11 @@ const WOOD_STYLE: React.CSSProperties = {
   backgroundRepeat: 'no-repeat',
 };
 
+const LOCALE_LABELS: Record<Locale, string> = { 'zh-HK': '繁', en: 'EN' };
+const LOCALE_OPTIONS: Locale[] = ['zh-HK', 'en'];
+
 export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
+  const { t, locale, setLocale } = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -53,6 +49,14 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
     setMenuOpen(false);
   };
 
+  const links: { label: string; key: Page }[] = [
+    { label: t.nav.home, key: 'home' },
+    { label: t.nav.about, key: 'about' },
+    { label: t.nav.courses, key: 'courses' },
+    { label: t.nav.team, key: 'team' },
+    { label: t.nav.facilities, key: 'facilities' },
+  ];
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 border-b border-amber-900/20 ${
@@ -63,7 +67,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between py-2 min-h-[72px]">
 
-          {/* Logo — transparent PNG, large */}
+          {/* Logo */}
           <button
             onClick={() => handleNav('home')}
             aria-label="回到首頁"
@@ -114,8 +118,27 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             ))}
           </div>
 
-          {/* Desktop WhatsApp CTA */}
-          <div className="hidden md:block">
+          {/* Desktop right: language switcher + WhatsApp CTA */}
+          <div className="hidden md:flex items-center gap-2">
+            {/* Language switcher */}
+            <div className="flex items-center gap-0.5 bg-black/8 rounded-lg p-0.5" aria-label="Language">
+              <Globe className="w-3.5 h-3.5 text-[#0A5C36] mx-1.5 shrink-0" />
+              {LOCALE_OPTIONS.map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLocale(l)}
+                  className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all duration-200 ${
+                    locale === l
+                      ? 'bg-[#F2A900] text-[#073b24] shadow-sm'
+                      : 'text-[#0A5C36] hover:text-[#F2A900]'
+                  }`}
+                >
+                  {LOCALE_LABELS[l]}
+                </button>
+              ))}
+            </div>
+
+            {/* WhatsApp CTA */}
             <a
               href={WA_LINK}
               target="_blank"
@@ -123,7 +146,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F2A900] hover:bg-[#ffc01a] text-[#073b24] font-bold text-sm rounded-xl transition-all duration-200 hover:-translate-y-px shadow-md shadow-amber-900/30"
             >
               {WA_ICON}
-              WhatsApp 查詢
+              {t.nav.whatsapp}
             </a>
           </div>
 
@@ -137,11 +160,29 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
           </button>
         </div>
 
-        {/* Mobile dropdown — same wood-grain, bordered top */}
+        {/* Mobile dropdown */}
         {menuOpen && (
-          <div
-            className="md:hidden border-t border-amber-900/20 pt-4 pb-5 space-y-1 animate-fade-in"
-          >
+          <div className="md:hidden border-t border-amber-900/20 pt-4 pb-5 space-y-1 animate-fade-in">
+            {/* Mobile language switcher */}
+            <div className="flex items-center gap-2 px-4 py-2 mb-1">
+              <Globe className="w-4 h-4 text-[#0A5C36] shrink-0" />
+              <div className="flex items-center gap-1 bg-black/8 rounded-lg p-0.5">
+                {LOCALE_OPTIONS.map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLocale(l)}
+                    className={`px-3 py-1 rounded-md text-xs font-bold transition-all duration-200 ${
+                      locale === l
+                        ? 'bg-[#F2A900] text-[#073b24] shadow-sm'
+                        : 'text-[#0A5C36] hover:text-[#F2A900]'
+                    }`}
+                  >
+                    {LOCALE_LABELS[l]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {links.map((link) => (
               <button
                 key={link.key}
@@ -162,7 +203,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               className="flex items-center justify-center gap-2 w-full mt-3 py-3 bg-[#F2A900] hover:bg-[#ffc01a] text-[#073b24] font-bold text-sm rounded-xl transition-colors shadow-md shadow-amber-900/20"
             >
               {WA_ICON}
-              WhatsApp 即時查詢
+              {t.nav.whatsappMobile}
             </a>
           </div>
         )}

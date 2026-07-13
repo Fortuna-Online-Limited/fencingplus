@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { useLocale } from '../lib/locale';
 
 const WA_LINK = 'https://wa.me/85298765432';
 
 interface Course {
   id: string;
   course_name: string;
+  course_name_en: string;
   age_group: string;
+  age_group_en: string;
   description: string;
+  description_en: string;
   schedule_info: string;
+  schedule_info_en: string;
   fee: string;
+  fee_en: string;
   image_url: string;
   sort_order: number;
 }
@@ -33,7 +39,6 @@ function CourseCardSkeleton() {
         <div className="space-y-2">
           <div className="h-4 w-full bg-slate-100 rounded" />
           <div className="h-4 w-5/6 bg-slate-100 rounded" />
-          <div className="h-4 w-4/6 bg-slate-100 rounded" />
         </div>
         <div className="mt-auto h-12 w-full bg-slate-200 rounded-xl" />
       </div>
@@ -42,6 +47,7 @@ function CourseCardSkeleton() {
 }
 
 export default function CoursesPage() {
+  const { t, locale } = useLocale();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -52,11 +58,14 @@ export default function CoursesPage() {
       .select('*')
       .order('sort_order', { ascending: true })
       .then(({ data, error: err }) => {
-        if (err) setError('載入課程資料時發生錯誤，請稍後再試。');
+        if (err) setError(locale === 'en' ? 'Failed to load courses. Please try again.' : '載入課程資料時發生錯誤，請稍後再試。');
         else setCourses(data ?? []);
         setLoading(false);
       });
-  }, []);
+  }, [locale]);
+
+  const loc = (zhVal: string, enVal: string) =>
+    locale === 'en' && enVal ? enVal : zhVal;
 
   return (
     <div className="bg-[#F8F9FA]">
@@ -71,28 +80,22 @@ export default function CoursesPage() {
         <div className="absolute inset-0 bg-primary-900/85" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <span className="inline-block text-gold font-semibold text-sm tracking-widest uppercase mb-4">
-            Courses
+            {t.courses.heroEyebrow}
           </span>
-          <h1 className="text-5xl md:text-6xl font-black text-white mb-5">課程介紹</h1>
-          <p className="text-white/70 text-lg leading-relaxed max-w-xl mx-auto">
-            由3.5歲幼兒到成人，由興趣啟蒙到競賽精英，我們提供完整的劍擊培訓路徑
-          </p>
+          <h1 className="text-5xl md:text-6xl font-black text-white mb-5">{t.courses.heroTitle}</h1>
+          <p className="text-white/70 text-lg leading-relaxed max-w-xl mx-auto">{t.courses.heroSubtitle}</p>
         </div>
       </section>
 
       {/* Notice */}
       <section className="bg-gold/10 border-b border-gold/20 py-4">
-        <p className="text-center text-primary font-semibold text-sm">
-          所有課程學費詳情，請直接 WhatsApp 查詢，教練將按學員年齡及程度作個人化建議
-        </p>
+        <p className="text-center text-primary font-semibold text-sm">{t.courses.notice}</p>
       </section>
 
       {/* Courses */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {error && (
-            <p className="text-center text-red-500 py-12">{error}</p>
-          )}
+          {error && <p className="text-center text-red-500 py-12">{error}</p>}
 
           <div className="grid md:grid-cols-2 gap-8">
             {loading
@@ -100,36 +103,18 @@ export default function CoursesPage() {
               : courses.map((c, idx) => {
                   const isElite = idx === courses.length - 1 && courses.length > 1;
                   const palette = [
-                    {
-                      border: 'border-gold',
-                      bg: 'bg-gold-50',
-                      tag: 'bg-gold text-primary-900',
-                      accent: 'text-gold',
-                    },
-                    {
-                      border: 'border-primary',
-                      bg: 'bg-primary-50',
-                      tag: 'bg-primary text-white',
-                      accent: 'text-primary',
-                    },
-                    {
-                      border: 'border-slate-200',
-                      bg: 'bg-slate-50',
-                      tag: 'bg-slate-700 text-white',
-                      accent: 'text-slate-700',
-                    },
-                    {
-                      border: 'border-gold',
-                      bg: 'bg-gradient-to-br from-gold-50 to-primary-50',
-                      tag: 'bg-gradient-to-r from-gold to-gold-600 text-primary-900',
-                      accent: 'text-gold-600',
-                    },
+                    { border: 'border-gold', bg: 'bg-gold-50', tag: 'bg-gold text-primary-900', accent: 'text-gold' },
+                    { border: 'border-primary', bg: 'bg-primary-50', tag: 'bg-primary text-white', accent: 'text-primary' },
+                    { border: 'border-slate-200', bg: 'bg-slate-50', tag: 'bg-slate-700 text-white', accent: 'text-slate-700' },
+                    { border: 'border-gold', bg: 'bg-gradient-to-br from-gold-50 to-primary-50', tag: 'bg-gradient-to-r from-gold to-gold-600 text-primary-900', accent: 'text-gold-600' },
                   ];
                   const p = palette[idx % palette.length];
-
-                  const scheduleLines = c.schedule_info
-                    ? c.schedule_info.split('；').filter(Boolean)
-                    : [];
+                  const displayName = loc(c.course_name, c.course_name_en);
+                  const displayAge = loc(c.age_group, c.age_group_en);
+                  const displayDesc = loc(c.description, c.description_en);
+                  const displaySchedule = loc(c.schedule_info, c.schedule_info_en);
+                  const displayFee = loc(c.fee, c.fee_en);
+                  const scheduleLines = displaySchedule.split('；').filter(Boolean);
 
                   return (
                     <div
@@ -139,26 +124,24 @@ export default function CoursesPage() {
                       <div className="relative h-52 overflow-hidden">
                         <img
                           src={c.image_url}
-                          alt={c.course_name}
+                          alt={displayName}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                         />
                         {isElite && (
                           <div className="absolute top-4 right-4 bg-gold text-primary-900 text-xs font-black px-3 py-1 rounded-full shadow-lg">
-                            ★ 精英課程
+                            {t.courses.eliteBadge}
                           </div>
                         )}
                       </div>
 
                       <div className="p-7 flex flex-col flex-1">
                         <div className="flex items-center gap-2 mb-3 flex-wrap">
-                          <span className={`px-3 py-1 text-xs font-bold rounded-full ${p.tag}`}>
-                            {c.course_name}
-                          </span>
-                          <span className="text-slate-500 text-sm font-medium">{c.age_group}</span>
+                          <span className={`px-3 py-1 text-xs font-bold rounded-full ${p.tag}`}>{displayName}</span>
+                          <span className="text-slate-500 text-sm font-medium">{displayAge}</span>
                         </div>
 
-                        <h3 className="text-xl font-black text-slate-900 mb-3">{c.course_name}</h3>
-                        <p className="text-slate-600 text-sm leading-relaxed mb-5">{c.description}</p>
+                        <h3 className="text-xl font-black text-slate-900 mb-3">{displayName}</h3>
+                        <p className="text-slate-600 text-sm leading-relaxed mb-5">{displayDesc}</p>
 
                         {scheduleLines.length > 0 && (
                           <ul className="space-y-2 mb-6 flex-1">
@@ -171,9 +154,9 @@ export default function CoursesPage() {
                           </ul>
                         )}
 
-                        {c.fee && (
+                        {displayFee && (
                           <p className="text-xs text-slate-500 mb-4 border-t border-slate-200 pt-3">
-                            <span className="font-semibold">學費：</span>{c.fee}
+                            <span className="font-semibold">{t.courses.feeLabel}</span>{displayFee}
                           </p>
                         )}
 
@@ -184,7 +167,7 @@ export default function CoursesPage() {
                           className="flex items-center justify-center gap-2 w-full py-3.5 bg-gold hover:bg-gold-400 text-primary-900 font-bold text-sm rounded-xl transition-all duration-200 hover:-translate-y-px shadow-md shadow-gold/20"
                         >
                           {WA_ICON}
-                          WhatsApp 諮詢此課程
+                          {t.courses.waButton}
                         </a>
                       </div>
                     </div>
@@ -194,18 +177,13 @@ export default function CoursesPage() {
         </div>
       </section>
 
-      {/* FAQ Strip */}
+      {/* FAQ */}
       <section className="py-16 bg-primary-50 border-t border-primary-100">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h3 className="text-2xl font-black text-slate-900 mb-3">常見問題</h3>
-          <p className="text-slate-500 mb-8">有任何疑問？以下或許已有答案，亦可直接WhatsApp我們</p>
+          <h3 className="text-2xl font-black text-slate-900 mb-3">{t.courses.faqTitle}</h3>
+          <p className="text-slate-500 mb-8">{t.courses.faqSubtitle}</p>
           <div className="grid md:grid-cols-2 gap-4 text-left">
-            {[
-              { q: '孩子完全沒有運動基礎，可以參加嗎？', a: '完全可以！我們的啟蒙班及兒童班均專為初學者設計，教練擅長從零教起，耐心引導每一位新學員。' },
-              { q: '學費及上課時間如何？', a: '學費因課程及班期不同而有所差異，請WhatsApp查詢以獲取最新課程表及學費資訊，教練會為您詳細介紹。' },
-              { q: '器材需要自備嗎？', a: '不需要！本中心提供全套安全器材供學員使用，家長無需自行購買。待學員確定長期學習後，教練會建議合適的個人裝備。' },
-              { q: '可以先試堂再決定報名嗎？', a: '當然可以！我們歡迎首堂體驗試堂，讓孩子和家長都能了解課程內容及中心環境後，再作決定。' },
-            ].map((item) => (
+            {t.courses.faq.map((item) => (
               <div key={item.q} className="bg-white rounded-2xl p-5 shadow-sm border border-primary-100">
                 <p className="font-bold text-primary text-sm mb-2">{item.q}</p>
                 <p className="text-slate-600 text-sm leading-relaxed">{item.a}</p>

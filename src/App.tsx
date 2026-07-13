@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { LocaleProvider } from './lib/locale';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -31,11 +32,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar currentPage={currentPage} onNavigate={navigate} />
-      <main className="flex-1">{pageComponents[currentPage]}</main>
-      <Footer onNavigate={navigate} />
-      <WhatsAppButton />
-    </div>
+    <LocaleProvider>
+      <div className="min-h-screen flex flex-col">
+        <Navbar currentPage={currentPage} onNavigate={navigate} />
+        <main className="flex-1">{pageComponents[currentPage]}</main>
+        <Footer onNavigate={navigate} />
+        <WhatsAppButton />
+      </div>
+    </LocaleProvider>
   );
 }

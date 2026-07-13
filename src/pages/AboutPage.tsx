@@ -1,4 +1,5 @@
 import { ArrowRight, BookOpen, Heart, Zap } from 'lucide-react';
+import { useLocale } from '../lib/locale';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -6,28 +7,17 @@ interface AboutPageProps {
   onNavigate: (page: Page) => void;
 }
 
-const coreValues = [
-  {
-    icon: BookOpen,
-    title: '專業引導',
-    desc: '所有教練均持有香港劍擊總會認可資格，並具備多年幼兒及兒童教學經驗。我們深信，正確的起步是成功的一半。從基本劍術到競技技巧，教練以科學化方式循序漸進，確保每位學員在安全的環境下打下紮實基礎。',
-    img: 'https://images.pexels.com/photos/8815943/pexels-photo-8815943.jpeg?auto=compress&cs=tinysrgb&w=700',
-  },
-  {
-    icon: Heart,
-    title: '品格培育',
-    desc: '劍擊不只是技術的比拼，更是品格的磨練。我們的課程設計融入正向教育理念，透過尊重對手、接受失敗、從新出發等劍道精神，幫助孩子建立自律、冷靜與謙遜的品格，讓運動場上學到的價值觀，在課室與生活中同樣發光。',
-    img: 'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=700',
-  },
-  {
-    icon: Zap,
-    title: '全面成長',
-    desc: '我們相信每個孩子都有無限潛能。FENCING PLUS提供從啟蒙到精英的完整培訓路徑，因材施教，讓孩子按自己的步伐成長。無論是強身健體、培養興趣，還是目標代表學校出賽，我們都有相應的課程方案。',
-    img: 'https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=700',
-  },
+const VALUE_ICONS = [BookOpen, Heart, Zap];
+
+const VALUE_IMGS = [
+  'https://images.pexels.com/photos/8815943/pexels-photo-8815943.jpeg?auto=compress&cs=tinysrgb&w=700',
+  'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=700',
+  'https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=700',
 ];
 
 export default function AboutPage({ onNavigate }: AboutPageProps) {
+  const { t } = useLocale();
+
   return (
     <div className="bg-[#F8F9FA]">
       {/* Hero */}
@@ -41,12 +31,10 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
         <div className="absolute inset-0 bg-primary-900/85" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <span className="inline-block text-gold font-semibold text-sm tracking-widest uppercase mb-4">
-            About Us
+            {t.about.heroEyebrow}
           </span>
-          <h1 className="text-5xl md:text-6xl font-black text-white mb-5">關於我們</h1>
-          <p className="text-white/70 text-lg leading-relaxed">
-            一群熱愛劍擊、熱愛教育的人，用心為香港下一代打造最好的培訓環境
-          </p>
+          <h1 className="text-5xl md:text-6xl font-black text-white mb-5">{t.about.heroTitle}</h1>
+          <p className="text-white/70 text-lg leading-relaxed">{t.about.heroSubtitle}</p>
         </div>
       </section>
 
@@ -56,42 +44,24 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-primary font-semibold text-sm tracking-widest uppercase">
-                品牌故事
+                {t.about.storySectionLabel}
               </span>
-              <h2 className="mt-3 text-4xl font-black text-slate-900 leading-tight">
-                從熱情出發，<br />以專業為本
+              <h2
+                className="mt-3 text-4xl font-black text-slate-900 leading-tight"
+                style={{ whiteSpace: 'pre-line' }}
+              >
+                {t.about.storyTitle}
               </h2>
               <div className="mt-6 space-y-4 text-slate-600 leading-relaxed">
-                <p>
-                  FENCING PLUS 成立於2026年，由一班熱愛劍擊、充滿教學熱誠的專業教練團隊組成。
-                  我們致力推廣劍擊運動，希望為幼童及青少年提供一個安全、愉快且具啟發性的學習環境，
-                  從小培養他們對劍擊的認識與興趣，讓運動成為成長的一部分。
-                </p>
-                <p>
-                  我們設有舒適完善的訓練空間，課程專為不同年齡層小朋友而設，包括幼兒劍擊班（3.5至6歲）
-                  及兒童劍擊班（7至14歲），涵蓋花劍及重劍訓練，由淺入深建立紮實基礎。
-                  另外也有為青少年及成人而設的劍擊體驗班。
-                </p>
-                <p>
-                  教練團隊擁有多年教學經驗，並熟悉幼兒及兒童教學，會以耐心及循序漸進的方式，
-                  讓每位小朋友都能在輕鬆愉快的氣氛中學習與成長。
-                </p>
-                <p>
-                  我們深信，劍擊不只是運動，更是幫助孩子建立良好品格的重要途徑。透過訓練，
-                  小朋友可以提升專注力和手眼協調，同時培養自信心、毅力及自律性，
-                  也會積極提供各項培訓、比賽及活動機會給予小朋友，在互動和練習當中，
-                  他們亦會學習冷靜思考、尊重他人，以及以正面的態度面對挑戰。
-                </p>
-                <p>
-                  未來，FENCING PLUS 將持續為更多小朋友帶來優質的劍擊學習體驗，
-                  陪伴他們一步一步成長，在運動中建立自信，發掘潛能，享受學習的樂趣。
-                </p>
+                {t.about.storyParas.map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
               </div>
               <button
                 onClick={() => onNavigate('courses')}
                 className="group mt-8 inline-flex items-center gap-2 px-7 py-3.5 bg-primary hover:bg-primary-800 text-white font-bold rounded-xl transition-all hover:-translate-y-0.5"
               >
-                探索我們的課程
+                {t.about.storyCta}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -104,12 +74,12 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 />
               </div>
               <div className="absolute -bottom-5 -left-5 bg-gold rounded-2xl p-5 shadow-xl">
-                <div className="text-primary-900 font-black text-3xl">2026</div>
-                <div className="text-primary-900/80 text-sm font-semibold">年正式成立</div>
+                <div className="text-primary-900 font-black text-3xl">{t.about.storyFounded}</div>
+                <div className="text-primary-900/80 text-sm font-semibold">{t.about.storyFoundedLabel}</div>
               </div>
               <div className="absolute -top-5 -right-5 bg-primary rounded-2xl p-5 shadow-xl">
-                <div className="text-white font-black text-3xl">100+</div>
-                <div className="text-white/80 text-sm font-semibold">位培訓學員</div>
+                <div className="text-white font-black text-3xl">{t.about.storyStudents}</div>
+                <div className="text-white/80 text-sm font-semibold">{t.about.storyStudentsLabel}</div>
               </div>
             </div>
           </div>
@@ -121,37 +91,36 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-primary font-semibold text-sm tracking-widest uppercase">
-              核心價值
+              {t.about.valuesSectionLabel}
             </span>
-            <h2 className="mt-3 text-4xl font-black text-slate-900">
-              三大核心，成就卓越
-            </h2>
-            <p className="mt-4 text-slate-500 max-w-xl mx-auto">
-              我們相信，真正的培訓不只在劍道上，更在孩子的心裡
-            </p>
+            <h2 className="mt-3 text-4xl font-black text-slate-900">{t.about.valuesTitle}</h2>
+            <p className="mt-4 text-slate-500 max-w-xl mx-auto">{t.about.valuesSubtitle}</p>
           </div>
           <div className="space-y-20">
-            {coreValues.map((v, i) => (
-              <div
-                key={v.title}
-                className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
-              >
-                <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
-                  <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-5">
-                    <v.icon className="w-7 h-7 text-white" />
+            {t.about.coreValues.map((v, i) => {
+              const Icon = VALUE_ICONS[i];
+              return (
+                <div
+                  key={v.title}
+                  className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
+                >
+                  <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
+                    <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-5">
+                      <Icon className="w-7 h-7 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-black text-slate-900 mb-4">{v.title}</h3>
+                    <p className="text-slate-600 leading-relaxed text-base">{v.desc}</p>
                   </div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-4">{v.title}</h3>
-                  <p className="text-slate-600 leading-relaxed text-base">{v.desc}</p>
+                  <div className={`rounded-2xl overflow-hidden shadow-lg ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                    <img
+                      src={VALUE_IMGS[i]}
+                      alt={v.title}
+                      className="w-full h-72 lg:h-80 object-cover hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
                 </div>
-                <div className={`rounded-2xl overflow-hidden shadow-lg ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <img
-                    src={v.img}
-                    alt={v.title}
-                    className="w-full h-72 lg:h-80 object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -159,17 +128,13 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
       {/* CTA */}
       <section className="py-20 bg-primary">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-            加入 FENCING PLUS 大家庭
-          </h2>
-          <p className="text-white/70 text-lg mb-8">
-            認識我們，了解我們，然後讓我們一同陪伴您的孩子成長
-          </p>
+          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">{t.about.ctaTitle}</h2>
+          <p className="text-white/70 text-lg mb-8">{t.about.ctaSubtitle}</p>
           <button
             onClick={() => onNavigate('facilities')}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gold hover:bg-gold-400 text-primary-900 font-black rounded-2xl transition-all hover:-translate-y-0.5 shadow-xl"
           >
-            聯絡我們 <ArrowRight className="w-5 h-5" />
+            {t.about.ctaButton} <ArrowRight className="w-5 h-5" />
           </button>
         </div>
       </section>
