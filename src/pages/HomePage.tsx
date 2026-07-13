@@ -272,8 +272,8 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                   className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url("${v.bgImg}")` }}
                 />
-                {/* White overlay — 40% to let background photo show at ~60% clarity */}
-                <div className="absolute inset-0" style={{ backgroundColor: 'rgba(255,255,255,0.40)' }} />
+                {/* White overlay — 65% to let background photo show at ~35% clarity */}
+                <div className="absolute inset-0" style={{ backgroundColor: 'rgba(255,255,255,0.65)' }} />
 
                 {/* Card content */}
                 <div className="relative p-8">
@@ -304,19 +304,19 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                   </div>
                   <div
                     className="text-xs font-semibold uppercase tracking-widest mb-1"
-                    style={{ color: '#1e3a2a', textShadow: '0 1px 3px rgba(255,255,255,0.8)' }}
+                    style={{ color: '#111827', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
                   >
                     {v.subtitle}
                   </div>
                   <h3
                     className="text-2xl font-black mb-3"
-                    style={{ color: '#0f2318', textShadow: '0 1px 4px rgba(255,255,255,0.85)' }}
+                    style={{ color: '#030712', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
                   >
                     {v.title}
                   </h3>
                   <p
                     className="text-sm leading-relaxed"
-                    style={{ color: '#1a2e20', textShadow: '0 1px 3px rgba(255,255,255,0.8)' }}
+                    style={{ color: '#1f2937', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
                   >
                     {v.desc}
                   </p>
