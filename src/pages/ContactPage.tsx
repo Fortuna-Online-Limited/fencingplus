@@ -57,12 +57,13 @@ export default function ContactPage() {
     setStatus('loading');
     setErrorMsg('');
 
-    const { error } = await supabase.from('contact_submissions').insert({
+    const { error } = await supabase.from('inquiries_Fencing_Plus').insert({
       name: form.name,
       email: form.email,
-      phone: form.phone || null,
-      service: form.service || null,
-      message: form.message,
+      phone: form.phone || '',
+      message: (form.service
+        ? `Service: ${form.service}\n${form.message}`
+        : form.message),
     });
 
     if (error) {

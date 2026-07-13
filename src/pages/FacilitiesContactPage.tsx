@@ -59,12 +59,13 @@ export default function FacilitiesContactPage() {
     setStatus('loading');
     setErrorMsg('');
 
-    const { error } = await supabase.from('fencing_inquiries').insert({
-      parent_name: form.parent_name,
+    const { error } = await supabase.from('inquiries_Fencing_Plus').insert({
+      name: form.parent_name,
       phone: form.phone,
-      student_age: form.student_age,
-      course_interest: form.course_interest || null,
-      message: form.message || null,
+      child_name: form.student_age,
+      message: (form.course_interest
+        ? `課程意向：${form.course_interest}${form.message ? `\n${form.message}` : ''}`
+        : form.message) || '',
     });
 
     if (error) {
