@@ -72,7 +72,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl shadow-primary/15">
                 <img
-                  src="https://images.pexels.com/photos/8815943/pexels-photo-8815943.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/to_be_confirmed.png"
                   alt="Fencing training"
                   className="w-full h-[500px] object-cover"
                 />

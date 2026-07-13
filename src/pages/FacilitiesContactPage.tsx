@@ -88,7 +88,7 @@ export default function FacilitiesContactPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
             <div className="rounded-3xl overflow-hidden shadow-xl">
               <img
-                src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/to_be_confirmed.png"
                 alt="Fencing facility"
                 className="w-full h-80 object-cover"
               />
