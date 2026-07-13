@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Award, Users, Heart } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -6,78 +8,17 @@ interface TeamPageProps {
   onNavigate: (page: Page) => void;
 }
 
-const WA_LINK = 'https://wa.me/85298765432';
+interface Coach {
+  id: string;
+  coach_name: string;
+  title: string;
+  experience: string[];
+  bio: string;
+  avatar_url: string;
+  sort_order: number;
+}
 
-const coaches = [
-  {
-    name: '李啟源',
-    role: '總教練',
-    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/1.LKY/LKY.jpeg',
-    qualifications: ['香港劍擊總會一級教練'],
-    achievements: [
-      '2025年保良局男子公開組重劍冠軍 🏆',
-      'Academy of Fencing 2018 Q4 U23 Men\'s Epee Champion 🏆',
-      '香港劍擊學院 2018 Q4公開組冠軍 🏆',
-      '2014–2018年台灣全國大專運動會重劍四年霸亞軍',
-      '103年台中市市長盃重劍冠軍 🏆',
-      '103年TFC盃擊劍分齡賽（II）季軍',
-      '仁愛堂劍擊大賽2014年重劍組冠軍 🏆',
-      '2014禮悅劍擊隊際邀請賽重劍公開男子組亞軍',
-      '2013年廣州市粵港澳重劍團體冠軍 🏆',
-      '2013年全國劍擊劍俱樂部聯賽（深圳站）季軍',
-      '2013–2014年首屆深圳劍劍公開賽季賽',
-      'New Territories Secondary School Fencing Competition (Team) Boy Foil: 3rd',
-      'New Territories Secondary School Fencing Competition (Team) Boy Foil: 2nd',
-    ],
-    specialtyColor: 'bg-gold text-primary-900',
-    specialtyLabel: '總教練 · 重劍',
-  },
-  {
-    name: '鄭樂晴',
-    role: '精英教練',
-    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/2.CLC/CLC.jpeg',
-    qualifications: [],
-    achievements: [
-      '2021年一劍擊劍擊錦標賽季軍 🥉',
-      '2022年全港中學生劍擊錦標賽季軍 🥉',
-      '2023年香港劍擊學院季度劍擊比賽季軍 🥉',
-      '2022新界區學界劍擊比賽團體賽亞軍 🥈',
-      '2023新界區學界劍擊比賽團體賽季軍 🥉',
-      '2024新界區學界劍擊比賽團體賽季軍 🥉',
-    ],
-    specialtyColor: 'bg-primary text-white',
-    specialtyLabel: '精英教練',
-  },
-  {
-    name: '劉宇軒',
-    role: '精英教練',
-    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/3.LYH/LYH.jpeg',
-    qualifications: [],
-    achievements: [
-      '2022新界區學界劍擊比賽個人賽季軍 🥉',
-      '2022新界區學界劍擊比賽團體賽亞軍 🥈',
-      '2023新界區學界劍擊比賽團體賽季軍 🥉',
-      '2024新界區學界劍擊比賽團體賽季軍 🥉',
-    ],
-    specialtyColor: 'bg-primary text-white',
-    specialtyLabel: '精英教練',
-  },
-  {
-    name: '王愉龍',
-    role: '精英教練',
-    img: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/04_Our_Team/Coaching_Team-Profile_Photos/4.WYL/WYL.jpeg',
-    qualifications: [],
-    achievements: [
-      '帶領學生於2025年本地賽事 U10男子（個人）奪冠 🏆',
-      '帶領學生於2025年本地賽事 U12男子（個人）奪季軍 🥉',
-      '帶領學生於2025年本地賽事 U10女子（個人）奪季軍 🥉',
-      '帶領學生於2025年本地賽事 U7男子（個人）奪冠 🏆',
-      '帶領學生於2024年本地賽事 U8男子（個人）奪冠 🏆',
-    ],
-    specialtyColor: 'bg-gold text-primary-900',
-    specialtyLabel: '精英教練 · 幼兒',
-  },
-];
+const WA_LINK = 'https://wa.me/85298765432';
 
 const teamStats = [
   { icon: Award, value: '港隊級別', label: '創辦教練背景' },
@@ -85,7 +26,47 @@ const teamStats = [
   { icon: Heart, value: '8:1', label: '師生比例上限' },
 ];
 
+function CoachCardSkeleton() {
+  return (
+    <div className="bg-white rounded-3xl overflow-hidden shadow-md border border-slate-100 flex flex-col animate-pulse">
+      <div className="h-72 bg-slate-200" />
+      <div className="p-6 flex flex-col gap-3">
+        <div className="h-6 w-1/2 bg-slate-200 rounded" />
+        <div className="h-4 w-1/3 bg-slate-100 rounded" />
+        <div className="space-y-2 mt-2">
+          <div className="h-3 w-full bg-slate-100 rounded" />
+          <div className="h-3 w-5/6 bg-slate-100 rounded" />
+          <div className="h-3 w-4/6 bg-slate-100 rounded" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
+  const [coaches, setCoaches] = useState<Coach[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    supabase
+      .from('coaches_Fencing_Plus')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .then(({ data, error: err }) => {
+        if (err) setError('載入教練資料時發生錯誤，請稍後再試。');
+        else setCoaches(data ?? []);
+        setLoading(false);
+      });
+  }, []);
+
+  const badgePalette = [
+    'bg-gold text-primary-900',
+    'bg-primary text-white',
+    'bg-primary text-white',
+    'bg-gold text-primary-900',
+  ];
+
   return (
     <div className="bg-[#F8F9FA]">
       {/* Hero */}
@@ -138,65 +119,62 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
             </p>
           </div>
 
+          {error && (
+            <p className="text-center text-red-500 py-12">{error}</p>
+          )}
+
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
-            {coaches.map((coach) => (
-              <div
-                key={coach.name}
-                className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col"
-              >
-                {/* Photo */}
-                <div className="relative h-72 overflow-hidden bg-slate-100">
-                  <img
-                    src={coach.img}
-                    alt={coach.name}
-                    className="w-full h-full object-cover object-top"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${coach.specialtyColor}`}>
-                      {coach.specialtyLabel}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="mb-4">
-                    <h3 className="font-black text-slate-900 text-xl">{coach.name}</h3>
-                    <p className="text-primary font-semibold text-sm">{coach.role}</p>
-                  </div>
-
-                  {/* Qualifications */}
-                  {coach.qualifications.length > 0 && (
-                    <div className="mb-3">
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">
-                        註冊資格
-                      </p>
-                      {coach.qualifications.map((q) => (
-                        <p key={q} className="text-xs text-primary-700 font-medium bg-primary-50 border border-primary-100 rounded-lg px-2.5 py-1 mb-1">
-                          {q}
-                        </p>
-                      ))}
+            {loading
+              ? Array.from({ length: 4 }).map((_, i) => <CoachCardSkeleton key={i} />)
+              : coaches.map((coach, idx) => (
+                  <div
+                    key={coach.id}
+                    className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                  >
+                    {/* Photo */}
+                    <div className="relative h-72 overflow-hidden bg-slate-100">
+                      <img
+                        src={coach.avatar_url}
+                        alt={coach.coach_name}
+                        className="w-full h-full object-cover object-top"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute bottom-3 left-3">
+                        <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${badgePalette[idx % badgePalette.length]}`}>
+                          {coach.title}
+                        </span>
+                      </div>
                     </div>
-                  )}
 
-                  {/* Achievements */}
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
-                      {coach.name === '王愉龍' ? '帶領學生榮譽' : '個人獎項'}
-                    </p>
-                    <ul className="space-y-1.5 max-h-48 overflow-y-auto pr-1 scrollbar-thin">
-                      {coach.achievements.map((a) => (
-                        <li key={a} className="flex items-start gap-1.5 text-xs text-slate-600 leading-relaxed">
-                          <span className="text-gold font-bold mt-0.5 shrink-0">▸</span>
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
+                    {/* Info */}
+                    <div className="p-6 flex flex-col flex-1">
+                      <div className="mb-4">
+                        <h3 className="font-black text-slate-900 text-xl">{coach.coach_name}</h3>
+                        <p className="text-primary font-semibold text-sm">{coach.title}</p>
+                      </div>
+
+                      {coach.bio && (
+                        <p className="text-slate-500 text-xs leading-relaxed mb-3">{coach.bio}</p>
+                      )}
+
+                      {coach.experience.length > 0 && (
+                        <div className="flex-1">
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
+                            個人獎項
+                          </p>
+                          <ul className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                            {coach.experience.map((item, i) => (
+                              <li key={i} className="flex items-start gap-1.5 text-xs text-slate-600 leading-relaxed">
+                                <span className="text-gold font-bold mt-0.5 shrink-0">▸</span>
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                ))}
           </div>
         </div>
       </section>
