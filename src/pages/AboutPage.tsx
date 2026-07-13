@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Heart, Zap } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useLocale } from '../lib/locale';
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
@@ -7,12 +7,16 @@ interface AboutPageProps {
   onNavigate: (page: Page) => void;
 }
 
-const VALUE_ICONS = [BookOpen, Heart, Zap];
+const VALUE_ICONS = [
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Professional_Guidance/Professional_Guidance.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Character_Cultivation/Character_Cultivation-removebg-preview_577x433.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Holistic_Growth/Holistic_Growth-removebg-preview_577x433.png',
+];
 
-const VALUE_IMGS = [
-  'https://images.pexels.com/photos/8815943/pexels-photo-8815943.jpeg?auto=compress&cs=tinysrgb&w=700',
-  'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=700',
-  'https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=700',
+const VALUE_BG_IMGS = [
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Picture/Professional_Guidance/Professional_Guidance_Background.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Picture/Character_Cultivation/Character_Cultivation_Background.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Picture/Holistic_Growth/Holistic_Growth_Background.png',
 ];
 
 export default function AboutPage({ onNavigate }: AboutPageProps) {
@@ -25,7 +29,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
         className="relative pt-40 pb-24 bg-cover bg-center"
         style={{
           backgroundImage:
-            'url(https://images.pexels.com/photos/3766256/pexels-photo-3766256.jpeg?auto=compress&cs=tinysrgb&w=1600)',
+            'url(https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Picture/about_us/about_us_AI.png)',
         }}
       >
         <div className="absolute inset-0 bg-primary-900/85" />
@@ -96,31 +100,39 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             <h2 className="mt-3 text-4xl font-black text-slate-900">{t.about.valuesTitle}</h2>
             <p className="mt-4 text-slate-500 max-w-xl mx-auto">{t.about.valuesSubtitle}</p>
           </div>
-          <div className="space-y-20">
-            {t.about.coreValues.map((v, i) => {
-              const Icon = VALUE_ICONS[i];
-              return (
+          <div className="grid md:grid-cols-3 gap-8">
+            {t.about.coreValues.map((v, i) => (
+              <div
+                key={v.title}
+                className="relative rounded-3xl overflow-hidden shadow-xl group"
+                style={{ minHeight: '420px' }}
+              >
+                {/* Background image */}
                 <div
-                  key={v.title}
-                  className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
-                >
-                  <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
-                    <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-5">
-                      <Icon className="w-7 h-7 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-black text-slate-900 mb-4">{v.title}</h3>
-                    <p className="text-slate-600 leading-relaxed text-base">{v.desc}</p>
-                  </div>
-                  <div className={`rounded-2xl overflow-hidden shadow-lg ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${VALUE_BG_IMGS[i]})` }}
+                />
+                {/* White overlay mask */}
+                <div className="absolute inset-0 bg-white/35" />
+                {/* Content */}
+                <div className="relative z-10 flex flex-col items-center text-center p-8 h-full">
+                  {/* Icon container — fully transparent background */}
+                  <div
+                    className="w-28 h-28 flex items-center justify-center mb-6 flex-shrink-0"
+                    style={{ background: 'transparent' }}
+                  >
                     <img
-                      src={VALUE_IMGS[i]}
+                      src={VALUE_ICONS[i]}
                       alt={v.title}
-                      className="w-full h-72 lg:h-80 object-cover hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full"
+                      style={{ objectFit: 'contain', background: 'transparent' }}
                     />
                   </div>
+                  <h3 className="text-2xl font-black text-slate-900 mb-4">{v.title}</h3>
+                  <p className="text-slate-800 leading-relaxed text-sm">{v.desc}</p>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </section>
