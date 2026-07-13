@@ -1,5 +1,24 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+
+interface NewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  publish_date: string;
+  image_url: string;
+  is_pinned: boolean;
+}
+
+interface HonorItem {
+  id: string;
+  student_name: string;
+  award_title: string;
+  category: string;
+  event_date: string;
+  image_url: string;
+}
 
 type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
 
@@ -18,49 +37,25 @@ const HERO_SLIDES = [
 
 const values = [
   {
-    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Focus/Focus.png',
+    bgImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Picture/Focus_Background/Focus_Background_asia.png',
+    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Focus/Focus_BG_remover-removebg-preview_628x397.png',
     title: '專注力',
     subtitle: 'Focus & Concentration',
     desc: '劍擊需要高度集中精神，每一次交鋒都是對注意力的訓練，幫助孩子在學業與生活中同樣保持專注。',
-    color: 'bg-primary-50 border-primary-100',
   },
   {
-    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Confidence/Confidence.png',
+    bgImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Picture/Confidence_Background/Confidence_Background_asia.png',
+    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Confidence/Confidence_BG_remover-removebg-preview_628x397.png',
     title: '自信心',
     subtitle: 'Confidence & Growth',
     desc: '從第一次握劍到第一場友誼賽，每一個進步都是自信的積累，讓孩子學懂欣賞自己的成長。',
-    color: 'bg-gold-50 border-gold-100',
   },
   {
-    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Perseverance/Perseverance.png',
+    bgImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Picture/Perseverance_Background/Perseverance_Background_asia.png',
+    iconImg: 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Icon/Perseverance/Perseverance_BG_remover-removebg-preview_628x397.png',
     title: '堅毅力',
     subtitle: 'Resilience & Character',
     desc: '劍道上的跌倒與爬起，磨練孩子面對挫折的韌性，培育永不放棄的運動員精神與正面人生態度。',
-    color: 'bg-primary-50 border-primary-100',
-  },
-];
-
-const news = [
-  {
-    date: '2026年5月',
-    badge: '比賽成績',
-    title: '學員於學界劍擊錦標賽奪得銀牌',
-    desc: '恭賀本中心學員陳小明於本年度學界劍擊錦標賽花劍項目勇奪銀牌，為自己及中心爭光！',
-    img: 'https://images.pexels.com/photos/6077776/pexels-photo-6077776.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    date: '2026年4月',
-    badge: '新課程',
-    title: '幼兒啟蒙班正式開班，名額有限！',
-    desc: '全新幼兒劍擊啟蒙班（3.5-6歲）正式招生，以遊戲化教學培養小朋友對劍擊的興趣，歡迎查詢。',
-    img: 'https://images.pexels.com/photos/3621104/pexels-photo-3621104.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    date: '2026年3月',
-    badge: '中心活動',
-    title: '免費體驗日圓滿結束，逾50組家庭參與',
-    desc: '感謝各位家長及小朋友的踴躍參與，免費劍擊體驗日反應熱烈，下次體驗日詳情敬請留意。',
-    img: 'https://images.pexels.com/photos/8815943/pexels-photo-8815943.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
 ];
 
@@ -98,6 +93,35 @@ const testimonials = [
 export default function HomePage({ onNavigate }: HomePageProps) {
   const [slideIndex, setSlideIndex] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [honors, setHonors] = useState<HonorItem[]>([]);
+  const [newsLoading, setNewsLoading] = useState(true);
+  const [honorsLoading, setHonorsLoading] = useState(true);
+
+  useEffect(() => {
+    supabase
+      .from('news_Fencing_Plus')
+      .select('id, title, summary, publish_date, image_url, is_pinned')
+      .order('is_pinned', { ascending: false })
+      .order('publish_date', { ascending: false })
+      .limit(3)
+      .then(({ data, error }) => {
+        if (!error && data) setNews(data);
+        setNewsLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    supabase
+      .from('honors_Fencing_Plus')
+      .select('id, student_name, award_title, category, event_date, image_url')
+      .order('event_date', { ascending: false })
+      .limit(6)
+      .then(({ data, error }) => {
+        if (!error && data) setHonors(data);
+        setHonorsLoading(false);
+      });
+  }, []);
 
   // Auto-advance hero slideshow every 4 s
   useEffect(() => {
@@ -241,20 +265,62 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             {values.map((v) => (
               <div
                 key={v.title}
-                className={`rounded-2xl border p-8 hover:-translate-y-1 transition-transform duration-300 ${v.color}`}
+                className="relative rounded-2xl overflow-hidden border border-slate-200 hover:-translate-y-1 transition-transform duration-300 shadow-sm hover:shadow-lg"
               >
-                <div className="w-20 h-20 mb-5 flex items-center justify-center">
-                  <img
-                    src={v.iconImg}
-                    alt={v.title}
-                    className="w-full h-full object-contain"
-                  />
+                {/* Background photo */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url("${v.bgImg}")` }}
+                />
+                {/* White overlay — 40% to let background photo show at ~60% clarity */}
+                <div className="absolute inset-0" style={{ backgroundColor: 'rgba(255,255,255,0.40)' }} />
+
+                {/* Card content */}
+                <div className="relative p-8">
+                  {/* Icon — transparent PNG, no white box */}
+                  <div
+                    style={{
+                      background: 'transparent',
+                      backgroundColor: 'transparent',
+                      lineHeight: 0,
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <img
+                      src={v.iconImg}
+                      alt={v.title}
+                      style={{
+                        height: '60px',
+                        width: 'auto',
+                        objectFit: 'contain',
+                        display: 'block',
+                        background: 'transparent',
+                        backgroundColor: 'transparent',
+                        boxShadow: 'none',
+                        border: 'none',
+                        maxWidth: 'none',
+                      }}
+                    />
+                  </div>
+                  <div
+                    className="text-xs font-semibold uppercase tracking-widest mb-1"
+                    style={{ color: '#1e3a2a', textShadow: '0 1px 3px rgba(255,255,255,0.8)' }}
+                  >
+                    {v.subtitle}
+                  </div>
+                  <h3
+                    className="text-2xl font-black mb-3"
+                    style={{ color: '#0f2318', textShadow: '0 1px 4px rgba(255,255,255,0.85)' }}
+                  >
+                    {v.title}
+                  </h3>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: '#1a2e20', textShadow: '0 1px 3px rgba(255,255,255,0.8)' }}
+                  >
+                    {v.desc}
+                  </p>
                 </div>
-                <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">
-                  {v.subtitle}
-                </div>
-                <h3 className="text-2xl font-black text-slate-900 mb-3">{v.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -270,7 +336,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                 最新動態
               </span>
               <h2 className="mt-2 text-3xl md:text-4xl font-black text-slate-900">
-                榮譽牆與中心消息
+                中心消息
               </h2>
             </div>
             <button
@@ -280,36 +346,114 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               查看更多 <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {news.map((n) => (
-              <div
-                key={n.title}
-                className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white group"
-              >
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={n.img}
-                    alt={n.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="px-2.5 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded-full">
-                      {n.badge}
-                    </span>
-                    <span className="text-slate-400 text-xs">{n.date}</span>
+
+          {newsLoading ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="rounded-2xl border border-slate-100 bg-slate-50 h-64 animate-pulse" />
+              ))}
+            </div>
+          ) : news.length === 0 ? (
+            <p className="text-center text-slate-400 py-16">暫無消息，敬請期待。</p>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {news.map((n) => (
+                <div
+                  key={n.id}
+                  className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white group"
+                >
+                  {n.image_url && (
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        src={n.image_url}
+                        alt={n.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      {n.is_pinned && (
+                        <span className="px-2.5 py-0.5 bg-gold/20 text-gold-700 text-xs font-semibold rounded-full">
+                          置頂
+                        </span>
+                      )}
+                      <span className="text-slate-400 text-xs">
+                        {new Date(n.publish_date).toLocaleDateString('zh-HK', {
+                          year: 'numeric',
+                          month: 'long',
+                        })}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-slate-900 text-base mb-2 leading-snug">{n.title}</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed">{n.summary}</p>
                   </div>
-                  <h3 className="font-bold text-slate-900 text-base mb-2 leading-snug">{n.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{n.desc}</p>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
+      {/* ── Honor Wall ── */}
+      <section className="py-24 bg-primary-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <span className="text-primary font-semibold text-sm tracking-widest uppercase">
+                學員戰績
+              </span>
+              <h2 className="mt-2 text-3xl md:text-4xl font-black text-slate-900">
+                榮譽牆
+              </h2>
+            </div>
+          </div>
+
+          {honorsLoading ? (
+            <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="rounded-2xl border border-slate-100 bg-white h-48 animate-pulse" />
+              ))}
+            </div>
+          ) : honors.length === 0 ? (
+            <p className="text-center text-slate-400 py-16">榮譽紀錄陸續更新，敬請期待。</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {honors.map((h) => (
+                <div
+                  key={h.id}
+                  className="rounded-2xl overflow-hidden border border-primary-100 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300 group"
+                >
+                  {h.image_url && (
+                    <div className="h-44 overflow-hidden">
+                      <img
+                        src={h.image_url}
+                        alt={h.award_title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-2 py-0.5 bg-gold/20 text-xs font-semibold rounded-full" style={{ color: '#92640a' }}>
+                        {h.category}
+                      </span>
+                      <span className="text-slate-400 text-xs">
+                        {new Date(h.event_date).toLocaleDateString('zh-HK', {
+                          year: 'numeric',
+                          month: 'long',
+                        })}
+                      </span>
+                    </div>
+                    <h3 className="font-black text-slate-900 text-base mb-1 leading-snug">{h.award_title}</h3>
+                    <p className="text-slate-500 text-sm">{h.student_name}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
       <section className="py-24 bg-primary-50">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-12">

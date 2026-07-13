@@ -25,9 +25,9 @@ export default function Footer({ onNavigate }: FooterProps) {
           <div>
             <button onClick={() => onNavigate('home')} className="flex items-center mb-5 group">
               <img
-                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Forest_Green_Main_Color_Version/FENCING_PLUS.jpeg"
+                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/BG_removed_PNG/FENCING_plus_BGremover_628x397-removebg-preview.png"
                 alt="FENCING PLUS"
-                className="h-12 w-auto object-contain brightness-0 invert group-hover:opacity-90 transition-opacity"
+                className="h-16 w-auto object-contain brightness-0 invert group-hover:opacity-85 transition-opacity"
               />
             </button>
             <p className="text-white/60 text-sm leading-relaxed max-w-xs">
