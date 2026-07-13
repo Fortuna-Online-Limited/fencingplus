@@ -8,7 +8,7 @@ interface AboutPageProps {
 }
 
 const VALUE_ICONS = [
-  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Professional_Guidance/Professional_Guidance.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Professional_Guidance/Professional_Guidance-removebg-preview_577x433.png',
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Character_Cultivation/Character_Cultivation-removebg-preview_577x433.png',
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/02_About_Us/Icon/Holistic_Growth/Holistic_Growth-removebg-preview_577x433.png',
 ];
@@ -112,8 +112,8 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ backgroundImage: `url(${VALUE_BG_IMGS[i]})` }}
                 />
-                {/* White overlay mask */}
-                <div className="absolute inset-0 bg-white/35" />
+                {/* White overlay mask — 70% opacity to heavily fade background and protect text */}
+                <div className="absolute inset-0" style={{ backgroundColor: 'rgba(255,255,255,0.70)' }} />
                 {/* Content */}
                 <div className="relative z-10 flex flex-col items-center text-center p-8 h-full">
                   {/* Icon container — fully transparent background */}
@@ -128,8 +128,18 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                       style={{ objectFit: 'contain', background: 'transparent' }}
                     />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-4">{v.title}</h3>
-                  <p className="text-slate-800 leading-relaxed text-sm">{v.desc}</p>
+                  <h3
+                    className="text-2xl font-black mb-4"
+                    style={{ color: '#0A5C36', textShadow: '0 1px 2px rgba(255,255,255,0.9)' }}
+                  >
+                    {v.title}
+                  </h3>
+                  <p
+                    className="leading-relaxed text-sm"
+                    style={{ color: '#222222', textShadow: '0 1px 2px rgba(255,255,255,0.9)' }}
+                  >
+                    {v.desc}
+                  </p>
                 </div>
               </div>
             ))}
