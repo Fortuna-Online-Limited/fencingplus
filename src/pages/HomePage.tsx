@@ -93,6 +93,9 @@ export default function HomePage({ onNavigate }: HomePageProps) {
     return () => clearInterval(timer);
   }, []);
 
+  const loc = (zhVal: string, enVal: string) =>
+    locale === 'en' && enVal ? enVal : zhVal;
+
   return (
     <div className="bg-[#F8F9FA]">
       {/* ── Hero Slideshow ── */}
