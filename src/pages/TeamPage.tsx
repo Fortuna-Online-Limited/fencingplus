@@ -95,7 +95,7 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
 
       {/* Team stats */}
       <section className="bg-primary py-10">
-        <div className="max-w-3xl mx-auto px-6 grid grid-cols-3 gap-6 text-center">
+        <div className="max-w-xl mx-auto px-6 grid grid-cols-2 gap-6 text-center">
           {t.team.stats.map((s, i) => {
             const Icon = STAT_ICONS[i];
             return (

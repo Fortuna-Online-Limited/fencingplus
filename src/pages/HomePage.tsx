@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowRight, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
 
@@ -55,7 +55,6 @@ const VALUE_ICON_IMGS = [
 export default function HomePage({ onNavigate }: HomePageProps) {
   const { t, locale } = useLocale();
   const [slideIndex, setSlideIndex] = useState(0);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [news, setNews] = useState<NewsItem[]>([]);
   const [honors, setHonors] = useState<HonorItem[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
@@ -93,24 +92,6 @@ export default function HomePage({ onNavigate }: HomePageProps) {
     );
     return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    const timer = setInterval(
-      () => setCurrentTestimonial((p) => (p + 1) % t.home.testimonials.length),
-      5000
-    );
-    return () => clearInterval(timer);
-  }, [t.home.testimonials.length]);
-
-  const prevT = () =>
-    setCurrentTestimonial((p) => (p - 1 + t.home.testimonials.length) % t.home.testimonials.length);
-  const nextT = () =>
-    setCurrentTestimonial((p) => (p + 1) % t.home.testimonials.length);
-
-  const loc = (zhVal: string, enVal: string) =>
-    locale === 'en' && enVal ? enVal : zhVal;
-
-  const testimonial = t.home.testimonials[currentTestimonial];
 
   return (
     <div className="bg-[#F8F9FA]">
@@ -189,7 +170,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
       {/* ── Quick Stats ── */}
       <section className="bg-primary py-12">
-        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-8 text-center">
           {t.home.stats.map((s) => (
             <div key={s.label}>
               <div className="text-gold font-black text-3xl md:text-4xl mb-1">{s.n}</div>
@@ -379,72 +360,6 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ── Testimonials ── */}
-      <section className="py-24 bg-primary-50">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <span className="text-primary font-semibold text-sm tracking-widest uppercase">
-              {t.home.testimonialsSectionLabel}
-            </span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-black text-slate-900">
-              {t.home.testimonialsTitle}
-            </h2>
-          </div>
-
-          <div className="relative">
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-lg shadow-primary/8 border border-primary-100 min-h-[220px]">
-              <div className="flex gap-1 mb-6">
-                {Array.from({ length: testimonial.stars }).map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-gold text-gold" />
-                ))}
-              </div>
-              <blockquote className="text-slate-700 text-lg leading-relaxed mb-8 italic">
-                「{testimonial.text}」
-              </blockquote>
-              <div className="flex items-center gap-4">
-                <img
-                  src={testimonial.avatar}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gold"
-                />
-                <div>
-                  <div className="font-bold text-slate-900">{testimonial.name}</div>
-                  <div className="text-slate-500 text-sm">{testimonial.child}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between mt-6">
-              <div className="flex gap-2">
-                {t.home.testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentTestimonial(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      i === currentTestimonial ? 'bg-primary w-6' : 'bg-slate-300 w-2'
-                    }`}
-                  />
-                ))}
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={prevT}
-                  className="w-9 h-9 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={nextT}
-                  className="w-9 h-9 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

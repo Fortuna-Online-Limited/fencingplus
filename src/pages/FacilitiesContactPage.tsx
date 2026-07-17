@@ -109,16 +109,7 @@ export default function FacilitiesContactPage() {
             </div>
           </div>
 
-          {/* Hygiene notice */}
-          <div className="bg-primary-50 border border-primary-100 rounded-2xl p-6 flex items-start gap-4">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shrink-0">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h4 className="font-bold text-primary text-base mb-1">{t.facilities.hygieneTitle}</h4>
-              <p className="text-slate-600 text-sm leading-relaxed">{t.facilities.hygieneBody}</p>
-            </div>
-          </div>
+
         </div>
       </section>
 

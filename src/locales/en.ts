@@ -39,7 +39,6 @@ export const en: Dict = {
     stats: [
       { n: '3.5+', label: 'Min. Age' },
       { n: '8:1', label: 'Student-Coach Ratio' },
-      { n: '100%', label: 'Equipment Provided' },
       { n: 'Year-round', label: 'Open Enrolment' },
     ],
     valuesSectionLabel: 'Core Values',
@@ -70,38 +69,7 @@ export const en: Dict = {
     honorsSectionLabel: 'Student Achievements',
     honorsTitle: 'Hall of Honours',
     honorsEmpty: 'Records being updated — check back soon.',
-    testimonialsSectionLabel: 'Testimonials',
-    testimonialsTitle: 'What Parents Say',
-    testimonials: [
-      {
-        name: 'Mrs Chan',
-        child: 'Son, 7, Children\'s Regular Class',
-        text: 'My son used to be shy, but after joining the fencing class he\'s become so much more confident and expressive. The coaches are incredibly patient — he comes home happy every time. Highly recommended!',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-      {
-        name: 'Mr Lee',
-        child: 'Daughter, 10, Children\'s Regular Class',
-        text: 'I was worried fencing might be dangerous, but the safety measures are excellent and the coaches explain every movement patiently. After 3 months, my daughter is in love with the sport!',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-      {
-        name: 'Mrs Cheung',
-        child: 'Daughter, 5, Toddler Starter Class',
-        text: 'My five-year-old absolutely loves the starter class! It\'s all games and zero pressure. The coaches know exactly how to engage young children. She can\'t wait to go every single week!',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-      {
-        name: 'Mr Wong',
-        child: 'Son, 14, Elite Class',
-        text: "My son's technique improved remarkably after joining the elite programme at FENCING PLUS. He went on to represent his school and won an award this year. The coaching is truly professional and tailored.",
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-    ],
+
     ctaTitle: 'Take the First Step for Your Child',
     ctaBody: 'WhatsApp us today to find the perfect course. Trial sessions are welcome — free for first-time visitors.',
     ctaButton: 'WhatsApp Us Now',
@@ -182,7 +150,6 @@ export const en: Dict = {
     heroTitle: 'Our Coaching Team',
     heroSubtitle: 'Every coach brings competitive credentials and deep expertise in youth development — patient, approachable, and professional.',
     stats: [
-      { value: 'National Level', label: 'Founding Coach Background' },
       { value: '4', label: 'Certified Coaches' },
       { value: '8:1', label: 'Max. Student-Coach Ratio' },
     ],
@@ -221,8 +188,7 @@ export const en: Dict = {
         desc: 'A dedicated fitness zone for agility and reaction speed drills that complement fencing training and elevate overall athletic performance.',
       },
     ],
-    hygieneTitle: 'Our Hygiene Commitment',
-    hygieneBody: 'All equipment (masks, jackets, gloves) is sanitised after every class. Floors are cleaned regularly with medical-grade disinfectants, ensuring a safe and hygienic environment. Parents are welcome to review our cleaning records at any time.',
+
     contactSectionLabel: 'Contact Us',
     contactTitle: "Questions?\nWe're Here to Help.",
     contactSubtitle: "Fill in the form below, or WhatsApp us directly — we usually reply within a few hours.",

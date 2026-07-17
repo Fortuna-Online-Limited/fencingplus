@@ -37,7 +37,6 @@ export const zhHK = {
     stats: [
       { n: '3.5歲+', label: '最小學員年齡' },
       { n: '8:1', label: '師生比例' },
-      { n: '100%', label: '裝備齊備，零自費' },
       { n: '全年', label: '持續招生' },
     ],
     valuesSectionLabel: '核心理念',
@@ -68,38 +67,7 @@ export const zhHK = {
     honorsSectionLabel: '學員戰績',
     honorsTitle: '榮譽牆',
     honorsEmpty: '榮譽紀錄陸續更新，敬請期待。',
-    testimonialsSectionLabel: '學員見證',
-    testimonialsTitle: '家長怎麼說',
-    testimonials: [
-      {
-        name: '陳媽媽',
-        child: '兒子 7 歲，就讀兒童恆常班',
-        text: '兒子本來很內向，參加劍擊班後明顯自信了很多，在課堂上也更敢於表達自己。教練非常有耐心，每次上課回來他都很開心，強力推薦！',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-      {
-        name: '李爸爸',
-        child: '女兒 10 歲，就讀兒童恆常班',
-        text: '起初擔心劍擊危險，但來參觀後發現安全措施非常完善，教練也耐心解釋每個動作。女兒學了三個月已愛上這項運動，成績進步了不少！',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-      {
-        name: '張媽媽',
-        child: '女兒 5 歲，就讀幼兒啟蒙班',
-        text: '五歲的女兒在啟蒙班玩得非常開心！課程以遊戲為主，完全沒有壓力，老師很懂得跟小朋友溝通。最重要是她每週都迫不及待想去上課！',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-      {
-        name: '王爸爸',
-        child: '兒子 14 歲，就讀精英班',
-        text: '兒子在FENCING PLUS接受精英班訓練後，技術突飛猛進，今年成功代表學校參加學界比賽並獲獎。教練的指導非常專業，針對每個學員的弱點制訂訓練計劃。',
-        stars: 5,
-        avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100',
-      },
-    ],
+
     ctaTitle: '為孩子踏出第一步',
     ctaBody: '立即WhatsApp查詢，了解最適合孩子的課程方案，首堂體驗課歡迎免費試堂。',
     ctaButton: '立即 WhatsApp 查詢',
@@ -180,7 +148,6 @@ export const zhHK = {
     heroTitle: '教練團隊',
     heroSubtitle: '每位教練均具備豐富競技資歷與兒童教學經驗，以耐心、親和力和專業引領每一位學員',
     stats: [
-      { value: '港隊級別', label: '創辦教練背景' },
       { value: '4 位', label: '認證教練' },
       { value: '8:1', label: '師生比例上限' },
     ],
@@ -219,8 +186,7 @@ export const zhHK = {
         desc: '設有專屬體能訓練區域，配合劍擊訓練的敏捷性及反應速度練習，全面提升學員身體素質。',
       },
     ],
-    hygieneTitle: '衛生安全承諾',
-    hygieneBody: '所有劍擊器材（面罩、護甲、手套）均於每次課後進行消毒清潔，場地定期以醫療級消毒液清潔，確保學員在安全衛生的環境下訓練。家長可隨時查閱我們的清潔紀錄。',
+
     contactSectionLabel: '聯絡我們',
     contactTitle: '有問題？\n讓我們告訴您',
     contactSubtitle: '填寫下方表格，或直接 WhatsApp 查詢，我們通常在數小時內回覆。',
