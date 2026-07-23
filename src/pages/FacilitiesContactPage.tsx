@@ -59,10 +59,10 @@ export default function FacilitiesContactPage() {
         className="relative pt-40 pb-24 bg-cover bg-center"
         style={{
           backgroundImage:
-            'url(https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1600)',
+            'url(https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/05_Facilities_Contact/Site_and_Equipment-Photos_of_the_Actual_Site/site_01.png)',
         }}
       >
-        <div className="absolute inset-0 bg-primary-900/85" />
+        <div className="absolute inset-0 bg-primary-900/70" />
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
           <span className="inline-block text-gold font-semibold text-sm tracking-widest uppercase mb-4">
             {t.facilities.heroEyebrow}
