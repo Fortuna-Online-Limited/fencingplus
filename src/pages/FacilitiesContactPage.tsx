@@ -3,13 +3,11 @@ import { supabase } from '../lib/supabase';
 import {
   MapPin, Phone, Mail, Clock,
   CheckCircle, AlertCircle, Send,
-  Shield, Zap, Wind, Dumbbell,
 } from 'lucide-react';
 import { useLocale } from '../lib/locale';
+import FacilitiesGallery from '../components/FacilitiesGallery';
 
 const WA_LINK = 'https://wa.me/85298765432';
-
-const FACILITY_ICONS = [Shield, Zap, Wind, Dumbbell];
 
 export default function FacilitiesContactPage() {
   const { t } = useLocale();
@@ -74,44 +72,8 @@ export default function FacilitiesContactPage() {
         </div>
       </section>
 
-      {/* Facilities */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <span className="text-primary font-semibold text-sm tracking-widest uppercase">
-              {t.facilities.facilitySectionLabel}
-            </span>
-            <h2 className="mt-3 text-4xl font-black text-slate-900">{t.facilities.facilityTitle}</h2>
-            <p className="mt-4 text-slate-500 max-w-xl mx-auto">{t.facilities.facilitySubtitle}</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-            <div className="rounded-3xl overflow-hidden shadow-xl">
-              <img
-                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/to_be_confirmed.png"
-                alt="Fencing facility"
-                className="w-full h-80 object-cover"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {t.facilities.facilityCards.map((f, i) => {
-                const Icon = FACILITY_ICONS[i];
-                return (
-                  <div key={f.title} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center mb-3">
-                      <Icon className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="font-bold text-slate-900 text-sm mb-1.5">{f.title}</h3>
-                    <p className="text-slate-500 text-xs leading-relaxed">{f.desc}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-
-        </div>
-      </section>
+      {/* Gallery */}
+      <FacilitiesGallery />
 
       {/* Contact Section */}
       <section className="py-24 bg-white">
