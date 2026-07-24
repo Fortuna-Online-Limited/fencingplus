@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Award, Users, Heart } from 'lucide-react';
+import { Award, Users } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
 
@@ -24,14 +24,17 @@ interface Coach {
 
 const WA_LINK = 'https://wa.me/85298765432';
 
-const STAT_ICONS = [Award, Users, Heart];
+const STAT_ICONS = [Award, Users];
 
-const BADGE_PALETTE = [
-  'bg-gold text-primary-900',
-  'bg-primary text-white',
-  'bg-primary text-white',
-  'bg-gold text-primary-900',
-];
+const HEAD_COACH_BADGE = 'bg-gold text-primary-900';
+const ELITE_BADGE = 'bg-primary text-white';
+
+function badgeClass(coach: Coach) {
+  const isHead =
+    coach.title.includes('總教練') ||
+    coach.title_en.toLowerCase().includes('head coach');
+  return isHead ? HEAD_COACH_BADGE : ELITE_BADGE;
+}
 
 function CoachCardSkeleton() {
   return (
@@ -145,7 +148,7 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         <div className="absolute bottom-3 left-3">
-                          <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${BADGE_PALETTE[idx % BADGE_PALETTE.length]}`}>
+                          <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${badgeClass(coach)}`}>
                             {displayTitle}
                           </span>
                         </div>

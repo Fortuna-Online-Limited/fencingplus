@@ -99,7 +99,7 @@ export const en: Dict = {
     coreValues: [
       {
         title: 'Expert Guidance',
-        desc: 'All coaches hold qualifications recognised by the Fencing Association of Hong Kong, with years of youth coaching experience. We believe a strong foundation starts with the right guidance — our scientific, step-by-step approach ensures every student builds solid skills in a safe environment.',
+        desc: 'Coaches hold qualifications recognised by the Fencing Association of Hong Kong, with years of youth coaching experience. We believe a strong foundation starts with the right guidance — our scientific, step-by-step approach ensures every student builds solid skills in a safe environment.',
       },
       {
         title: 'Character Development',
@@ -150,8 +150,8 @@ export const en: Dict = {
     heroTitle: 'Our Coaching Team',
     heroSubtitle: 'Every coach brings competitive credentials and deep expertise in youth development — patient, approachable, and professional.',
     stats: [
-      { value: '4', label: 'Certified Coaches' },
-      { value: '8:1', label: 'Max. Student-Coach Ratio' },
+      { value: '1', label: 'Head Coach' },
+      { value: '5', label: 'Elite Team Members' },
     ],
     sectionLabel: 'Meet Our Coaches',
     sectionTitle: 'Behind Every Expert, a Story',
