@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { useLocale } from '../lib/locale';
 
-type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
+type Page = 'home' | 'about' | 'team' | 'facilities';
 
 interface AboutPageProps {
   onNavigate: (page: Page) => void;
@@ -62,7 +62,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 ))}
               </div>
               <button
-                onClick={() => onNavigate('courses')}
+                onClick={() => onNavigate('team')}
                 className="group mt-8 inline-flex items-center gap-2 px-7 py-3.5 bg-primary hover:bg-primary-800 text-white font-bold rounded-xl transition-all hover:-translate-y-0.5"
               >
                 {t.about.storyCta}
@@ -72,9 +72,9 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl shadow-primary/15">
                 <img
-                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/to_be_confirmed.png"
-                  alt="Fencing training"
-                  className="w-full h-[500px] object-cover"
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Site_logo/Fencing_Plus_site_logo.png"
+                  alt="FENCING PLUS 官方標誌"
+                  className="w-full h-[500px] object-contain bg-primary-50"
                 />
               </div>
               <div className="absolute -bottom-5 -left-5 bg-gold rounded-2xl p-5 shadow-xl">

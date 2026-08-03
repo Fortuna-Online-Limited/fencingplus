@@ -3,7 +3,7 @@ import { Award, Users } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
 
-type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
+type Page = 'home' | 'about' | 'team' | 'facilities';
 
 interface TeamPageProps {
   onNavigate: (page: Page) => void;
@@ -22,18 +22,22 @@ interface Coach {
   sort_order: number;
 }
 
-const WA_LINK = 'https://wa.me/85298765432';
+const WA_LINK = 'https://wa.me/85268956089';
 
 const STAT_ICONS = [Award, Users];
 
 const HEAD_COACH_BADGE = 'bg-gold text-primary-900';
 const ELITE_BADGE = 'bg-primary text-white';
 
-function badgeClass(coach: Coach) {
-  const isHead =
+function isHeadCoach(coach: Coach) {
+  return (
     coach.title.includes('總教練') ||
-    coach.title_en.toLowerCase().includes('head coach');
-  return isHead ? HEAD_COACH_BADGE : ELITE_BADGE;
+    coach.title_en.toLowerCase().includes('head coach')
+  );
+}
+
+function badgeClass(coach: Coach) {
+  return isHeadCoach(coach) ? HEAD_COACH_BADGE : ELITE_BADGE;
 }
 
 function CoachCardSkeleton() {
@@ -127,63 +131,120 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
 
           {error && <p className="text-center text-red-500 py-12">{error}</p>}
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
-            {loading
-              ? Array.from({ length: 4 }).map((_, i) => <CoachCardSkeleton key={i} />)
-              : coaches.map((coach, idx) => {
-                  const displayTitle = loc(coach.title, coach.title_en);
-                  const displayBio = loc(coach.bio, coach.bio_en);
-                  const displayExp = locArr(coach.experience, coach.experience_en);
-
-                  return (
-                    <div
-                      key={coach.id}
-                      className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col"
-                    >
-                      <div className="relative h-72 overflow-hidden bg-slate-100">
-                        <img
-                          src={coach.avatar_url}
-                          alt={coach.coach_name}
-                          className="w-full h-full object-cover object-top"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <div className="absolute bottom-3 left-3">
-                          <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${badgeClass(coach)}`}>
-                            {displayTitle}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="p-6 flex flex-col flex-1">
-                        <div className="mb-4">
-                          <h3 className="font-black text-slate-900 text-xl">{coach.coach_name}</h3>
-                          <p className="text-primary font-semibold text-sm">{displayTitle}</p>
-                        </div>
-
-                        {displayBio && (
-                          <p className="text-slate-500 text-xs leading-relaxed mb-3">{displayBio}</p>
-                        )}
-
-                        {displayExp.length > 0 && (
-                          <div className="flex-1">
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
-                              {t.team.achievementsLabel}
-                            </p>
-                            <ul className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                              {displayExp.map((item, i) => (
-                                <li key={i} className="flex items-start gap-1.5 text-xs text-slate-600 leading-relaxed">
-                                  <span className="text-gold font-bold mt-0.5 shrink-0">▸</span>
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
+          {/* Head coach featured card */}
+          {!loading && coaches.filter(isHeadCoach).map((coach) => {
+            const displayTitle = loc(coach.title, coach.title_en);
+            const displayBio = loc(coach.bio, coach.bio_en);
+            const displayExp = locArr(coach.experience, coach.experience_en);
+            return (
+              <div
+                key={coach.id}
+                className="mb-10 bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl border-2 border-gold/40 hover:-translate-y-1 transition-all duration-300 grid md:grid-cols-2"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+                  <img
+                    src={coach.avatar_url}
+                    alt={coach.coach_name}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center 20%' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  <div className="absolute top-4 left-4">
+                    <span className={`px-3 py-1.5 text-sm font-bold rounded-full ${HEAD_COACH_BADGE} shadow-lg`}>
+                      {displayTitle}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-8 flex flex-col justify-center">
+                  <h3 className="font-black text-slate-900 text-2xl mb-1">{coach.coach_name}</h3>
+                  <p className="text-primary font-semibold text-sm mb-4">{displayTitle}</p>
+                  {displayBio && (
+                    <p className="text-slate-600 text-sm leading-relaxed mb-4">{displayBio}</p>
+                  )}
+                  {displayExp.length > 0 && (
+                    <div>
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
+                        {t.team.achievementsLabel}
+                      </p>
+                      <ul className="space-y-1.5">
+                        {displayExp.map((item, i) => (
+                          <li key={i} className="flex items-start gap-1.5 text-sm text-slate-600 leading-relaxed">
+                            <span className="text-gold font-bold mt-0.5 shrink-0">▸</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  );
-                })}
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Elite members grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {!loading && coaches.filter((c) => !isHeadCoach(c)).map((coach, idx) => {
+              const displayTitle = loc(coach.title, coach.title_en);
+              const displayBio = loc(coach.bio, coach.bio_en);
+              const displayExp = locArr(coach.experience, coach.experience_en);
+
+              return (
+                <div
+                  key={coach.id}
+                  className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-slate-100 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+                    <img
+                      src={coach.avatar_url}
+                      alt={coach.coach_name}
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: 'center 20%' }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-3 left-3">
+                      <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${ELITE_BADGE}`}>
+                        {displayTitle}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="mb-4">
+                      <h3 className="font-black text-slate-900 text-xl">{coach.coach_name}</h3>
+                      <p className="text-primary font-semibold text-sm">{displayTitle}</p>
+                    </div>
+
+                    {displayBio && (
+                      <p className="text-slate-500 text-xs leading-relaxed mb-3">{displayBio}</p>
+                    )}
+
+                    {displayExp.length > 0 && (
+                      <div className="flex-1">
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
+                          {t.team.achievementsLabel}
+                        </p>
+                        <ul className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                          {displayExp.map((item, i) => (
+                            <li key={i} className="flex items-start gap-1.5 text-xs text-slate-600 leading-relaxed">
+                              <span className="text-gold font-bold mt-0.5 shrink-0">▸</span>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
+
+          {/* Skeletons while loading */}
+          {loading && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => <CoachCardSkeleton key={i} />)}
+            </div>
+          )}
         </div>
       </section>
 

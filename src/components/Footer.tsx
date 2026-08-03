@@ -1,13 +1,13 @@
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Instagram } from 'lucide-react';
 import { useLocale } from '../lib/locale';
 
-type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
+type Page = 'home' | 'about' | 'team' | 'facilities';
 
 interface FooterProps {
   onNavigate: (page: Page) => void;
 }
 
-const WA_LINK = 'https://wa.me/85298765432';
+const WA_LINK = 'https://wa.me/85268956089';
 
 export default function Footer({ onNavigate }: FooterProps) {
   const { t } = useLocale();
@@ -15,7 +15,6 @@ export default function Footer({ onNavigate }: FooterProps) {
   const links: { label: string; key: Page }[] = [
     { label: t.nav.home, key: 'home' },
     { label: t.nav.about, key: 'about' },
-    { label: t.nav.courses, key: 'courses' },
     { label: t.nav.team, key: 'team' },
     { label: t.nav.facilities, key: 'facilities' },
   ];
@@ -91,11 +90,46 @@ export default function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/40 text-sm">
-            &copy; {new Date().getFullYear()} FENCING PLUS. All rights reserved.
-          </p>
-          <p className="text-white/30 text-xs">{t.footer.copyright}</p>
+        <div className="border-t border-white/10 mt-12 pt-8">
+          {/* QR Codes */}
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <div className="text-center">
+              <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-1">
+                {t.footer.qrTitle}
+              </h4>
+              <p className="text-white/40 text-xs">{t.footer.qrSubtitle}</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-6">
+              <div className="bg-white rounded-2xl p-6 flex flex-col items-center gap-3 shadow-lg" style={{ width: '320px' }}>
+                <img
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_IG_QRcode.png"
+                  alt="Instagram QR Code"
+                  className="object-contain"
+                  style={{ width: '240px', height: '240px' }}
+                />
+                <span className="flex items-center gap-1.5 text-slate-700 text-base font-bold">
+                  <Instagram className="w-5 h-5" />
+                  {t.footer.qrIg}
+                </span>
+              </div>
+              <div className="bg-white rounded-2xl p-6 flex flex-col items-center gap-3 shadow-lg" style={{ width: '320px' }}>
+                <img
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_Xiaohongshu_QRcode.png"
+                  alt="Xiaohongshu QR Code"
+                  className="object-contain"
+                  style={{ width: '240px', height: '240px' }}
+                />
+                <span className="text-slate-700 text-base font-bold">{t.footer.qrXhs}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-white/40 text-sm">
+              &copy; {new Date().getFullYear()} FENCING PLUS. All rights reserved.
+            </p>
+            <p className="text-white/30 text-xs">{t.footer.copyright}</p>
+          </div>
         </div>
       </div>
     </footer>

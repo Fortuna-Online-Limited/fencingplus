@@ -2,16 +2,20 @@ import { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
+import NewsModal, { type NewsArticle } from '../components/NewsModal';
+import NewsListModal from '../components/NewsListModal';
 
 interface NewsItem {
   id: string;
-  title: string;
+  title_zh: string;
   title_en: string;
+  content_zh: string;
+  content_en: string;
   summary: string;
   summary_en: string;
   publish_date: string;
   image_url: string;
-  is_pinned: boolean;
+  image_urls: string[];
 }
 
 interface HonorItem {
@@ -25,13 +29,13 @@ interface HonorItem {
   image_url: string;
 }
 
-type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
+type Page = 'home' | 'about' | 'team' | 'facilities';
 
 interface HomePageProps {
   onNavigate: (page: Page) => void;
 }
 
-const WA_LINK = 'https://wa.me/85298765432';
+const WA_LINK = 'https://wa.me/85268956089';
 
 const HERO_SLIDES = [
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scenario%201:%20Two-person%20sparring%20practice/Scenario1_Two-person_sparring%20practice_16-9.png',
@@ -59,16 +63,18 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   const [honors, setHonors] = useState<HonorItem[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
   const [honorsLoading, setHonorsLoading] = useState(true);
+  const [selectedNews, setSelectedNews] = useState<NewsArticle | null>(null);
+  const [showAllNews, setShowAllNews] = useState(false);
 
   useEffect(() => {
     supabase
       .from('news_Fencing_Plus')
-      .select('id, title, title_en, summary, summary_en, publish_date, image_url, is_pinned')
-      .order('is_pinned', { ascending: false })
+      .select('id, title_zh, title_en, content_zh, content_en, summary, summary_en, publish_date, image_url, image_urls')
+      .eq('is_published', true)
       .order('publish_date', { ascending: false })
-      .limit(3)
+      .limit(6)
       .then(({ data, error }) => {
-        if (!error && data) setNews(data);
+        if (!error && data) setNews(data as NewsItem[]);
         setNewsLoading(false);
       });
   }, []);
@@ -145,7 +151,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onNavigate('courses')}
+              onClick={() => onNavigate('about')}
               className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold hover:bg-gold-400 text-primary-900 font-black text-base rounded-2xl transition-all duration-200 shadow-xl shadow-gold/30 hover:-translate-y-0.5"
             >
               {t.home.ctaCourses}
@@ -248,7 +254,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               <h2 className="mt-2 text-3xl md:text-4xl font-black text-slate-900">{t.home.newsTitle}</h2>
             </div>
             <button
-              onClick={() => onNavigate('about')}
+              onClick={() => setShowAllNews(true)}
               className="hidden md:flex items-center gap-1 text-primary font-semibold text-sm hover:gap-2 transition-all"
             >
               {t.home.newsViewMore} <ArrowRight className="w-4 h-4" />
@@ -265,27 +271,26 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             <p className="text-center text-slate-400 py-16">{t.home.newsEmpty}</p>
           ) : (
             <div className="grid md:grid-cols-3 gap-6">
-              {news.map((n) => (
+              {news.map((n) => {
+                const cover = (n.image_urls?.length && n.image_urls[0]) || n.image_url;
+                const summaryText = loc(n.summary, n.summary_en) || loc(n.content_zh, n.content_en).slice(0, 120);
+                return (
                 <div
                   key={n.id}
-                  className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white group"
+                  onClick={() => setSelectedNews(n as unknown as NewsArticle)}
+                  className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white group cursor-pointer"
                 >
-                  {n.image_url && (
+                  {cover && (
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={n.image_url}
-                        alt={loc(n.title, n.title_en)}
+                        src={cover}
+                        alt={loc(n.title_zh, n.title_en)}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   )}
                   <div className="p-6">
                     <div className="flex items-center gap-2 mb-3">
-                      {n.is_pinned && (
-                        <span className="px-2.5 py-0.5 bg-gold/20 text-gold-700 text-xs font-semibold rounded-full">
-                          {t.home.newsPinned}
-                        </span>
-                      )}
                       <span className="text-slate-400 text-xs">
                         {new Date(n.publish_date).toLocaleDateString(
                           locale === 'en' ? 'en-GB' : 'zh-HK',
@@ -294,14 +299,25 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                       </span>
                     </div>
                     <h3 className="font-bold text-slate-900 text-base mb-2 leading-snug">
-                      {loc(n.title, n.title_en)}
+                      {loc(n.title_zh, n.title_en)}
                     </h3>
-                    <p className="text-slate-500 text-sm leading-relaxed">{loc(n.summary, n.summary_en)}</p>
+                    <p className="text-slate-500 text-sm leading-relaxed">{summaryText}</p>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
+
+          {/* Mobile View All button */}
+          <div className="md:hidden mt-8 text-center">
+            <button
+              onClick={() => setShowAllNews(true)}
+              className="inline-flex items-center gap-1 text-primary font-semibold text-sm hover:gap-2 transition-all"
+            >
+              {t.home.newsViewMore} <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </section>
 
@@ -384,6 +400,9 @@ export default function HomePage({ onNavigate }: HomePageProps) {
           </a>
         </div>
       </section>
+
+      <NewsModal article={selectedNews} onClose={() => setSelectedNews(null)} />
+      {showAllNews && <NewsListModal onClose={() => setShowAllNews(false)} />}
     </div>
   );
 }

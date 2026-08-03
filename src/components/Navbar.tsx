@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
 import { useLocale, type Locale } from '../lib/locale';
 
-type Page = 'home' | 'about' | 'courses' | 'team' | 'facilities';
+type Page = 'home' | 'about' | 'team' | 'facilities';
 
 interface NavbarProps {
   currentPage: Page;
@@ -12,7 +12,7 @@ interface NavbarProps {
 const LOGO_URL =
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/BG_removed_PNG/FENCING_plus_BGremover_628x397-removebg-preview.png';
 
-const WA_LINK = 'https://wa.me/85298765432';
+const WA_LINK = 'https://wa.me/85268956089';
 
 const WA_ICON = (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 shrink-0" aria-hidden="true">
@@ -20,14 +20,13 @@ const WA_ICON = (
   </svg>
 );
 
-const WOOD_BG_URL =
-  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Forest_Green_Main_Color_Version/Background.png';
+const WOOD_BG_URL = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Wood_grain_pattern/Wood_grain_pattern.png';
 
 const WOOD_STYLE: React.CSSProperties = {
   backgroundImage: `url("${WOOD_BG_URL}")`,
   backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center top',
+  backgroundRepeat: 'repeat-x',
 };
 
 const LOCALE_LABELS: Record<Locale, string> = { 'zh-HK': '繁', en: 'EN' };
@@ -52,7 +51,6 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
   const links: { label: string; key: Page }[] = [
     { label: t.nav.home, key: 'home' },
     { label: t.nav.about, key: 'about' },
-    { label: t.nav.courses, key: 'courses' },
     { label: t.nav.team, key: 'team' },
     { label: t.nav.facilities, key: 'facilities' },
   ];
