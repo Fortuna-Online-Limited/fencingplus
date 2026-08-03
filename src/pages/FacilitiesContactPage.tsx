@@ -46,6 +46,27 @@ export default function FacilitiesContactPage() {
       return;
     }
 
+    try {
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
+      await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          source: 'facilities',
+          name: form.parent_name,
+          phone: form.phone,
+          child_name: form.student_age,
+          course_interest: form.course_interest,
+          message: form.message,
+        }),
+      });
+    } catch {
+      // Email send failed — submission is still saved in the database.
+    }
+
     setStatus('success');
     setForm({ parent_name: '', phone: '', student_age: '', course_interest: '', message: '' });
   };

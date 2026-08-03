@@ -72,6 +72,28 @@ export default function ContactPage() {
       return;
     }
 
+    try {
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
+      await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          source: 'contact',
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          message: form.service
+            ? `Service: ${form.service}\n${form.message}`
+            : form.message,
+        }),
+      });
+    } catch {
+      // Email send failed — submission is still saved in the database.
+    }
+
     setStatus('success');
     setForm({ name: '', email: '', phone: '', service: '', message: '' });
   };
