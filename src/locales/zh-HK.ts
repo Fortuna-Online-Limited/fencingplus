@@ -16,7 +16,7 @@ export const zhHK = {
     contactLabel: '聯絡資訊',
     address: '香港荃灣青山公路荃灣段388號\n中染大廈22樓2208室',
     phone: '+852 6895 6089',
-    email: 'info@fencingplus.hk',
+    email: 'info@fencingplushk.com',
     hoursLabel: '營業時間',
     hours: '週一至週五 13:00–20:00\n週六 09:00–19:00\n週日 09:00–16:00',
     copyright: '培育下一代劍擊精英 · 由香港出發，放眼國際',
@@ -230,7 +230,7 @@ export const zhHK = {
     contactInfoItems: [
       { label: '地址', value: '香港荃灣青山公路荃灣段388號\n中染大廈22樓2208室' },
       { label: '電話 / WhatsApp', value: '+852 6895 6089' },
-      { label: '電郵', value: 'info@fencingplus.hk' },
+      { label: '電郵', value: 'info@fencingplushk.com' },
       { label: '營業時間', value: '週一至週五 13:00–20:00\n週六 09:00–19:00\n週日 09:00–16:00' },
     ],
     waButton: '即時 WhatsApp 查詢',

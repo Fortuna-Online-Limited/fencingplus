@@ -18,7 +18,7 @@ export const en: Dict = {
     contactLabel: 'Contact Info',
     address: 'Room 2208, 22/F, CDW Building\n388 Castle Peak Road, Tsuen Wan, N.T., Hong Kong',
     phone: '+852 6895 6089',
-    email: 'info@fencingplus.hk',
+    email: 'info@fencingplushk.com',
     hoursLabel: 'Business Hours',
     hours: 'Mon–Fri 13:00–20:00\nSat 09:00–19:00\nSun 09:00–16:00',
     copyright: 'Nurturing the next generation of fencers · From Hong Kong to the world',
@@ -232,7 +232,7 @@ export const en: Dict = {
     contactInfoItems: [
       { label: 'Address', value: 'Room 2208, 22/F, CDW Building\n388 Castle Peak Road, Tsuen Wan, N.T., Hong Kong' },
       { label: 'Phone / WhatsApp', value: '+852 6895 6089' },
-      { label: 'Email', value: 'info@fencingplus.hk' },
+      { label: 'Email', value: 'info@fencingplushk.com' },
       { label: 'Business Hours', value: 'Mon–Fri 13:00–20:00\nSat 09:00–19:00\nSun 09:00–16:00' },
     ],
     waButton: 'WhatsApp Enquiry',

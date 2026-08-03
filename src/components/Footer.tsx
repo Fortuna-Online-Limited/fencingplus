@@ -118,9 +118,9 @@ export default function Footer({ onNavigate }: FooterProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t.footer.qrXhs}
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center overflow-hidden opacity-70 hover:opacity-100 hover:border-gold transition-all duration-200"
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center overflow-hidden bg-primary-700 opacity-90 hover:opacity-100 hover:border-gold transition-all duration-200"
               >
-                <img src="/images/icons/image.png" alt="小紅書" className="w-full h-full object-cover" />
+                <img src="/images/icons/image.png" alt="小紅書" className="w-full h-full object-contain p-1.5" />
               </a>
             </div>
           </div>
