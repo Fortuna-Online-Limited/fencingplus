@@ -161,7 +161,10 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
 
         {/* Mobile dropdown */}
         {menuOpen && (
-          <div className="md:hidden border-t border-amber-900/20 pt-4 pb-5 space-y-1 animate-fade-in">
+          <div
+            className="md:hidden border-t border-amber-900/20 pt-4 pb-5 space-y-1 animate-fade-in"
+            style={WOOD_STYLE}
+          >
             {/* Mobile language switcher */}
             <div className="flex items-center gap-2 px-4 py-2 mb-1">
               <Globe className="w-4 h-4 text-[#0A5C36] shrink-0" />
