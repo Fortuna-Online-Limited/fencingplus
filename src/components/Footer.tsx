@@ -118,9 +118,9 @@ export default function Footer({ onNavigate }: FooterProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t.footer.qrXhs}
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-gold hover:border-gold transition-colors duration-200"
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center overflow-hidden opacity-70 hover:opacity-100 hover:border-gold transition-all duration-200"
               >
-                <span className="font-bold text-base leading-none">小</span>
+                <img src="/images/icons/image.png" alt="小紅書" className="w-full h-full object-cover" />
               </a>
             </div>
           </div>
