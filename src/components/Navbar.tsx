@@ -24,7 +24,7 @@ const WOOD_BG_URL = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/
 
 const WOOD_STYLE: React.CSSProperties = {
   backgroundImage: `url("${WOOD_BG_URL}")`,
-  backgroundSize: 'cover',
+  backgroundSize: '200px auto',
   backgroundPosition: 'center top',
   backgroundRepeat: 'repeat-x',
 };
