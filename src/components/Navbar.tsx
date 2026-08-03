@@ -63,10 +63,13 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 border-b border-amber-900/20 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-amber-900/20 ${
         scrolled || menuOpen ? 'shadow-lg shadow-black/20' : ''
       }`}
-      style={WOOD_STYLE}
+      style={{
+        ...WOOD_STYLE,
+        backgroundColor: scrolled || menuOpen ? 'rgba(255,255,255,0.78)' : 'transparent',
+      }}
     >
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="flex items-center justify-between py-2 min-h-[72px]">
