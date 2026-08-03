@@ -30,7 +30,9 @@ const WOOD_STYLE: React.CSSProperties = {
 };
 
 const MOBILE_DROPDOWN_STYLE: React.CSSProperties = {
-  backgroundColor: '#C8A47A',
+  backgroundColor: 'rgba(255,255,255,0.85)',
+  backdropFilter: 'blur(8px)',
+  WebkitBackdropFilter: 'blur(8px)',
 };
 
 const LOCALE_LABELS: Record<Locale, string> = { 'zh-HK': '繁', en: 'EN' };
@@ -166,7 +168,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
         {/* Mobile dropdown */}
         {menuOpen && (
           <div
-            className="md:hidden border-t border-amber-900/20 pt-4 pb-5 space-y-1 animate-fade-in"
+            className="md:hidden absolute left-3 right-3 top-full mt-2 rounded-2xl shadow-xl border border-white/60 pt-4 pb-5 space-y-1 animate-fade-in overflow-hidden"
             style={MOBILE_DROPDOWN_STYLE}
           >
             {/* Mobile language switcher */}
