@@ -42,6 +42,8 @@ const HERO_SLIDES = [
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scene%202:%20Close-up%20of%20an%20individual%20hero/Scene2_Close-up_of_an_individual_hero_boy.png',
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scene%202:%20Close-up%20of%20an%20individual%20hero/Scene2_Close-up_of_an_individual_hero_girl.png',
   'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/AI/Scene%203:%20Warm%20Interaction%20Between%20Coach%20and%20Child/Scene3_Warm_Interaction_Between_Coach_and_Child.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Real/Scene4_Warm_Interaction_Between_Coach_Lee_and_Child_01/Scene4_Warm_Interaction_Between_Coach_Lee_and_Child_01.png',
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/01_Home/Real/Scene5_Warm_Interaction_Between_Coach_Lee_and_Child_02/Scene5_Warm_Interaction_Between_Coach_Lee_and_Child_02.png',
 ];
 
 const VALUE_BG_IMGS = [
