@@ -20,10 +20,17 @@ const WA_ICON = (
   </svg>
 );
 
-const WOOD_COLOR = '#C8A47A';
+const WOOD_BG_URL = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Wood_grain_pattern/Wood_grain_pattern.png';
 
 const WOOD_STYLE: React.CSSProperties = {
-  backgroundColor: WOOD_COLOR,
+  backgroundImage: `url("${WOOD_BG_URL}")`,
+  backgroundSize: '200px auto',
+  backgroundPosition: 'center top',
+  backgroundRepeat: 'repeat-x',
+};
+
+const MOBILE_DROPDOWN_STYLE: React.CSSProperties = {
+  backgroundColor: '#C8A47A',
 };
 
 const LOCALE_LABELS: Record<Locale, string> = { 'zh-HK': '繁', en: 'EN' };
@@ -160,6 +167,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
         {menuOpen && (
           <div
             className="md:hidden border-t border-amber-900/20 pt-4 pb-5 space-y-1 animate-fade-in"
+            style={MOBILE_DROPDOWN_STYLE}
           >
             {/* Mobile language switcher */}
             <div className="flex items-center gap-2 px-4 py-2 mb-1">
