@@ -21,12 +21,14 @@ export default function Footer({ onNavigate }: FooterProps) {
     { label: t.nav.facilities, key: 'facilities' },
   ];
 
+  const phoneHrefs = t.footer.phoneNumbers.map((n) => `tel:${n.replace(/\s/g, '')}`);
+
   const contactItems = [
-    { Icon: MapPin, text: t.footer.address },
-    { Icon: Phone, text: t.footer.phone },
-    { Icon: Mail, text: t.footer.email },
-    { Icon: Clock, text: t.footer.hours },
-  ];
+    { Icon: MapPin, text: t.footer.address, href: undefined },
+    { Icon: Phone, text: t.footer.phone, href: undefined, phoneHrefs },
+    { Icon: Mail, text: t.footer.email, href: `mailto:${t.footer.email}` },
+    { Icon: Clock, text: t.footer.hours, href: undefined },
+  ] as const;
 
   return (
     <footer className="bg-primary-900 text-white">
@@ -82,10 +84,28 @@ export default function Footer({ onNavigate }: FooterProps) {
               {t.footer.contactLabel}
             </h4>
             <ul className="space-y-4">
-              {contactItems.map(({ Icon, text }) => (
+              {contactItems.map(({ Icon, text, href, phoneHrefs }) => (
                 <li key={text} className="flex items-start gap-3">
                   <Icon className="w-4 h-4 text-gold mt-0.5 shrink-0" />
-                  <span className="text-white/60 text-sm whitespace-pre-line">{text}</span>
+                  {phoneHrefs ? (
+                    <span className="text-white/60 text-sm">
+                      {t.footer.phoneNumbers.map((num, i) => (
+                        <span key={num}>
+                          {i > 0 && <span className="text-white/40 mx-1">/</span>}
+                          <a
+                            href={phoneHrefs[i]}
+                            className="hover:text-gold transition-colors"
+                          >
+                            {num}
+                          </a>
+                        </span>
+                      ))}
+                    </span>
+                  ) : href ? (
+                    <a href={href} className="text-white/60 text-sm hover:text-gold transition-colors whitespace-pre-line">{text}</a>
+                  ) : (
+                    <span className="text-white/60 text-sm whitespace-pre-line">{text}</span>
+                  )}
                 </li>
               ))}
             </ul>
