@@ -79,8 +79,14 @@ export default function AdminPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedPassword = password.trim();
+    const { error } = await supabase.auth.signInWithPassword({
+      email: trimmedEmail,
+      password: trimmedPassword,
+    });
     if (error) {
+      console.error('[Admin Login] Sign-in failed:', error.message, error.status);
       showToast(t.admin.toastLoginError, 'error');
     } else {
       showToast(t.admin.toastLoginSuccess, 'success');
