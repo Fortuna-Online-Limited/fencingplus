@@ -68,7 +68,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
       }`}
       style={{
         ...WOOD_STYLE,
-        backgroundColor: scrolled || menuOpen ? 'rgba(255,255,255,0.78)' : 'transparent',
+        backgroundColor: scrolled || menuOpen ? 'rgba(255,255,255,0.88)' : 'transparent',
       }}
     >
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
