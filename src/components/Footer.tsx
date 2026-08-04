@@ -99,7 +99,6 @@ export default function Footer({ onNavigate }: FooterProps) {
               <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-1">
                 {t.footer.qrTitle}
               </h4>
-              <p className="text-white/40 text-xs">{t.footer.qrSubtitle}</p>
             </div>
             <div className="flex items-center gap-6">
               <a
