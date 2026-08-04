@@ -181,7 +181,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
       {/* ── Quick Stats ── */}
       <section className="bg-primary py-12">
-        <div className="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-8 text-center">
+        <div className="max-w-4xl mx-auto px-6 flex flex-wrap justify-center gap-12 text-center">
           {t.home.stats.map((s) => (
             <div key={s.label}>
               <div className="text-gold font-black text-3xl md:text-4xl mb-1">{s.n}</div>

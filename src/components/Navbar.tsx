@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
 import { useLocale, type Locale } from '../lib/locale';
+import LogoImage from './LogoImage';
 
 type Page = 'home' | 'about' | 'team' | 'facilities';
 
@@ -8,9 +9,6 @@ interface NavbarProps {
   currentPage: Page;
   onNavigate: (page: Page) => void;
 }
-
-const LOGO_URL =
-  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/BG_removed_PNG/FENCING_plus_BGremover_628x397-removebg-preview.png';
 
 const WA_LINK = 'https://wa.me/85268956089';
 
@@ -20,7 +18,7 @@ const WA_ICON = (
   </svg>
 );
 
-const WOOD_BG_URL = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Wood_grain_pattern/Wood_grain_pattern.png';
+const WOOD_BG_URL = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Wood_grain_pattern/Wood_grain_pattem_v2.jpeg';
 
 const WOOD_STYLE: React.CSSProperties = {
   backgroundImage: `url("${WOOD_BG_URL}")`,
@@ -90,19 +88,14 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             }}
             className="shrink-0 group"
           >
-            <img
-              src={LOGO_URL}
+            <LogoImage
               alt="FENCING PLUS"
               style={{
-                height: '68px',
+                height: '56px',
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
-                background: 'transparent',
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                border: 'none',
-                maxWidth: 'none',
+                filter: 'drop-shadow(0px 3px 6px rgba(0,0,0,0.35)) drop-shadow(0px 1px 2px rgba(0,0,0,0.2))',
               }}
               className="group-hover:opacity-80 transition-opacity"
             />
@@ -115,10 +108,16 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
                 key={link.key}
                 onClick={() => handleNav(link.key)}
                 style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
-                className={`px-4 py-2 rounded-lg text-sm transition-all duration-200 ${
+                style={{
+                  textShadow: '0 1px 2px rgba(255,255,255,0.8)',
+                  backdropFilter: 'blur(4px)',
+                  WebkitBackdropFilter: 'blur(4px)',
+                  backgroundColor: 'rgba(255,255,255,0.7)',
+                }}
+                className={`px-4 py-1.5 rounded-full text-base font-semibold transition-all duration-200 ${
                   currentPage === link.key
-                    ? 'text-[#0A5C36] font-bold bg-white/40 underline underline-offset-4 decoration-2 decoration-[#0A5C36]'
-                    : 'text-[#333333] font-semibold hover:text-[#0A5C36] hover:bg-white/30 hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-[#0A5C36]'
+                    ? 'text-[#0A5C36] font-bold underline underline-offset-4 decoration-2 decoration-[#0A5C36]'
+                    : 'text-[#0A5C36] hover:text-[#073b24] hover:underline hover:underline-offset-4 hover:decoration-2 hover:decoration-[#0A5C36]'
                 }`}
               >
                 {link.label}
@@ -199,10 +198,10 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
                 key={link.key}
                 onClick={() => handleNav(link.key)}
                 style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
-                className={`block w-full text-left px-4 py-3 rounded-xl text-sm transition-colors ${
+                className={`block w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
                   currentPage === link.key
-                    ? 'text-[#0A5C36] font-bold bg-white/40 underline underline-offset-4 decoration-2 decoration-[#0A5C36]'
-                    : 'text-[#333333] font-semibold hover:text-[#0A5C36] hover:bg-white/30'
+                    ? 'text-[#0A5C36] font-bold bg-white/50 underline underline-offset-4 decoration-2 decoration-[#0A5C36]'
+                    : 'text-[#0A5C36] hover:text-[#073b24] hover:bg-white/30'
                 }`}
               >
                 {link.label}

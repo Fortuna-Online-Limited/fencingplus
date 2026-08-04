@@ -93,34 +93,57 @@ export default function Footer({ onNavigate }: FooterProps) {
         </div>
 
         <div className="border-t border-white/10 mt-12 pt-8">
-          {/* Social Links */}
-          <div className="flex flex-col items-center gap-4 mb-8">
+          {/* Social Links with QR Codes */}
+          <div className="flex flex-col items-center gap-6 mb-8">
             <div className="text-center">
               <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-1">
                 {t.footer.qrTitle}
               </h4>
             </div>
-            <div className="flex items-center gap-6">
-              <a
-                href={IG_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-gold hover:border-gold transition-colors duration-200"
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6" aria-hidden="true">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-              </a>
-              <a
-                href={XHS_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={t.footer.qrXhs}
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center overflow-hidden opacity-70 hover:opacity-100 hover:border-gold transition-all duration-200"
-              >
-                <img src="/images/icons/xiaohongshu.png" alt="小紅書" className="w-full h-full object-contain p-2" />
-              </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+              {/* Instagram card */}
+              <div className="bg-white rounded-2xl p-6 shadow-xl flex flex-col items-center gap-4 max-w-[260px]">
+                <a
+                  href={IG_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="w-12 h-12 rounded-full border-2 border-[#0A5C36]/20 flex items-center justify-center text-[#0A5C36] hover:border-[#F2A900] hover:scale-105 transition-all duration-200"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6" aria-hidden="true">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                </a>
+                <img
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_IG_QRcode.png"
+                  alt="Instagram QR Code"
+                  className="w-[200px] h-[200px] object-contain rounded-lg"
+                />
+                <span className="text-[#0A5C36] font-semibold text-sm">Instagram</span>
+              </div>
+
+              {/* Xiaohongshu card */}
+              <div className="bg-white rounded-2xl p-6 shadow-xl flex flex-col items-center gap-4 max-w-[260px]">
+                <a
+                  href={XHS_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t.footer.qrXhs}
+                  className="w-12 h-12 rounded-full border-2 border-[#0A5C36]/20 flex items-center justify-center overflow-hidden hover:border-[#F2A900] hover:scale-105 transition-all duration-200"
+                >
+                  <svg viewBox="0 0 48 48" className="w-7 h-7" aria-hidden="true">
+                    <rect x="4" y="4" width="40" height="40" rx="10" fill="#FF2442" />
+                    <text x="24" y="20" textAnchor="middle" fontSize="8" fontWeight="700" fill="#fff" fontFamily="sans-serif">小紅</text>
+                    <text x="24" y="32" textAnchor="middle" fontSize="8" fontWeight="700" fill="#fff" fontFamily="sans-serif">書</text>
+                  </svg>
+                </a>
+                <img
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_Xiaohongshu_QRcode.png"
+                  alt="小紅書 QR Code"
+                  className="w-[200px] h-[200px] object-contain rounded-lg"
+                />
+                <span className="text-[#0A5C36] font-semibold text-sm">{t.footer.qrXhs}</span>
+              </div>
             </div>
           </div>
 
