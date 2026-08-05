@@ -12,6 +12,7 @@ interface TeamPageProps {
 interface Coach {
   id: string;
   coach_name: string;
+  coach_name_en: string;
   title: string;
   title_en: string;
   experience: string[];
@@ -76,6 +77,8 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
 
   const loc = (zhVal: string, enVal: string) =>
     locale === 'en' && enVal ? enVal : zhVal;
+
+  const coachName = (c: Coach) => loc(c.coach_name, c.coach_name_en);
 
   const locArr = (zhArr: string[], enArr: string[]) =>
     locale === 'en' && enArr.length > 0 ? enArr : zhArr;
@@ -156,7 +159,7 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
                   </div>
                 </div>
                 <div className="p-8 flex flex-col justify-center">
-                  <h3 className="font-black text-slate-900 text-2xl mb-1">{coach.coach_name}</h3>
+                  <h3 className="font-black text-slate-900 text-2xl mb-1">{coachName(coach)}</h3>
                   <p className="text-primary font-semibold text-sm mb-4">{displayTitle}</p>
                   {displayBio && (
                     <p className="text-slate-600 text-sm leading-relaxed mb-4">{displayBio}</p>
@@ -210,7 +213,7 @@ export default function TeamPage({ onNavigate: _onNavigate }: TeamPageProps) {
 
                   <div className="p-6 flex flex-col flex-1">
                     <div className="mb-4">
-                      <h3 className="font-black text-slate-900 text-xl">{coach.coach_name}</h3>
+                      <h3 className="font-black text-slate-900 text-xl">{coachName(coach)}</h3>
                       <p className="text-primary font-semibold text-sm">{displayTitle}</p>
                     </div>
 
