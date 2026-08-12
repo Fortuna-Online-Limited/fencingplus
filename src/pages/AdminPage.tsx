@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Image as ImageIcon,
-  Calendar, Eye, EyeOff, KeyRound, ArrowLeft, FileText, Newspaper,
+  Calendar, Eye, EyeOff, KeyRound, ArrowLeft, FileText, Newspaper, Trophy, Search,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
@@ -9,7 +9,9 @@ import { useToast } from '../components/Toast';
 
 const STORAGE_BUCKET = 'Fencing_plus';
 const STORAGE_FOLDER = '05_News';
+const HONOR_STORAGE_FOLDER = '06_Honors';
 const MAX_IMAGES = 10;
+const MAX_HONOR_IMAGES = 5;
 
 interface NewsRow {
   id: string;
@@ -24,7 +26,25 @@ interface NewsRow {
   is_published: boolean;
 }
 
+interface HonorRow {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  student_name: string;
+  award_title: string;
+  award_title_en: string;
+  category: string;
+  category_en: string;
+  event_date: string;
+  description: string;
+  description_en: string;
+  image_url: string;
+  image_urls: string[];
+  is_published: boolean;
+}
+
 type View = 'list' | 'edit';
+type Section = 'news' | 'honors';
 
 export default function AdminPage() {
   const { t, locale } = useLocale();
@@ -38,10 +58,16 @@ export default function AdminPage() {
   const [showPwd, setShowPwd] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
 
+  const [section, setSection] = useState<Section>('news');
   const [view, setView] = useState<View>('list');
   const [news, setNews] = useState<NewsRow[]>([]);
   const [listLoading, setListLoading] = useState(true);
   const [editing, setEditing] = useState<NewsRow | null>(null);
+
+  const [honors, setHonors] = useState<HonorRow[]>([]);
+  const [honorsLoading, setHonorsLoading] = useState(true);
+  const [editingHonor, setEditingHonor] = useState<HonorRow | null>(null);
+  const [honorSearch, setHonorSearch] = useState('');
 
   const [showPwdModal, setShowPwdModal] = useState(false);
 
@@ -72,9 +98,22 @@ export default function AdminPage() {
     setListLoading(false);
   }, []);
 
+  const fetchHonors = useCallback(async () => {
+    setHonorsLoading(true);
+    const { data, error } = await supabase
+      .from('honors_Fencing_Plus')
+      .select('*')
+      .order('event_date', { ascending: false });
+    if (!error && data) setHonors(data as HonorRow[]);
+    setHonorsLoading(false);
+  }, []);
+
   useEffect(() => {
-    if (session) fetchNews();
-  }, [session, fetchNews]);
+    if (session) {
+      fetchNews();
+      fetchHonors();
+    }
+  }, [session, fetchNews, fetchHonors]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,7 +154,11 @@ export default function AdminPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gold mb-4 shadow-xl shadow-gold/20">
               <Lock className="w-8 h-8 text-primary-900" />
             </div>
-            <h1 className="text-2xl font-black text-white">{t.admin.loginTitle}</h1>
+            <div className="flex flex-col items-center leading-none mb-1">
+              <span className="text-2xl font-black text-white">FENCING PLUS</span>
+              <span className="text-[9px] font-bold tracking-[0.22em] text-white/60 mt-0.5">HK LIMITED</span>
+            </div>
+            <h1 className="text-sm font-bold text-white/80 mt-2">{t.admin.loginTitle}</h1>
             <p className="mt-2 text-white/60 text-sm">{t.admin.loginSubtitle}</p>
           </div>
 
@@ -177,11 +220,15 @@ export default function AdminPage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gold flex items-center justify-center shrink-0">
-              <Newspaper className="w-5 h-5 text-primary-900" />
+              {section === 'news' ? <Newspaper className="w-5 h-5 text-primary-900" /> : <Trophy className="w-5 h-5 text-primary-900" />}
             </div>
             <div>
-              <div className="text-white font-black leading-tight">{t.admin.dashboardTitle}</div>
-              <div className="text-white/50 text-xs">{t.admin.dashboardSubtitle}</div>
+              <div className="text-white font-black leading-tight">
+                {section === 'news' ? t.admin.dashboardTitle : t.admin.honorDashboardTitle}
+              </div>
+              <div className="text-white/50 text-xs">
+                {section === 'news' ? t.admin.dashboardSubtitle : t.admin.honorDashboardSubtitle}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -205,10 +252,30 @@ export default function AdminPage() {
             </button>
           </div>
         </div>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex gap-1">
+            <button
+              onClick={() => { setSection('news'); setView('list'); }}
+              className={`px-4 py-2 text-sm font-bold rounded-t-lg transition-all ${
+                section === 'news' ? 'bg-white text-primary' : 'text-white/60 hover:text-white'
+              }`}
+            >
+              <Newspaper className="w-4 h-4 inline mr-1.5" />{t.admin.tabNews}
+            </button>
+            <button
+              onClick={() => { setSection('honors'); setView('list'); }}
+              className={`px-4 py-2 text-sm font-bold rounded-t-lg transition-all ${
+                section === 'honors' ? 'bg-white text-primary' : 'text-white/60 hover:text-white'
+              }`}
+            >
+              <Trophy className="w-4 h-4 inline mr-1.5" />{t.admin.tabHonors}
+            </button>
+          </div>
+        </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-6 py-8">
-        {view === 'list' && (
+        {section === 'news' && view === 'list' && (
           <NewsList
             news={news}
             loading={listLoading}
@@ -227,11 +294,51 @@ export default function AdminPage() {
           />
         )}
 
-        {view === 'edit' && (
+        {section === 'news' && view === 'edit' && (
           <NewsForm
             initial={editing}
             onCancel={() => { setEditing(null); setView('list'); }}
             onSaved={() => { setEditing(null); setView('list'); fetchNews(); }}
+          />
+        )}
+
+        {section === 'honors' && view === 'list' && (
+          <HonorList
+            honors={honors}
+            loading={honorsLoading}
+            search={honorSearch}
+            onSearch={setHonorSearch}
+            onAdd={() => { setEditingHonor(null); setView('edit'); }}
+            onEdit={(h) => { setEditingHonor(h); setView('edit'); }}
+            onDelete={async (h) => {
+              if (!window.confirm(t.admin.confirmDeleteHonor)) return;
+              const { error } = await supabase.from('honors_Fencing_Plus').delete().eq('id', h.id);
+              if (error) {
+                showToast(t.admin.toastHonorDeleteError, 'error');
+              } else {
+                setHonors((prev) => prev.filter((x) => x.id !== h.id));
+                showToast(t.admin.toastHonorDeleteSuccess, 'success');
+              }
+            }}
+            onTogglePublish={async (h) => {
+              const { error } = await supabase
+                .from('honors_Fencing_Plus')
+                .update({ is_published: !h.is_published })
+                .eq('id', h.id);
+              if (error) {
+                showToast(t.admin.toastHonorSaveError, 'error');
+              } else {
+                setHonors((prev) => prev.map((x) => x.id === h.id ? { ...x, is_published: !x.is_published } : x));
+              }
+            }}
+          />
+        )}
+
+        {section === 'honors' && view === 'edit' && (
+          <HonorForm
+            initial={editingHonor}
+            onCancel={() => { setEditingHonor(null); setView('list'); }}
+            onSaved={() => { setEditingHonor(null); setView('list'); fetchHonors(); }}
           />
         )}
       </main>
@@ -578,6 +685,407 @@ export default function AdminPage() {
               className="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-xl transition-all"
             >
               {t.admin.cancel}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function HonorList({
+    honors, loading, search, onSearch, onAdd, onEdit, onDelete, onTogglePublish,
+  }: {
+    honors: HonorRow[];
+    loading: boolean;
+    search: string;
+    onSearch: (s: string) => void;
+    onAdd: () => void;
+    onEdit: (h: HonorRow) => void;
+    onDelete: (h: HonorRow) => void;
+    onTogglePublish: (h: HonorRow) => void;
+  }) {
+    const { t, locale } = useLocale();
+    const loc = (zh: string, en: string) => (locale === 'en' ? en || zh : zh || en);
+    const filtered = honors.filter((h) => {
+      const q = search.toLowerCase().trim();
+      if (!q) return true;
+      return (
+        h.student_name.toLowerCase().includes(q) ||
+        h.award_title.toLowerCase().includes(q) ||
+        h.award_title_en.toLowerCase().includes(q) ||
+        h.category.toLowerCase().includes(q) ||
+        h.category_en.toLowerCase().includes(q)
+      );
+    });
+
+    return (
+      <div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <button
+            onClick={onAdd}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary hover:bg-primary-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/20"
+          >
+            <Plus className="w-5 h-5" /> {t.admin.addHonor}
+          </button>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => onSearch(e.target.value)}
+              placeholder={t.admin.searchPlaceholder}
+              className="pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm text-slate-800 w-full sm:w-64"
+            />
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-16">
+            <Trophy className="w-12 h-12 text-slate-200 mx-auto mb-3" />
+            <p className="text-slate-400">{search ? t.admin.searchPlaceholder : t.admin.honorEmpty}</p>
+          </div>
+        ) : (
+          <div className="grid gap-3">
+            {filtered.map((h) => {
+              const cover = h.image_urls?.[0] || h.image_url;
+              return (
+                <div
+                  key={h.id}
+                  className="flex items-center gap-4 bg-white rounded-xl border border-slate-100 p-3 hover:shadow-md transition-shadow"
+                >
+                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                    {cover ? (
+                      <img src={cover} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Trophy className="w-6 h-6 text-slate-300" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold text-slate-900 truncate">{loc(h.award_title, h.award_title_en)}</span>
+                      <span
+                        className={`px-2 py-0.5 text-xs font-semibold rounded-full shrink-0 ${
+                          h.is_published ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+                        }`}
+                      >
+                        {h.is_published ? t.admin.published : t.admin.draft}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-slate-500">
+                      <span className="font-medium text-slate-700">{h.student_name}</span>
+                      <span className="px-1.5 py-0.5 bg-gold/20 rounded font-medium" style={{ color: '#92640a' }}>
+                        {loc(h.category, h.category_en)}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(h.event_date).toLocaleDateString(locale === 'en' ? 'en-GB' : 'zh-HK', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <button
+                      onClick={() => onTogglePublish(h)}
+                      className="p-2 text-slate-400 hover:text-primary transition-colors"
+                      title={h.is_published ? t.admin.draft : t.admin.published}
+                    >
+                      {h.is_published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                    </button>
+                    <button
+                      onClick={() => onEdit(h)}
+                      className="p-2 text-slate-400 hover:text-primary transition-colors"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onDelete(h)}
+                      className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  function HonorForm({
+    initial, onCancel, onSaved,
+  }: {
+    initial: HonorRow | null;
+    onCancel: () => void;
+    onSaved: () => void;
+  }) {
+    const { t } = useLocale();
+    const [studentName, setStudentName] = useState(initial?.student_name ?? '');
+    const [awardTitleZh, setAwardTitleZh] = useState(initial?.award_title ?? '');
+    const [awardTitleEn, setAwardTitleEn] = useState(initial?.award_title_en ?? '');
+    const [categoryZh, setCategoryZh] = useState(initial?.category ?? '');
+    const [categoryEn, setCategoryEn] = useState(initial?.category_en ?? '');
+    const [eventDate, setEventDate] = useState(initial?.event_date ?? new Date().toISOString().slice(0, 10));
+    const [descriptionZh, setDescriptionZh] = useState(initial?.description ?? '');
+    const [descriptionEn, setDescriptionEn] = useState(initial?.description_en ?? '');
+    const [imageUrls, setImageUrls] = useState<string[]>(initial?.image_urls ?? (initial?.image_url ? [initial.image_url] : []));
+    const [isPublished, setIsPublished] = useState(initial?.is_published ?? true);
+    const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const fileRef = useRef<HTMLInputElement>(null);
+
+    const uploadFiles = async (files: FileList) => {
+      if (imageUrls.length + files.length > MAX_HONOR_IMAGES) {
+        showToast(t.admin.honorImageFull, 'error');
+        return;
+      }
+      setUploading(true);
+      const newUrls: string[] = [];
+      for (const file of Array.from(files)) {
+        if (imageUrls.length + newUrls.length >= MAX_HONOR_IMAGES) break;
+        const ext = file.name.split('.').pop() || 'jpg';
+        const path = `${HONOR_STORAGE_FOLDER}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file);
+        if (error) {
+          showToast(t.admin.toastUploadError, 'error');
+        } else {
+          newUrls.push(supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl);
+        }
+      }
+      if (newUrls.length > 0) {
+        setImageUrls((prev) => [...prev, ...newUrls]);
+        showToast(t.admin.toastUploadSuccess, 'success');
+      }
+      setUploading(false);
+    };
+
+    const handleSave = async () => {
+      if (!studentName.trim() || !awardTitleZh.trim() || !eventDate) {
+        showToast(t.admin.toastHonorSaveError, 'error');
+        return;
+      }
+      setSaving(true);
+      const cover = imageUrls[0] || '';
+      const payload = {
+        student_name: studentName.trim(),
+        award_title: awardTitleZh.trim(),
+        award_title_en: awardTitleEn.trim(),
+        category: categoryZh.trim(),
+        category_en: categoryEn.trim(),
+        event_date: eventDate,
+        description: descriptionZh.trim(),
+        description_en: descriptionEn.trim(),
+        image_url: cover,
+        image_urls: imageUrls,
+        is_published: isPublished,
+        updated_at: new Date().toISOString(),
+      };
+      let error;
+      if (initial) {
+        ({ error } = await supabase.from('honors_Fencing_Plus').update(payload).eq('id', initial.id));
+      } else {
+        ({ error } = await supabase.from('honors_Fencing_Plus').insert(payload));
+      }
+      setSaving(false);
+      if (error) {
+        showToast(t.admin.toastHonorSaveError, 'error');
+      } else {
+        showToast(t.admin.toastHonorSaveSuccess, 'success');
+        onSaved();
+      }
+    };
+
+    return (
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sm:p-8 space-y-6">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.studentName}</label>
+              <input
+                type="text"
+                value={studentName}
+                onChange={(e) => setStudentName(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+                placeholder="張小明 / Lucas Cheung"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.eventDate}</label>
+              <input
+                type="date"
+                value={eventDate}
+                onChange={(e) => setEventDate(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+              />
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.awardTitleZh}</label>
+              <input
+                type="text"
+                value={awardTitleZh}
+                onChange={(e) => setAwardTitleZh(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+                placeholder="全港青少年劍擊錦標賽 U10 花劍冠軍"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.awardTitleEn}</label>
+              <input
+                type="text"
+                value={awardTitleEn}
+                onChange={(e) => setAwardTitleEn(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+                placeholder="HK Youth Fencing Championship U10 Foil Champion"
+              />
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.categoryZh}</label>
+              <input
+                type="text"
+                value={categoryZh}
+                onChange={(e) => setCategoryZh(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+                placeholder="花劍 / 個人賽"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.categoryEn}</label>
+              <input
+                type="text"
+                value={categoryEn}
+                onChange={(e) => setCategoryEn(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+                placeholder="Foil / Individual"
+              />
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.descriptionZh}</label>
+              <textarea
+                value={descriptionZh}
+                onChange={(e) => setDescriptionZh(e.target.value)}
+                rows={3}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800 resize-none"
+                placeholder="比賽亮點或簡短描述..."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.descriptionEn}</label>
+              <textarea
+                value={descriptionEn}
+                onChange={(e) => setDescriptionEn(e.target.value)}
+                rows={3}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800 resize-none"
+                placeholder="Competition highlights or brief description..."
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              {t.admin.honorImages}
+              <span className="ml-2 text-xs font-normal text-slate-400">{t.admin.honorImagesHint}</span>
+            </label>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={(e) => { if (e.target.files) uploadFiles(e.target.files); e.target.value = ''; }}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading || imageUrls.length >= MAX_HONOR_IMAGES}
+              className="w-full border-2 border-dashed border-slate-200 hover:border-primary rounded-xl py-8 flex flex-col items-center gap-2 transition-colors disabled:opacity-50"
+            >
+              {uploading ? (
+                <>
+                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  <span className="text-sm text-slate-500">{t.admin.uploading}</span>
+                </>
+              ) : (
+                <>
+                  <Upload className="w-6 h-6 text-slate-400" />
+                  <span className="text-sm text-slate-500">{t.admin.uploadImages}</span>
+                </>
+              )}
+            </button>
+            {imageUrls.length > 0 && (
+              <div className="grid grid-cols-5 gap-2 mt-3">
+                {imageUrls.map((url, idx) => (
+                  <div key={idx} className="relative group aspect-square rounded-lg overflow-hidden border border-slate-200">
+                    <img src={url} alt="" className="w-full h-full object-cover" />
+                    {idx === 0 && (
+                      <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-gold text-primary-900 text-[10px] font-bold rounded">{t.admin.published}</span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setImageUrls((prev) => prev.filter((_, i) => i !== idx))}
+                      className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.status}</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setIsPublished(true)}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  isPublished ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                }`}
+              >
+                <Eye className="w-4 h-4 inline mr-1.5" />{t.admin.published}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsPublished(false)}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  !isPublished ? 'bg-slate-500 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                }`}
+              >
+                <EyeOff className="w-4 h-4 inline mr-1.5" />{t.admin.draft}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-5 py-2.5 text-slate-600 hover:text-slate-800 font-bold rounded-xl hover:bg-slate-100 transition-all"
+            >
+              {t.admin.cancel}
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="px-5 py-2.5 bg-primary hover:bg-primary-600 disabled:opacity-60 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/20"
+            >
+              {saving ? t.admin.saving : t.admin.save}
             </button>
           </div>
         </div>

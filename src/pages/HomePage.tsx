@@ -27,6 +27,9 @@ interface HonorItem {
   category_en: string;
   event_date: string;
   image_url: string;
+  image_urls: string[];
+  description: string;
+  description_en: string;
 }
 
 type Page = 'home' | 'about' | 'team' | 'facilities';
@@ -84,11 +87,12 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   useEffect(() => {
     supabase
       .from('honors_Fencing_Plus')
-      .select('id, student_name, award_title, award_title_en, category, category_en, event_date, image_url')
+      .select('id, student_name, award_title, award_title_en, category, category_en, event_date, image_url, image_urls, description, description_en')
+      .eq('is_published', true)
       .order('event_date', { ascending: false })
       .limit(6)
       .then(({ data, error }) => {
-        if (!error && data) setHonors(data);
+        if (!error && data) setHonors(data as HonorItem[]);
         setHonorsLoading(false);
       });
   }, []);
@@ -135,9 +139,12 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             <span className="text-gold text-sm font-semibold tracking-wide">{t.home.heroBadge}</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6 text-balance">
-            {t.home.heroTitle}
-            <span className="block text-gold mt-1 text-3xl md:text-4xl lg:text-5xl font-bold">
+          <h1 className="flex flex-col items-center justify-center text-center text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6 text-balance">
+            <span>{t.home.heroTitle}</span>
+            <span className="block text-[10px] md:text-sm font-bold tracking-[0.25em] text-white mt-1">
+              HK LIMITED
+            </span>
+            <span className="block text-gold mt-2 text-2xl md:text-3xl lg:text-4xl font-bold">
               {t.home.heroSubtitle}
             </span>
           </h1>
@@ -343,15 +350,18 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             <p className="text-center text-slate-400 py-16">{t.home.honorsEmpty}</p>
           ) : (
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {honors.map((h) => (
+              {honors.map((h) => {
+                const cover = (h.image_urls?.length && h.image_urls[0]) || h.image_url;
+                const desc = loc(h.description, h.description_en);
+                return (
                 <div
                   key={h.id}
                   className="rounded-2xl overflow-hidden border border-primary-100 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300 group"
                 >
-                  {h.image_url && (
+                  {cover && (
                     <div className="h-44 overflow-hidden">
                       <img
-                        src={h.image_url}
+                        src={cover}
                         alt={loc(h.award_title, h.award_title_en)}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
@@ -376,9 +386,13 @@ export default function HomePage({ onNavigate }: HomePageProps) {
                       {loc(h.award_title, h.award_title_en)}
                     </h3>
                     <p className="text-slate-500 text-sm">{h.student_name}</p>
+                    {desc && (
+                      <p className="text-slate-400 text-xs mt-2 line-clamp-2 leading-relaxed">{desc}</p>
+                    )}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
