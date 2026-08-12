@@ -88,25 +88,17 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             }}
             className="shrink-0 group"
           >
-            <div className="flex flex-col items-center justify-center text-center leading-none">
-              <LogoImage
-                alt="FENCING PLUS"
-                style={{
-                  height: '56px',
-                  width: 'auto',
-                  objectFit: 'contain',
-                  display: 'block',
-                  filter: 'drop-shadow(0px 3px 6px rgba(0,0,0,0.35)) drop-shadow(0px 1px 2px rgba(0,0,0,0.2))',
-                }}
-                className="group-hover:opacity-80 transition-opacity"
-              />
-              <span
-                className="text-[9px] font-bold tracking-[0.22em] text-[#0A5C36] mt-0.5"
-                style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
-              >
-                HK LIMITED
-              </span>
-            </div>
+            <LogoImage
+              alt="FENCING PLUS HK LIMITED"
+              blendMode="multiply"
+              style={{
+                height: '80px',
+                width: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+              }}
+              className="group-hover:opacity-80 transition-opacity"
+            />
           </button>
 
           {/* Desktop nav links */}

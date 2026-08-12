@@ -1,42 +1,26 @@
-import { useEffect, useState } from 'react';
-
-const LOGO_URL = '/images/logo/fencing_logo_final.png';
-
-const WHITE_THRESHOLD = 235;
+const LOGO_URL =
+  'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/high_resolution_PNG/FENCING_PLUS_v5.png';
 
 export default function LogoImage({
   alt = 'FENCING PLUS',
   className,
   style,
+  blendMode,
 }: {
   alt?: string;
   className?: string;
   style?: React.CSSProperties;
+  blendMode?: 'multiply' | 'normal';
 }) {
-  const [src, setSrc] = useState<string>(LOGO_URL);
-
-  useEffect(() => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      ctx.drawImage(img, 0, 0);
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
-      for (let i = 0; i < data.length; i += 4) {
-        if (data[i] > WHITE_THRESHOLD && data[i + 1] > WHITE_THRESHOLD && data[i + 2] > WHITE_THRESHOLD) {
-          data[i + 3] = 0;
-        }
-      }
-      ctx.putImageData(imageData, 0, 0);
-      setSrc(canvas.toDataURL('image/png'));
-    };
-    img.src = LOGO_URL;
-  }, []);
-
-  return <img src={src} alt={alt} className={className} style={style} />;
+  return (
+    <img
+      src={LOGO_URL}
+      alt={alt}
+      className={className}
+      style={{
+        ...style,
+        mixBlendMode: blendMode ?? 'normal',
+      }}
+    />
+  );
 }

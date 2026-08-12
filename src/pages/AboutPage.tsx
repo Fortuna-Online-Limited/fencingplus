@@ -72,9 +72,9 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl shadow-primary/15">
                 <img
-                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/Site_logo/Fencing_Plus_site_logo.png"
-                  alt="FENCING PLUS 官方標誌"
-                  className="w-full h-[500px] object-contain bg-primary-50"
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/high_resolution_PNG/FENCING_PLUS_v5.png"
+                  alt="FENCING PLUS HK LIMITED 官方標誌"
+                  className="w-full h-[500px] object-contain bg-primary-50 mix-blend-multiply"
                 />
               </div>
               <div className="absolute -bottom-5 -left-5 bg-gold rounded-2xl p-5 shadow-xl">

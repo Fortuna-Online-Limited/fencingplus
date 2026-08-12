@@ -38,11 +38,10 @@ export default function Footer({ onNavigate }: FooterProps) {
           <div>
             <button onClick={() => onNavigate('home')} className="flex flex-col items-start mb-5 group">
               <img
-                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/BG_removed_PNG/FENCING_plus_BGremover_628x397-removebg-preview.png"
-                alt="FENCING PLUS"
-                className="h-16 w-auto object-contain brightness-0 invert group-hover:opacity-85 transition-opacity"
+                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/high_resolution_PNG/FENCING_PLUS_v5.png"
+                alt="FENCING PLUS HK LIMITED"
+                className="h-20 w-auto object-contain mix-blend-multiply group-hover:opacity-85 transition-opacity"
               />
-              <span className="text-[9px] font-bold tracking-[0.22em] text-white/60 mt-0.5">HK LIMITED</span>
             </button>
             <p className="text-white/60 text-sm leading-relaxed max-w-xs">
               {t.footer.brandTagline}
@@ -170,7 +169,7 @@ export default function Footer({ onNavigate }: FooterProps) {
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-sm">
-              &copy; {new Date().getFullYear()} FENCING PLUS HK LIMITED. All rights reserved.
+              &copy; {new Date().getFullYear()} FENCING PLUS HK LIMITED. All Rights Reserved.
             </p>
             <p className="text-white/30 text-xs">{t.footer.copyright}</p>
           </div>
