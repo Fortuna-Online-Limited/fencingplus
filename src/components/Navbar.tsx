@@ -107,7 +107,6 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
               <button
                 key={link.key}
                 onClick={() => handleNav(link.key)}
-                style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
                 style={{
                   textShadow: '0 1px 2px rgba(255,255,255,0.8)',
                   backdropFilter: 'blur(4px)',

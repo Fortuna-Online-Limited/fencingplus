@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, Play } from 'lucide-react';
 import { useLocale } from '../lib/locale';
+import { isVideoUrl } from '../lib/mediaType';
 
 export interface NewsArticle {
   id: string;
@@ -23,12 +24,13 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [lightbox, setLightbox] = useState(false);
 
-  const images =
+  const media =
     article && Array.isArray(article.image_urls) && article.image_urls.length > 0
       ? article.image_urls
       : article && article.image_url
       ? [article.image_url]
       : [];
+  const currentIsVideo = media.length > 0 && isVideoUrl(media[galleryIndex]);
 
   const title = article
     ? locale === 'en' && article.title_en
@@ -42,12 +44,12 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
     : '';
 
   const prev = useCallback(() => {
-    setGalleryIndex((i) => (i - 1 + images.length) % images.length);
-  }, [images.length]);
+    setGalleryIndex((i) => (i - 1 + media.length) % media.length);
+  }, [media.length]);
 
   const next = useCallback(() => {
-    setGalleryIndex((i) => (i + 1) % images.length);
-  }, [images.length]);
+    setGalleryIndex((i) => (i + 1) % media.length);
+  }, [media.length]);
 
   useEffect(() => {
     setGalleryIndex(0);
@@ -59,14 +61,14 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
       if (e.key === 'Escape') {
         if (lightbox) setLightbox(false);
         else onClose();
-      } else if (images.length > 1) {
+      } else if (media.length > 1) {
         if (e.key === 'ArrowLeft') prev();
         if (e.key === 'ArrowRight') next();
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [article, lightbox, images.length, prev, next, onClose]);
+  }, [article, lightbox, media.length, prev, next, onClose]);
 
   if (!article) return null;
 
@@ -86,14 +88,26 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="relative">
-            {images.length > 0 && (
+            {media.length > 0 && (
               <div className="relative h-64 sm:h-80 overflow-hidden rounded-t-3xl bg-slate-100">
-                <img
-                  src={images[galleryIndex]}
-                  alt={title}
-                  className="w-full h-full object-cover"
-                />
-                {images.length > 1 && (
+                {currentIsVideo ? (
+                  <video
+                    src={media[galleryIndex]}
+                    className="w-full h-full object-contain bg-black"
+                    controls
+                    muted
+                    playsInline
+                    autoPlay
+                    loop
+                  />
+                ) : (
+                  <img
+                    src={media[galleryIndex]}
+                    alt={title}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                {media.length > 1 && (
                   <>
                     <button
                       onClick={prev}
@@ -108,15 +122,17 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
                       <ChevronRight className="w-5 h-5 text-slate-700" />
                     </button>
                     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900/60 rounded-full text-white text-xs font-medium">
-                      {galleryIndex + 1} {t.newsModal.of} {images.length}
+                      {galleryIndex + 1} {t.newsModal.of} {media.length}
                     </div>
-                    <button
-                      onClick={() => setLightbox(true)}
-                      className="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all"
-                      title={t.newsModal.galleryHint}
-                    >
-                      <ZoomIn className="w-4 h-4" />
-                    </button>
+                    {!currentIsVideo && (
+                      <button
+                        onClick={() => setLightbox(true)}
+                        className="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all"
+                        title={t.newsModal.galleryHint}
+                      >
+                        <ZoomIn className="w-4 h-4" />
+                      </button>
+                    )}
                   </>
                 )}
               </div>
@@ -124,7 +140,7 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
             <button
               onClick={onClose}
               className="absolute top-3 right-3 w-10 h-10 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all"
-              style={{ right: images.length > 1 ? '3.25rem' : '0.75rem' }}
+              style={{ right: media.length > 1 && !currentIsVideo ? '3.25rem' : '0.75rem' }}
             >
               <X className="w-5 h-5" />
             </button>
@@ -148,24 +164,37 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
         </div>
       </div>
 
-      {lightbox && images.length > 0 && (
+      {lightbox && media.length > 0 && (
         <div
           className="fixed inset-0 z-[1100] bg-black/95 flex items-center justify-center p-4 animate-fade-in"
           onClick={() => setLightbox(false)}
         >
-          <img
-            src={images[galleryIndex]}
-            alt={title}
-            className="max-w-full max-h-full object-contain rounded-lg"
-            onClick={(e) => e.stopPropagation()}
-          />
+          {isVideoUrl(media[galleryIndex]) ? (
+            <video
+              src={media[galleryIndex]}
+              className="max-w-full max-h-full rounded-lg"
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <img
+              src={media[galleryIndex]}
+              alt={title}
+              className="max-w-full max-h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
           <button
             onClick={() => setLightbox(false)}
             className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
           >
             <X className="w-6 h-6" />
           </button>
-          {images.length > 1 && (
+          {media.length > 1 && (
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); prev(); }}
@@ -180,7 +209,7 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
                 <ChevronRight className="w-6 h-6" />
               </button>
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full text-white text-sm font-medium">
-                {galleryIndex + 1} {t.newsModal.of} {images.length}
+                {galleryIndex + 1} {t.newsModal.of} {media.length}
               </div>
             </>
           )}

@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
-import { X, Search, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, Search, ArrowRight, ArrowLeft, Play } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
 import NewsModal, { type NewsArticle } from './NewsModal';
+import { isVideoUrl } from '../lib/mediaType';
 
 interface NewsItem {
   id: string;
@@ -121,12 +122,21 @@ export default function NewsListModal({ onClose }: NewsListModalProps) {
                       className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-white group cursor-pointer"
                     >
                       {cover && (
-                        <div className="h-44 overflow-hidden">
-                          <img
-                            src={cover}
-                            alt={loc(n.title_zh, n.title_en)}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
+                        <div className="h-44 overflow-hidden relative bg-slate-100">
+                          {isVideoUrl(cover) ? (
+                            <>
+                              <video src={cover} className="w-full h-full object-cover" muted preload="metadata" />
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
+                                <Play className="w-10 h-10 text-white fill-white/90 drop-shadow-lg" />
+                              </div>
+                            </>
+                          ) : (
+                            <img
+                              src={cover}
+                              alt={loc(n.title_zh, n.title_en)}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          )}
                         </div>
                       )}
                       <div className="p-5">

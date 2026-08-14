@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Image as ImageIcon,
   Calendar, Eye, EyeOff, KeyRound, ArrowLeft, FileText, Newspaper, Trophy, Search,
+  Link as LinkIcon, Video as VideoIcon, Play,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
 import { useToast } from '../components/Toast';
+import { getMediaType, isVideoUrl, ACCEPT_ALL } from '../lib/mediaType';
 
 const STORAGE_BUCKET = 'Fencing_plus';
 const STORAGE_FOLDER = '05_News';
@@ -395,9 +397,18 @@ export default function AdminPage() {
                   key={n.id}
                   className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-shadow"
                 >
-                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 relative">
                     {cover ? (
-                      <img src={cover} alt={title} className="w-full h-full object-cover" />
+                      isVideoUrl(cover) ? (
+                        <>
+                          <video src={cover} className="w-full h-full object-cover" muted preload="metadata" />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
+                            <Play className="w-5 h-5 text-white fill-white/90" />
+                          </div>
+                        </>
+                      ) : (
+                        <img src={cover} alt={title} className="w-full h-full object-cover" />
+                      )
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <ImageIcon className="w-6 h-6 text-slate-300" />
@@ -461,6 +472,7 @@ export default function AdminPage() {
     const [isPublished, setIsPublished] = useState(initial?.is_published ?? true);
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [mediaUrlInput, setMediaUrlInput] = useState('');
     const fileRef = useRef<HTMLInputElement>(null);
 
     const uploadFiles = async (files: FileList) => {
@@ -491,6 +503,18 @@ export default function AdminPage() {
       }
       setUploading(false);
       if (fileRef.current) fileRef.current.value = '';
+    };
+
+    const addMediaUrl = () => {
+      const url = mediaUrlInput.trim();
+      if (!url) return;
+      if (imageUrls.length >= MAX_IMAGES) {
+        showToast(t.admin.toastImageLimit, 'error');
+        return;
+      }
+      setImageUrls((prev) => [...prev, url]);
+      setMediaUrlInput('');
+      showToast(t.admin.toastMediaUrlAdded, 'success');
     };
 
     const removeImage = (idx: number) => {
@@ -595,14 +619,38 @@ export default function AdminPage() {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-semibold text-slate-700">{t.admin.images}</label>
-              <span className="text-xs text-slate-400">{t.admin.imagesHint}</span>
+              <label className="block text-sm font-semibold text-slate-700">{t.admin.mediaLabel}</label>
+              <span className="text-xs text-slate-400">{t.admin.mediaHint}</span>
             </div>
+
+            {/* URL paste */}
+            <div className="flex gap-2 mb-3">
+              <div className="relative flex-1">
+                <LinkIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="url"
+                  value={mediaUrlInput}
+                  onChange={(e) => setMediaUrlInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addMediaUrl(); } }}
+                  placeholder={t.admin.mediaUrlPlaceholder}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm text-slate-800"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={addMediaUrl}
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-all"
+              >
+                {t.admin.mediaUrlAdd}
+              </button>
+            </div>
+
+            {/* File upload */}
             <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center">
               <input
                 ref={fileRef}
                 type="file"
-                accept="image/*"
+                accept={ACCEPT_ALL}
                 multiple
                 onChange={(e) => e.target.files && uploadFiles(e.target.files)}
                 className="hidden"
@@ -615,7 +663,7 @@ export default function AdminPage() {
                 {uploading ? (
                   <><Upload className="w-5 h-5 animate-pulse" /> {t.admin.uploading}</>
                 ) : (
-                  <><Upload className="w-5 h-5" /> {t.admin.uploadImages}</>
+                  <><Upload className="w-5 h-5" /> {t.admin.uploadMedia}</>
                 )}
               </label>
               {imageUrls.length >= MAX_IMAGES && (
@@ -625,23 +673,44 @@ export default function AdminPage() {
 
             {imageUrls.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 mt-4">
-                {imageUrls.map((url, idx) => (
-                  <div key={url} className="relative group rounded-xl overflow-hidden border border-slate-200 aspect-square">
-                    <img src={url} alt="" className="w-full h-full object-cover" />
-                    <button
-                      onClick={() => removeImage(idx)}
-                      className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                      title={t.admin.removeImage}
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                    {idx === 0 && (
-                      <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-gold text-primary-900 text-[10px] font-bold rounded">
-                        Cover
+                {imageUrls.map((url, idx) => {
+                  const isVideo = isVideoUrl(url);
+                  return (
+                    <div key={url} className="relative group rounded-xl overflow-hidden border border-slate-200 aspect-square bg-slate-100">
+                      {isVideo ? (
+                        <video
+                          src={url}
+                          className="w-full h-full object-cover"
+                          muted
+                          playsInline
+                          preload="metadata"
+                        />
+                      ) : (
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                      )}
+                      {isVideo && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none">
+                          <Play className="w-8 h-8 text-white fill-white/90 drop-shadow-lg" />
+                        </div>
+                      )}
+                      <button
+                        onClick={() => removeImage(idx)}
+                        className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                        title={t.admin.removeImage}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                      {idx === 0 && (
+                        <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-gold text-primary-900 text-[10px] font-bold rounded">
+                          Cover
+                        </span>
+                      )}
+                      <span className="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-slate-900/60 text-white text-[10px] font-bold rounded flex items-center gap-0.5">
+                        {isVideo ? <><VideoIcon className="w-2.5 h-2.5" /> Video</> : 'Image'}
                       </span>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
