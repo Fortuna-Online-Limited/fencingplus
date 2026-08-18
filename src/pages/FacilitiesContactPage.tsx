@@ -80,7 +80,7 @@ export default function FacilitiesContactPage() {
         className="relative pt-40 pb-24 bg-cover bg-center"
         style={{
           backgroundImage:
-            'url(https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/05_Facilities_Contact/Site_and_Equipment-Photos_of_the_Actual_Site/site_01.png)',
+            'url(https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/05_Facilities_Contact/Site_and_Equipment-Photos_of_the_Actual_Site/site_01_v2.jpg)',
         }}
       >
         <div className="absolute inset-0 bg-primary-900/70" />

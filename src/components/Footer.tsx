@@ -38,9 +38,10 @@ export default function Footer({ onNavigate }: FooterProps) {
           <div>
             <button onClick={() => onNavigate('home')} className="flex flex-col items-start mb-5 group">
               <img
-                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/high_resolution_PNG/FENCING_PLUS_v5.png"
-                alt="FENCING PLUS HK LIMITED"
-                className="h-20 w-auto object-contain mix-blend-multiply group-hover:opacity-85 transition-opacity"
+                src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/00_Brand_Identity/FENCING%20PLUS%20Logo/high_resolution_PNG/Fencing_Power-removebg-preview_v1.png"
+                alt="FENCING POWER HK LIMITED"
+                className="h-16 md:h-20 w-auto object-contain group-hover:opacity-85 transition-opacity"
+                style={{ filter: 'brightness(0) invert(1)' }}
               />
             </button>
             <p className="text-white/60 text-sm leading-relaxed max-w-xs">
@@ -169,7 +170,7 @@ export default function Footer({ onNavigate }: FooterProps) {
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-sm">
-              &copy; {new Date().getFullYear()} FENCING PLUS HK LIMITED. All Rights Reserved.
+              &copy; {new Date().getFullYear()} FENCING POWER HK LIMITED. All Rights Reserved.
             </p>
             <p className="text-white/30 text-xs">{t.footer.copyright}</p>
           </div>

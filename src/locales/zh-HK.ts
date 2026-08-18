@@ -29,7 +29,7 @@ export const zhHK = {
 
   home: {
     heroBadge: '香港專業兒童及青少年劍擊培訓中心',
-    heroTitle: 'FENCING PLUS',
+    heroTitle: 'FENCING POWER',
     heroSubtitle: '讓劍擊成為孩子成長的自信基石',
     bodyPart1: '無論有沒有運動底子，',
     bodyStrong: '3.5歲起',
@@ -85,11 +85,11 @@ export const zhHK = {
     storySectionLabel: '公司故事',
     storyTitle: '從熱情出發，\n以專業為本',
     storyParas: [
-      'FENCING PLUS HK LIMITED 成立於2026年，由一班熱愛劍擊、充滿教學熱誠的專業教練團隊組成。我們致力推廣劍擊運動，希望為幼童及青少年提供一個安全、愉快且具啟發性的學習環境，從小培養他們對劍擊的認識與興趣，讓運動成為成長的一部分。',
+      'FENCING POWER HK LIMITED 成立於2026年，由一班熱愛劍擊、充滿教學熱誠的專業教練團隊組成。我們致力推廣劍擊運動，希望為幼童及青少年提供一個安全、愉快且具啟發性的學習環境，從小培養他們對劍擊的認識與興趣，讓運動成為成長的一部分。',
       '我們設有舒適完善的訓練空間，課程專為不同年齡層小朋友而設，包括幼兒劍擊班（3.5至6歲）及兒童劍擊班（7至14歲），涵蓋花劍及重劍訓練，由淺入深建立紮實基礎。另外也有為青少年及成人而設的劍擊體驗班。',
       '教練團隊擁有多年教學經驗，並熟悉幼兒及兒童教學，會以耐心及循序漸進的方式，讓每位小朋友都能在輕鬆愉快的氣氛中學習與成長。',
       '我們深信，劍擊不只是運動，更是幫助孩子建立良好品格的重要途徑。透過訓練，小朋友可以提升專注力和手眼協調，同時培養自信心、毅力及自律性，也會積極提供各項培訓、比賽及活動機會給予小朋友，在互動和練習當中，他們亦會學習冷靜思考、尊重他人，以及以正面的態度面對挑戰。',
-      '未來，FENCING PLUS 將持續為更多小朋友帶來優質的劍擊學習體驗，陪伴他們一步一步成長，在運動中建立自信，發掘潛能，享受學習的樂趣。',
+      '未來，FENCING POWER 將持續為更多小朋友帶來優質的劍擊學習體驗，陪伴他們一步一步成長，在運動中建立自信，發掘潛能，享受學習的樂趣。',
     ],
     storyCta: '了解我們的教練團隊',
     storyFounded: '2026',
@@ -110,10 +110,10 @@ export const zhHK = {
       },
       {
         title: '全面成長',
-        desc: '我們相信每個孩子都有無限潛能。FENCING PLUS提供從啟蒙到精英的完整培訓路徑，因材施教，讓孩子按自己的步伐成長。無論是強身健體、培養興趣，還是目標代表學校出賽，我們都有相應的課程方案。',
+        desc: '我們相信每個孩子都有無限潛能。FENCING POWER提供從啟蒙到精英的完整培訓路徑，因材施教，讓孩子按自己的步伐成長。無論是強身健體、培養興趣，還是目標代表學校出賽，我們都有相應的課程方案。',
       },
     ],
-    ctaTitle: '加入 FENCING PLUS HK LIMITED 大家庭',
+    ctaTitle: '加入 FENCING POWER HK LIMITED 大家庭',
     ctaSubtitle: '認識我們，了解我們，然後讓我們一同陪伴您的孩子成長',
     ctaButton: '聯絡我們',
   },
@@ -194,7 +194,7 @@ export const zhHK = {
 
     gallery: {
       sectionLabel: '場地實景',
-      sectionTitle: '走進 FENCING PLUS HK LIMITED',
+      sectionTitle: '走進 FENCING POWER HK LIMITED',
       sectionSubtitle: '11 張實景照片，帶您身臨其境感受專業劍擊訓練環境',
       tabs: {
         all: '全部展示',
@@ -266,7 +266,7 @@ export const zhHK = {
   },
 
   admin: {
-    brandTitle: 'FENCING PLUS',
+    brandTitle: 'FENCING POWER',
     brandSubtitle: '消息管理後台',
     loginTitle: '管理者登入',
     loginSubtitle: '請輸入帳號與密碼以進入管理後台',
@@ -292,15 +292,15 @@ export const zhHK = {
     contentEn: '英文內容',
     images: '消息圖片',
     mediaLabel: '媒體（圖片及影片）',
-    mediaHint: '可上載 1 至 10 張圖片或影片',
+    mediaHint: '貼上 1 至 10 條圖片或影片連結',
     uploadMedia: '選擇檔案上載',
-    mediaUrlPlaceholder: '貼上圖片或影片連結...',
+    mediaUrlPlaceholder: '貼上 Supabase 圖片或影片連結...',
     mediaUrlAdd: '加入連結',
     toastMediaUrlAdded: '媒體連結已加入',
-    imagesHint: '可上載 1 至 10 張圖片',
+    imagesHint: '貼上 1 至 10 條圖片連結',
     uploadImages: '選擇圖片上載',
     uploading: '上載中...',
-    imageFull: '已達上限（最多 10 張）',
+    imageFull: '已達上限（最多 10 條）',
     removeImage: '刪除',
     status: '發佈狀態',
     published: '已發佈',
@@ -354,7 +354,7 @@ export const zhHK = {
     descriptionZh: '中文描述',
     descriptionEn: '英文描述',
     honorImages: '戰績圖片',
-    honorImagesHint: '可上載 1 至 5 張圖片',
+    honorImagesHint: '貼上 1 至 5 條圖片連結',
     honorImageFull: '已達上限（最多 5 張）',
     searchPlaceholder: '搜尋學員姓名或獎項...',
     filterAll: '全部',

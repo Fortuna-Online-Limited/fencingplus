@@ -1,17 +1,14 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
-  Lock, LogOut, Plus, Pencil, Trash2, X, Upload, Image as ImageIcon,
+  Lock, LogOut, Plus, Pencil, Trash2, X, Image as ImageIcon,
   Calendar, Eye, EyeOff, KeyRound, ArrowLeft, FileText, Newspaper, Trophy, Search,
   Link as LinkIcon, Video as VideoIcon, Play,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useLocale } from '../lib/locale';
 import { useToast } from '../components/Toast';
-import { getMediaType, isVideoUrl, ACCEPT_ALL } from '../lib/mediaType';
+import { isVideoUrl } from '../lib/mediaType';
 
-const STORAGE_BUCKET = 'Fencing_plus';
-const STORAGE_FOLDER = '05_News';
-const HONOR_STORAGE_FOLDER = '06_Honors';
 const MAX_IMAGES = 10;
 const MAX_HONOR_IMAGES = 5;
 
@@ -157,7 +154,7 @@ export default function AdminPage() {
               <Lock className="w-8 h-8 text-primary-900" />
             </div>
             <div className="flex flex-col items-center leading-none mb-1">
-              <span className="text-2xl font-black text-white">FENCING PLUS</span>
+              <span className="text-2xl font-black text-white">FENCING POWER</span>
               <span className="text-[9px] font-bold tracking-[0.22em] text-white/60 mt-0.5">HK LIMITED</span>
             </div>
             <h1 className="text-sm font-bold text-white/80 mt-2">{t.admin.loginTitle}</h1>
@@ -471,39 +468,7 @@ export default function AdminPage() {
     const [imageUrls, setImageUrls] = useState<string[]>(initial?.image_urls || []);
     const [isPublished, setIsPublished] = useState(initial?.is_published ?? true);
     const [saving, setSaving] = useState(false);
-    const [uploading, setUploading] = useState(false);
     const [mediaUrlInput, setMediaUrlInput] = useState('');
-    const fileRef = useRef<HTMLInputElement>(null);
-
-    const uploadFiles = async (files: FileList) => {
-      const remaining = MAX_IMAGES - imageUrls.length;
-      const toUpload = Array.from(files).slice(0, remaining);
-      if (toUpload.length === 0) {
-        showToast(t.admin.toastImageLimit, 'error');
-        return;
-      }
-      setUploading(true);
-      const uploaded: string[] = [];
-      for (const file of toUpload) {
-        const ext = file.name.split('.').pop() || 'jpg';
-        const path = `${STORAGE_FOLDER}/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
-        const { error } = await supabase.storage
-          .from(STORAGE_BUCKET)
-          .upload(path, file, { upsert: false });
-        if (error) {
-          showToast(t.admin.toastUploadError, 'error');
-          continue;
-        }
-        const { data: pub } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
-        if (pub?.publicUrl) uploaded.push(pub.publicUrl);
-      }
-      if (uploaded.length > 0) {
-        setImageUrls((prev) => [...prev, ...uploaded]);
-        showToast(`${uploaded.length} ${t.admin.toastUploadSuccess}`, 'success');
-      }
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = '';
-    };
 
     const addMediaUrl = () => {
       const url = mediaUrlInput.trim();
@@ -520,6 +485,8 @@ export default function AdminPage() {
     const removeImage = (idx: number) => {
       setImageUrls((prev) => prev.filter((_, i) => i !== idx));
     };
+
+    const previewIsVideo = isVideoUrl(mediaUrlInput.trim());
 
     const handleSave = async () => {
       setSaving(true);
@@ -623,7 +590,7 @@ export default function AdminPage() {
               <span className="text-xs text-slate-400">{t.admin.mediaHint}</span>
             </div>
 
-            {/* URL paste */}
+            {/* URL input */}
             <div className="flex gap-2 mb-3">
               <div className="relative flex-1">
                 <LinkIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -639,37 +606,30 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={addMediaUrl}
-                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-all"
+                disabled={!mediaUrlInput.trim() || imageUrls.length >= MAX_IMAGES}
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-all disabled:opacity-50"
               >
                 {t.admin.mediaUrlAdd}
               </button>
             </div>
 
-            {/* File upload */}
-            <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center">
-              <input
-                ref={fileRef}
-                type="file"
-                accept={ACCEPT_ALL}
-                multiple
-                onChange={(e) => e.target.files && uploadFiles(e.target.files)}
-                className="hidden"
-                id="news-images-input"
-              />
-              <label
-                htmlFor="news-images-input"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-50 text-primary font-semibold rounded-xl cursor-pointer hover:bg-primary-100 transition-all"
-              >
-                {uploading ? (
-                  <><Upload className="w-5 h-5 animate-pulse" /> {t.admin.uploading}</>
-                ) : (
-                  <><Upload className="w-5 h-5" /> {t.admin.uploadMedia}</>
-                )}
-              </label>
-              {imageUrls.length >= MAX_IMAGES && (
-                <p className="mt-2 text-xs text-red-500">{t.admin.imageFull}</p>
-              )}
-            </div>
+            {/* Live preview of current URL input */}
+            {mediaUrlInput.trim() && (
+              <div className="mb-4 rounded-xl border border-slate-200 overflow-hidden bg-slate-50 p-3">
+                <p className="text-xs text-slate-400 mb-2 font-medium">預覽 Preview</p>
+                <div className="w-full max-w-xs aspect-video rounded-lg overflow-hidden bg-slate-100 mx-auto">
+                  {previewIsVideo ? (
+                    <video src={mediaUrlInput.trim()} controls className="w-full h-full object-cover" />
+                  ) : (
+                    <img src={mediaUrlInput.trim()} alt="preview" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
+                  )}
+                </div>
+              </div>
+            )}
+
+            {imageUrls.length >= MAX_IMAGES && (
+              <p className="mb-3 text-xs text-red-500">{t.admin.imageFull}</p>
+            )}
 
             {imageUrls.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 mt-4">
@@ -906,32 +866,18 @@ export default function AdminPage() {
     const [imageUrls, setImageUrls] = useState<string[]>(initial?.image_urls ?? (initial?.image_url ? [initial.image_url] : []));
     const [isPublished, setIsPublished] = useState(initial?.is_published ?? true);
     const [saving, setSaving] = useState(false);
-    const [uploading, setUploading] = useState(false);
-    const fileRef = useRef<HTMLInputElement>(null);
+    const [mediaUrlInput, setMediaUrlInput] = useState('');
 
-    const uploadFiles = async (files: FileList) => {
-      if (imageUrls.length + files.length > MAX_HONOR_IMAGES) {
+    const addMediaUrl = () => {
+      const url = mediaUrlInput.trim();
+      if (!url) return;
+      if (imageUrls.length >= MAX_HONOR_IMAGES) {
         showToast(t.admin.honorImageFull, 'error');
         return;
       }
-      setUploading(true);
-      const newUrls: string[] = [];
-      for (const file of Array.from(files)) {
-        if (imageUrls.length + newUrls.length >= MAX_HONOR_IMAGES) break;
-        const ext = file.name.split('.').pop() || 'jpg';
-        const path = `${HONOR_STORAGE_FOLDER}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-        const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(path, file);
-        if (error) {
-          showToast(t.admin.toastUploadError, 'error');
-        } else {
-          newUrls.push(supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path).data.publicUrl);
-        }
-      }
-      if (newUrls.length > 0) {
-        setImageUrls((prev) => [...prev, ...newUrls]);
-        showToast(t.admin.toastUploadSuccess, 'success');
-      }
-      setUploading(false);
+      setImageUrls((prev) => [...prev, url]);
+      setMediaUrlInput('');
+      showToast(t.admin.toastMediaUrlAdded, 'success');
     };
 
     const handleSave = async () => {
@@ -1069,32 +1015,44 @@ export default function AdminPage() {
               {t.admin.honorImages}
               <span className="ml-2 text-xs font-normal text-slate-400">{t.admin.honorImagesHint}</span>
             </label>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              onChange={(e) => { if (e.target.files) uploadFiles(e.target.files); e.target.value = ''; }}
-            />
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              disabled={uploading || imageUrls.length >= MAX_HONOR_IMAGES}
-              className="w-full border-2 border-dashed border-slate-200 hover:border-primary rounded-xl py-8 flex flex-col items-center gap-2 transition-colors disabled:opacity-50"
-            >
-              {uploading ? (
-                <>
-                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                  <span className="text-sm text-slate-500">{t.admin.uploading}</span>
-                </>
-              ) : (
-                <>
-                  <Upload className="w-6 h-6 text-slate-400" />
-                  <span className="text-sm text-slate-500">{t.admin.uploadImages}</span>
-                </>
-              )}
-            </button>
+
+            {/* URL input */}
+            <div className="flex gap-2 mb-3">
+              <div className="relative flex-1">
+                <LinkIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="url"
+                  value={mediaUrlInput}
+                  onChange={(e) => setMediaUrlInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addMediaUrl(); } }}
+                  placeholder={t.admin.mediaUrlPlaceholder}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm text-slate-800"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={addMediaUrl}
+                disabled={!mediaUrlInput.trim() || imageUrls.length >= MAX_HONOR_IMAGES}
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-all disabled:opacity-50"
+              >
+                {t.admin.mediaUrlAdd}
+              </button>
+            </div>
+
+            {/* Live preview of current URL input */}
+            {mediaUrlInput.trim() && (
+              <div className="mb-4 rounded-xl border border-slate-200 overflow-hidden bg-slate-50 p-3">
+                <p className="text-xs text-slate-400 mb-2 font-medium">預覽 Preview</p>
+                <div className="w-full max-w-xs aspect-video rounded-lg overflow-hidden bg-slate-100 mx-auto">
+                  <img src={mediaUrlInput.trim()} alt="preview" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
+                </div>
+              </div>
+            )}
+
+            {imageUrls.length >= MAX_HONOR_IMAGES && (
+              <p className="mb-3 text-xs text-red-500">{t.admin.honorImageFull}</p>
+            )}
+
             {imageUrls.length > 0 && (
               <div className="grid grid-cols-5 gap-2 mt-3">
                 {imageUrls.map((url, idx) => (

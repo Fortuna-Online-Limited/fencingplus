@@ -16,17 +16,17 @@ interface GalleryImage {
 const BASE = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/05_Facilities_Contact/Site_and_Equipment-Photos_of_the_Actual_Site';
 
 const GALLERY_IMAGES: GalleryImage[] = [
-  { id: 'site_01', src: `${BASE}/site_01.png`, category: 'venue', titleZh: '品牌木紋形象牆', titleEn: 'Brand Reception & Logo Wall' },
-  { id: 'site_02', src: `${BASE}/site_02.png`, category: 'venue', titleZh: '全景寬敞練劍場地', titleEn: 'Panoramic Training Area' },
-  { id: 'site_03', src: `${BASE}/site_03.png`, category: 'venue', titleZh: '明亮透光專業劍道區', titleEn: 'Bright Professional Piste Area' },
-  { id: 'site_04', src: `${BASE}/site_04.jpeg`, category: 'venue', titleZh: '專屬金屬劍道特寫', titleEn: 'Custom Metallic Fencing Piste' },
-  { id: 'site_05', src: `${BASE}/site_05.png`, category: 'venue', titleZh: '高空環形燈光與多條賽道', titleEn: 'High-ceiling Ring Lighting & Track System' },
-  { id: 'site_06', src: `${BASE}/site_06.png`, category: 'venue', titleZh: '階梯式家長觀賽休息區', titleEn: 'Tiered Spectator & Parent Seating' },
-  { id: 'site_07', src: `${BASE}/site_07.jpeg`, category: 'venue', titleZh: '體能與敏捷度訓練器材', titleEn: 'Physical & Agility Training Equipment' },
-  { id: 'electronic_devices_01', src: `${BASE}/electronic_devices_01.jpeg`, category: 'scoring', titleZh: '國際賽事級電子計分器', titleEn: 'International Match Electronic Scoring Box' },
-  { id: 'electronic_devices_02', src: `${BASE}/electronic_devices_02.jpeg`, category: 'scoring', titleZh: '精密裁判發光指示燈', titleEn: 'Precision Fencing Target & Signal Lights' },
-  { id: 'kendo_01', src: `${BASE}/kendo_01.png`, category: 'pistes', titleZh: '國際標準避震防滑金屬劍道', titleEn: 'Standard Shock-Absorbing Metallic Piste' },
-  { id: 'kendo_02', src: `${BASE}/kendo_02.png`, category: 'pistes', titleZh: '高品質金屬網格特寫', titleEn: 'High-Durability Metallic Grid Surface' },
+  { id: 'site_01', src: `${BASE}/site_01_v2.jpg`, category: 'venue', titleZh: '品牌木紋形象牆', titleEn: 'Brand Reception & Logo Wall' },
+  { id: 'site_02', src: `${BASE}/site_02_v2.jpg`, category: 'venue', titleZh: '全景寬敞練劍場地', titleEn: 'Panoramic Training Area' },
+  { id: 'site_03', src: `${BASE}/site_03_v2.jpg`, category: 'venue', titleZh: '明亮透光專業劍道區', titleEn: 'Bright Professional Piste Area' },
+  { id: 'site_04', src: `${BASE}/site_04_v2.jpg`, category: 'venue', titleZh: '專屬金屬劍道特寫', titleEn: 'Custom Metallic Fencing Piste' },
+  { id: 'site_05', src: `${BASE}/site_05_v2.png`, category: 'venue', titleZh: '高空環形燈光與多條賽道', titleEn: 'High-ceiling Ring Lighting & Track System' },
+  { id: 'site_06', src: `${BASE}/site_06_v2.jpg`, category: 'venue', titleZh: '階梯式家長觀賽休息區', titleEn: 'Tiered Spectator & Parent Seating' },
+  { id: 'site_07', src: `${BASE}/site_07_v2.jpg`, category: 'venue', titleZh: '體能與敏捷度訓練器材', titleEn: 'Physical & Agility Training Equipment' },
+  { id: 'electronic_devices_01', src: `${BASE}/electronic_devices_01_v2.jpg`, category: 'scoring', titleZh: '國際賽事級電子計分器', titleEn: 'International Match Electronic Scoring Box' },
+  { id: 'electronic_devices_02', src: `${BASE}/electronic_devices_02_v2.jpg`, category: 'scoring', titleZh: '精密裁判發光指示燈', titleEn: 'Precision Fencing Target & Signal Lights' },
+  { id: 'kendo_01', src: `${BASE}/kendo_01_v2.jpg`, category: 'pistes', titleZh: '國際標準避震防滑金屬劍道', titleEn: 'Standard Shock-Absorbing Metallic Piste' },
+  { id: 'kendo_02', src: `${BASE}/kendo_02_v2.png`, category: 'pistes', titleZh: '高品質金屬網格特寫', titleEn: 'High-Durability Metallic Grid Surface' },
 ];
 
 const HERO_ORDER = [

@@ -70,7 +70,7 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
       }}
     >
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
-        <div className="flex items-center justify-between py-2 min-h-[72px]">
+        <div className="flex items-center justify-between py-1 min-h-[100px]">
 
           {/* Logo */}
           <button
@@ -89,15 +89,9 @@ export default function Navbar({ currentPage, onNavigate }: NavbarProps) {
             className="shrink-0 group"
           >
             <LogoImage
-              alt="FENCING PLUS HK LIMITED"
+              alt="FENCING POWER HK LIMITED"
               blendMode="multiply"
-              style={{
-                height: '80px',
-                width: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-              }}
-              className="group-hover:opacity-80 transition-opacity"
+              className="h-[88px] md:h-[96px] w-auto object-contain block group-hover:opacity-80 transition-opacity"
             />
           </button>
 

@@ -31,7 +31,7 @@ export const en: Dict = {
 
   home: {
     heroBadge: 'Professional Youth Fencing Centre in Hong Kong',
-    heroTitle: 'FENCING PLUS',
+    heroTitle: 'FENCING POWER',
     heroSubtitle: 'Building Confidence Through Fencing',
     bodyPart1: 'No experience required — children from ',
     bodyStrong: 'age 3.5',
@@ -87,11 +87,11 @@ export const en: Dict = {
     storySectionLabel: 'Company Story',
     storyTitle: 'Passion-Driven,\nProfessionally Delivered',
     storyParas: [
-      'FENCING PLUS HK LIMITED was founded in 2026 by a team of passionate and dedicated professional fencing coaches. We are committed to promoting the sport and providing children and young people with a safe, enjoyable, and inspiring learning environment. Our goal is to nurture their understanding and interest in fencing from an early age, making the sport a meaningful part of their growth.',
+      'FENCING POWER HK LIMITED was founded in 2026 by a team of passionate and dedicated professional fencing coaches. We are committed to promoting the sport and providing children and young people with a safe, enjoyable, and inspiring learning environment. Our goal is to nurture their understanding and interest in fencing from an early age, making the sport a meaningful part of their growth.',
       'We offer a comfortable, well equipped training space with courses designed for different age groups, including Toddler Fencing (ages 3.5–6) and Children\'s Fencing Classes (ages 7–14). Training covers both foil and épée, building a solid foundation step by step. We also provide Introductory Classes for teenagers and adults who are new to fencing.',
       'Our coaching team has many years of teaching experience and specialises in working with young children. With patience and a progressive teaching approach, our coaches ensure every child learns and grows in a relaxed and enjoyable atmosphere.',
       'We firmly believe that fencing is more than just a sport — it is a powerful way to build character. Through training, children improve concentration and hand eye coordination while developing confidence, perseverance, and self discipline. We actively offer training opportunities, competitions, and events where students learn calm thinking, respect for others, and how to face challenges with a positive mindset.',
-      'Looking ahead, FENCING PLUS will continue delivering exceptional fencing experiences for more children — accompanying them as they grow, build confidence, discover their potential, and find joy in learning.',
+      'Looking ahead, FENCING POWER will continue delivering exceptional fencing experiences for more children — accompanying them as they grow, build confidence, discover their potential, and find joy in learning.',
     ],
     storyCta: 'Meet Our Coaching Team',
     storyFounded: '2026',
@@ -112,10 +112,10 @@ export const en: Dict = {
       },
       {
         title: 'Holistic Growth',
-        desc: "We believe every child has unlimited potential. FENCING PLUS offers a complete pathway from beginner to elite, adapting to each child's pace. Whether the goal is fitness, a new hobby, or representing their school in competition, we have the right programme.",
+        desc: "We believe every child has unlimited potential. FENCING POWER offers a complete pathway from beginner to elite, adapting to each child's pace. Whether the goal is fitness, a new hobby, or representing their school in competition, we have the right programme.",
       },
     ],
-    ctaTitle: 'Join the FENCING PLUS HK LIMITED Family',
+    ctaTitle: 'Join the FENCING POWER HK LIMITED Family',
     ctaSubtitle: "Get to know us, and let us walk alongside your child's growth journey.",
     ctaButton: 'Contact Us',
   },
@@ -196,7 +196,7 @@ export const en: Dict = {
 
     gallery: {
       sectionLabel: 'Venue Gallery',
-      sectionTitle: 'Step Inside FENCING PLUS HK LIMITED',
+      sectionTitle: 'Step Inside FENCING POWER HK LIMITED',
       sectionSubtitle: 'Explore 11 real‑life photos and experience our professional fencing training environment.',
       tabs: {
         all: 'All',
@@ -268,7 +268,7 @@ export const en: Dict = {
   },
 
   admin: {
-    brandTitle: 'FENCING PLUS',
+    brandTitle: 'FENCING POWER',
     brandSubtitle: 'News Management',
     loginTitle: 'Admin Login',
     loginSubtitle: 'Enter your credentials to access the management panel',
@@ -294,12 +294,12 @@ export const en: Dict = {
     contentEn: 'English Content',
     images: 'News Images',
     mediaLabel: 'Media (Images & Videos)',
-    mediaHint: 'Upload up to 10 images or videos',
+    mediaHint: 'Paste 1 to 10 image or video URLs',
     uploadMedia: 'Select Files to Upload',
-    mediaUrlPlaceholder: 'Paste image or video URL...',
+    mediaUrlPlaceholder: 'Paste Supabase image or video URL...',
     mediaUrlAdd: 'Add URL',
     toastMediaUrlAdded: 'Media URL added',
-    imagesHint: 'Upload 1 to 10 images',
+    imagesHint: 'Paste 1 to 10 image URLs',
     uploadImages: 'Select Images to Upload',
     uploading: 'Uploading...',
     imageFull: 'Limit reached (max 10)',
@@ -356,7 +356,7 @@ export const en: Dict = {
     descriptionZh: 'Chinese Description',
     descriptionEn: 'English Description',
     honorImages: 'Achievement Photos',
-    honorImagesHint: 'Upload 1 to 5 photos',
+    honorImagesHint: 'Paste 1 to 5 photo URLs',
     honorImageFull: 'Limit reached (max 5)',
     searchPlaceholder: 'Search student name or award...',
     filterAll: 'All',
