@@ -347,17 +347,19 @@ export default function AdminPage() {
       )}
     </div>
   );
+}
 
-  function NewsList({
-    news, loading, onAdd, onEdit, onDelete,
-  }: {
-    news: NewsRow[];
-    loading: boolean;
-    onAdd: () => void;
-    onEdit: (n: NewsRow) => void;
-    onDelete: (n: NewsRow) => void;
-  }) {
-    return (
+function NewsList({
+  news, loading, onAdd, onEdit, onDelete,
+}: {
+  news: NewsRow[];
+  loading: boolean;
+  onAdd: () => void;
+  onEdit: (n: NewsRow) => void;
+  onDelete: (n: NewsRow) => void;
+}) {
+  const { t, locale } = useLocale();
+  return (
       <div>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-black text-slate-900">{t.admin.dashboardTitle}</h2>
@@ -451,14 +453,16 @@ export default function AdminPage() {
     );
   }
 
-  function NewsForm({
-    initial, onCancel, onSaved,
-  }: {
-    initial: NewsRow | null;
-    onCancel: () => void;
-    onSaved: () => void;
-  }) {
-    const [publishDate, setPublishDate] = useState(
+function NewsForm({
+  initial, onCancel, onSaved,
+}: {
+  initial: NewsRow | null;
+  onCancel: () => void;
+  onSaved: () => void;
+}) {
+  const { t } = useLocale();
+  const { showToast } = useToast();
+  const [publishDate, setPublishDate] = useState(
       initial?.publish_date || new Date().toISOString().slice(0, 10)
     );
     const [titleZh, setTitleZh] = useState(initial?.title_zh || '');
@@ -721,19 +725,19 @@ export default function AdminPage() {
     );
   }
 
-  function HonorList({
-    honors, loading, search, onSearch, onAdd, onEdit, onDelete, onTogglePublish,
-  }: {
-    honors: HonorRow[];
-    loading: boolean;
-    search: string;
-    onSearch: (s: string) => void;
-    onAdd: () => void;
-    onEdit: (h: HonorRow) => void;
-    onDelete: (h: HonorRow) => void;
-    onTogglePublish: (h: HonorRow) => void;
-  }) {
-    const { t, locale } = useLocale();
+function HonorList({
+  honors, loading, search, onSearch, onAdd, onEdit, onDelete, onTogglePublish,
+}: {
+  honors: HonorRow[];
+  loading: boolean;
+  search: string;
+  onSearch: (s: string) => void;
+  onAdd: () => void;
+  onEdit: (h: HonorRow) => void;
+  onDelete: (h: HonorRow) => void;
+  onTogglePublish: (h: HonorRow) => void;
+}) {
+  const { t, locale } = useLocale();
     const loc = (zh: string, en: string) => (locale === 'en' ? en || zh : zh || en);
     const filtered = honors.filter((h) => {
       const q = search.toLowerCase().trim();
@@ -847,15 +851,16 @@ export default function AdminPage() {
     );
   }
 
-  function HonorForm({
-    initial, onCancel, onSaved,
-  }: {
-    initial: HonorRow | null;
-    onCancel: () => void;
-    onSaved: () => void;
-  }) {
-    const { t } = useLocale();
-    const [studentName, setStudentName] = useState(initial?.student_name ?? '');
+function HonorForm({
+  initial, onCancel, onSaved,
+}: {
+  initial: HonorRow | null;
+  onCancel: () => void;
+  onSaved: () => void;
+}) {
+  const { t } = useLocale();
+  const { showToast } = useToast();
+  const [studentName, setStudentName] = useState(initial?.student_name ?? '');
     const [awardTitleZh, setAwardTitleZh] = useState(initial?.award_title ?? '');
     const [awardTitleEn, setAwardTitleEn] = useState(initial?.award_title_en ?? '');
     const [categoryZh, setCategoryZh] = useState(initial?.category ?? '');
@@ -1120,8 +1125,10 @@ export default function AdminPage() {
     );
   }
 
-  function ChangePasswordModal({ onClose }: { onClose: () => void }) {
-    const [current, setCurrent] = useState('');
+function ChangePasswordModal({ onClose }: { onClose: () => void }) {
+  const { t } = useLocale();
+  const { showToast } = useToast();
+  const [current, setCurrent] = useState('');
     const [next, setNext] = useState('');
     const [confirm, setConfirm] = useState('');
     const [loading, setLoading] = useState(false);
@@ -1200,4 +1207,3 @@ export default function AdminPage() {
       </div>
     );
   }
-}
