@@ -1,4 +1,4 @@
-const WA_LINK = 'https://wa.me/85268956089?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2FENCING%20PLUS%E7%9A%84%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A%E3%80%82';
+const WA_LINK = 'https://wa.me/85268956089?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E6%9F%A5%E8%A9%A2FENCING%20POWER%E7%9A%84%E8%AA%B2%E7%A8%8B%E8%B3%87%E8%A8%8A%E3%80%82';
 const IG_LINK = 'https://www.instagram.com/fencingplushklimited/';
 
 export default function WhatsAppButton() {
