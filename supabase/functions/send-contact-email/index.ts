@@ -25,13 +25,13 @@ interface ContactPayload {
 
 function buildSubject(source: string): string {
   return source === "facilities"
-    ? "[Fencing Plus] New Enquiry from Facilities Page"
-    : "[Fencing Plus] New Contact Form Submission";
+    ? "[Fencing Power] New Enquiry from Website"
+    : "[Fencing Power] New Enquiry from Website";
 }
 
 function buildBody(data: ContactPayload): string {
   const lines: string[] = [];
-  lines.push("You have received a new enquiry from the Fencing Plus website.");
+  lines.push("You have received a new enquiry from the Fencing Power website.");
   lines.push("");
   if (data.name) lines.push(`Name: ${data.name}`);
   if (data.email) lines.push(`Email: ${data.email}`);
@@ -45,7 +45,7 @@ function buildBody(data: ContactPayload): string {
   }
   lines.push("");
   lines.push("---");
-  lines.push("This message was sent automatically from the Fencing Plus website contact form.");
+  lines.push("This message was sent automatically from the Fencing Power website contact form.");
   return lines.join("\n");
 }
 
