@@ -214,7 +214,6 @@ export const en: Dict = {
         { id: 'site_02', title: 'Panoramic Training Area' },
         { id: 'site_03', title: 'Bright Professional Piste Area' },
         { id: 'site_04', title: 'Custom Metallic Fencing Piste' },
-        { id: 'site_05', title: 'High-ceiling Ring Lighting & Track System' },
         { id: 'site_06', title: 'Tiered Spectator & Parent Seating' },
         { id: 'site_07', title: 'Physical & Agility Training Equipment' },
         { id: 'electronic_devices_01', title: 'International Match Electronic Scoring Box' },

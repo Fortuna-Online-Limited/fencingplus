@@ -52,7 +52,7 @@ export default function AdminPage() {
   const [session, setSession] = useState<ReturnType<typeof supabase.auth.getSession> extends Promise<infer R> ? Awaited<R>['data']['session'] : null>(null);
   const [authReady, setAuthReady] = useState(false);
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('info@fencingpowerhk.com');
   const [password, setPassword] = useState('');
   const [showPwd, setShowPwd] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);

@@ -212,7 +212,6 @@ export const zhHK = {
         { id: 'site_02', title: '全景寬敞練劍場地' },
         { id: 'site_03', title: '明亮透光專業劍道區' },
         { id: 'site_04', title: '專屬金屬劍道特寫' },
-        { id: 'site_05', title: '高空環形燈光與多條賽道' },
         { id: 'site_06', title: '階梯式家長觀賽休息區' },
         { id: 'site_07', title: '體能與敏捷度訓練器材' },
         { id: 'electronic_devices_01', title: '國際賽事級電子計分器' },

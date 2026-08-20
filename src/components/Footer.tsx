@@ -136,7 +136,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   </svg>
                 </a>
                 <img
-                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_IG_QRcode.png"
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_IG_QRcode_v2.png"
                   alt="Instagram QR Code"
                   className="w-[200px] h-[200px] object-contain rounded-lg"
                 />
@@ -159,7 +159,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   </svg>
                 </a>
                 <img
-                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_Xiaohongshu_QRcode.png"
+                  src="https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/information/Fencing_Xiaohongshu_QRcode_v2.png"
                   alt="小紅書 QR Code"
                   className="w-[200px] h-[200px] object-contain rounded-lg"
                 />
