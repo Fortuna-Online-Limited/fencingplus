@@ -10,7 +10,7 @@ const SMTP_HOST = "smtp.office365.com";
 const SMTP_PORT = 587;
 const SMTP_USER = "info@fencingpowerhk.com";
 const SMTP_PASS = "Fencing1234@";
-const FROM_ADDR = "no-reply@fencingpowerhk.com";
+const FROM_ADDR = "info@fencingpowerhk.com";
 const TO_ADDR = "info@fencingpowerhk.com";
 
 interface ContactPayload {
