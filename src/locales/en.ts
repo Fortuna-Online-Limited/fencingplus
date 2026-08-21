@@ -165,7 +165,7 @@ export const en: Dict = {
     philosophySectionLabel: 'Teaching Philosophy',
     philosophyTitle: 'Every Child Has Their Own Pace',
     philosophyBody: 'We believe every child can thrive with the right approach. Our coaches are trained in child psychology and pedagogy — skilled at communicating in ways children understand, balancing encouragement with challenge so every student finds confidence and joy in fencing.',
-    philosophyButton: 'Book a Free Trial',
+    philosophyButton: 'Contact Us',
   },
 
   facilities: {

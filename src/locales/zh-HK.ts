@@ -163,7 +163,7 @@ export const zhHK = {
     philosophySectionLabel: '教學理念',
     philosophyTitle: '每個孩子都有自己的節奏',
     philosophyBody: '我們深信，沒有教不好的學生，只有未找到合適方法的教學。每位教練均接受兒童心理與教學法培訓，擅長以孩子能理解的語言和方式進行教學，在鼓勵與挑戰之間取得平衡，讓每一位學員都能在劍道上找到屬於自己的自信與喜悅。',
-    philosophyButton: '預約免費試堂',
+    philosophyButton: '聯絡我們',
   },
 
   facilities: {
