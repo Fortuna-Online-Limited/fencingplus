@@ -8,7 +8,7 @@ interface FooterProps {
 }
 
 const WA_LINK = 'https://wa.me/85268956089';
-const IG_LINK = 'https://www.instagram.com/fencingplushklimited/';
+const IG_LINK = 'https://www.instagram.com/fencingpowerhklimited';
 const XHS_LINK = 'https://www.xiaohongshu.com/user/profile/fencingplushklimited';
 
 export default function Footer({ onNavigate }: FooterProps) {
