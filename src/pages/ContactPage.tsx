@@ -31,7 +31,7 @@ const contactInfo = [
   {
     icon: Clock,
     label: 'Business Hours',
-    value: 'Mon–Fri: 7am–6pm  |  Sat: 8am–4pm',
+    value: 'Mon, Tue & Thu 13:00–18:00  |  Wed & Fri 13:00–19:00\nSat 09:00–18:00  |  Sun 09:00–16:00',
   },
 ];
 
