@@ -12,6 +12,22 @@ import { isVideoUrl } from '../lib/mediaType';
 const MAX_IMAGES = 10;
 const MAX_HONOR_IMAGES = 5;
 
+const HK_TZ = 'Asia/Hong_Kong';
+
+function hkLocalToISO(localStr: string): string {
+  return localStr.length >= 16 ? localStr.slice(0, 16) + ':00+08:00' : localStr;
+}
+
+function isoToHkLocal(isoStr: string): string {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: HK_TZ,
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  }).formatToParts(new Date(isoStr));
+  const get = (type: string) => parts.find((p) => p.type === type)?.value || '';
+  return `${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}`;
+}
+
 interface NewsRow {
   id: string;
   created_at: string;
@@ -397,7 +413,7 @@ function NewsList({
               const scheduledDateStr = n.scheduled_at
                 ? new Date(n.scheduled_at).toLocaleString(
                     locale === 'en' ? 'en-GB' : 'zh-HK',
-                    { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+                    { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: HK_TZ }
                   )
                 : '';
               const effectiveStatus = n.status === 'scheduled' && !isScheduled ? 'published' : n.status;
@@ -493,7 +509,7 @@ function NewsForm({
     );
     const [scheduledAt, setScheduledAt] = useState(
       initial?.scheduled_at
-        ? new Date(initial.scheduled_at).toISOString().slice(0, 16)
+        ? isoToHkLocal(initial.scheduled_at)
         : ''
     );
     const [saving, setSaving] = useState(false);
@@ -520,7 +536,7 @@ function NewsForm({
     const handleSave = async () => {
       setSaving(true);
       const finalStatus = publishStatus === 'scheduled' && scheduledAt
-        ? (new Date(scheduledAt) <= new Date() ? 'published' : 'scheduled')
+        ? (new Date(hkLocalToISO(scheduledAt)) <= new Date() ? 'published' : 'scheduled')
         : publishStatus;
       const finalPublishDate = finalStatus === 'published' && publishStatus === 'published'
         ? new Date().toISOString().slice(0, 10)
@@ -535,7 +551,7 @@ function NewsForm({
         image_urls: imageUrls,
         is_published: finalStatus === 'published',
         status: finalStatus,
-        scheduled_at: finalStatus === 'scheduled' ? scheduledAt : null,
+        scheduled_at: finalStatus === 'scheduled' ? hkLocalToISO(scheduledAt) : null,
         summary: contentZh.slice(0, 120),
         summary_en: contentEn.slice(0, 120),
         title: titleZh,
