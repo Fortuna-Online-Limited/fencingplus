@@ -16,6 +16,8 @@ interface NewsItem {
   publish_date: string;
   image_url: string;
   image_urls: string[];
+  status: string;
+  scheduled_at: string | null;
 }
 
 interface NewsListModalProps {
@@ -35,11 +37,17 @@ export default function NewsListModal({ onClose }: NewsListModalProps) {
   useEffect(() => {
     supabase
       .from('news_Fencing_Plus')
-      .select('id, title_zh, title_en, content_zh, content_en, summary, summary_en, publish_date, image_url, image_urls')
-      .eq('is_published', true)
+      .select('id, title_zh, title_en, content_zh, content_en, summary, summary_en, publish_date, image_url, image_urls, status, scheduled_at')
+      .in('status', ['published', 'scheduled'])
       .order('publish_date', { ascending: false })
       .then(({ data, error }) => {
-        if (!error && data) setAllNews(data as NewsItem[]);
+        if (!error && data) {
+          const now = new Date();
+          const visible = (data as NewsItem[]).filter(
+            (n) => n.status === 'published' || (n.status === 'scheduled' && n.scheduled_at && new Date(n.scheduled_at) <= now)
+          );
+          setAllNews(visible);
+        }
         setLoading(false);
       });
   }, []);

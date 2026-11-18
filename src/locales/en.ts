@@ -311,6 +311,10 @@ export const en: Dict = {
     status: 'Publish Status',
     published: 'Published',
     draft: 'Draft',
+    publishNow: 'Publish Now',
+    scheduled: 'Scheduled',
+    scheduledAt: 'Scheduled Publish Date & Time',
+    scheduledHint: 'This news will automatically appear on the website at the scheduled time.',
     save: 'Save',
     cancel: 'Cancel',
     saving: 'Saving...',
@@ -343,6 +347,7 @@ export const en: Dict = {
     statusBadge: {
       published: 'Published',
       draft: 'Draft',
+      scheduled: 'Scheduled',
     },
     tabNews: 'News',
     tabHonors: 'Honors',

@@ -309,6 +309,10 @@ export const zhHK = {
     status: '發佈狀態',
     published: '已發佈',
     draft: '草稿',
+    publishNow: '即時發佈',
+    scheduled: '定時發佈',
+    scheduledAt: '預約發佈日期與時間',
+    scheduledHint: '此消息將在預約時間自動顯示於前台。',
     save: '儲存',
     cancel: '取消',
     saving: '儲存中...',
@@ -341,6 +345,7 @@ export const zhHK = {
     statusBadge: {
       published: '已發佈',
       draft: '草稿',
+      scheduled: '定時發佈',
     },
     tabNews: '最新消息',
     tabHonors: '榮譽牆',

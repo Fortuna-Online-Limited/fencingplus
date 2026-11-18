@@ -23,6 +23,8 @@ interface NewsRow {
   image_url: string;
   image_urls: string[];
   is_published: boolean;
+  status: string;
+  scheduled_at: string | null;
 }
 
 interface HonorRow {
@@ -391,6 +393,14 @@ function NewsList({
                 locale === 'en' ? 'en-GB' : 'zh-HK',
                 { year: 'numeric', month: 'short', day: 'numeric' }
               );
+              const isScheduled = n.status === 'scheduled' && n.scheduled_at && new Date(n.scheduled_at) > new Date();
+              const scheduledDateStr = n.scheduled_at
+                ? new Date(n.scheduled_at).toLocaleString(
+                    locale === 'en' ? 'en-GB' : 'zh-HK',
+                    { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }
+                  )
+                : '';
+              const effectiveStatus = n.status === 'scheduled' && !isScheduled ? 'published' : n.status;
               return (
                 <div
                   key={n.id}
@@ -421,12 +431,18 @@ function NewsList({
                       <span
                         className="px-2 py-0.5 text-xs font-semibold rounded-full"
                         style={
-                          n.is_published
+                          effectiveStatus === 'published'
                             ? { backgroundColor: '#dcfce7', color: '#15803d' }
+                            : effectiveStatus === 'scheduled'
+                            ? { backgroundColor: '#fef3c7', color: '#b45309' }
                             : { backgroundColor: '#f1f5f9', color: '#64748b' }
                         }
                       >
-                        {n.is_published ? t.admin.statusBadge.published : t.admin.statusBadge.draft}
+                        {effectiveStatus === 'published'
+                          ? t.admin.statusBadge.published
+                          : effectiveStatus === 'scheduled'
+                          ? `${t.admin.statusBadge.scheduled}: ${scheduledDateStr}`
+                          : t.admin.statusBadge.draft}
                       </span>
                     </div>
                   </div>
@@ -470,7 +486,16 @@ function NewsForm({
     const [contentZh, setContentZh] = useState(initial?.content_zh || '');
     const [contentEn, setContentEn] = useState(initial?.content_en || '');
     const [imageUrls, setImageUrls] = useState<string[]>(initial?.image_urls || []);
-    const [isPublished, setIsPublished] = useState(initial?.is_published ?? true);
+    const [publishStatus, setPublishStatus] = useState<'published' | 'scheduled' | 'draft'>(
+      initial?.status === 'scheduled' ? 'scheduled'
+        : initial?.status === 'draft' ? 'draft'
+        : 'published'
+    );
+    const [scheduledAt, setScheduledAt] = useState(
+      initial?.scheduled_at
+        ? new Date(initial.scheduled_at).toISOString().slice(0, 16)
+        : ''
+    );
     const [saving, setSaving] = useState(false);
     const [mediaUrlInput, setMediaUrlInput] = useState('');
 
@@ -494,15 +519,23 @@ function NewsForm({
 
     const handleSave = async () => {
       setSaving(true);
+      const finalStatus = publishStatus === 'scheduled' && scheduledAt
+        ? (new Date(scheduledAt) <= new Date() ? 'published' : 'scheduled')
+        : publishStatus;
+      const finalPublishDate = finalStatus === 'published' && publishStatus === 'published'
+        ? new Date().toISOString().slice(0, 10)
+        : publishDate;
       const payload = {
-        publish_date: publishDate,
+        publish_date: finalPublishDate,
         title_zh: titleZh,
         title_en: titleEn,
         content_zh: contentZh,
         content_en: contentEn,
         image_url: imageUrls[0] || initial?.image_url || '',
         image_urls: imageUrls,
-        is_published: isPublished,
+        is_published: finalStatus === 'published',
+        status: finalStatus,
+        scheduled_at: finalStatus === 'scheduled' ? scheduledAt : null,
         summary: contentZh.slice(0, 120),
         summary_en: contentEn.slice(0, 120),
         title: titleZh,
@@ -681,21 +714,34 @@ function NewsForm({
 
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-2">{t.admin.status}</label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
-                onClick={() => setIsPublished(true)}
+                type="button"
+                onClick={() => setPublishStatus('published')}
                 className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
-                  isPublished
+                  publishStatus === 'published'
                     ? 'bg-primary text-white shadow-lg shadow-primary/20'
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                 }`}
               >
-                {t.admin.published}
+                {t.admin.publishNow}
               </button>
               <button
-                onClick={() => setIsPublished(false)}
+                type="button"
+                onClick={() => setPublishStatus('scheduled')}
                 className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
-                  !isPublished
+                  publishStatus === 'scheduled'
+                    ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/20'
+                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                }`}
+              >
+                {t.admin.scheduled}
+              </button>
+              <button
+                type="button"
+                onClick={() => setPublishStatus('draft')}
+                className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                  publishStatus === 'draft'
                     ? 'bg-slate-700 text-white shadow-lg'
                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                 }`}
@@ -704,6 +750,24 @@ function NewsForm({
               </button>
             </div>
           </div>
+
+          {publishStatus === 'scheduled' && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t.admin.scheduledAt}</label>
+                <div className="relative max-w-xs">
+                  <Calendar className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="datetime-local"
+                    value={scheduledAt}
+                    onChange={(e) => setScheduledAt(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-slate-800"
+                  />
+                </div>
+                <p className="mt-2 text-xs text-amber-700">{t.admin.scheduledHint}</p>
+              </div>
+            </div>
+          )}
 
           <div className="flex gap-3 pt-2">
             <button
