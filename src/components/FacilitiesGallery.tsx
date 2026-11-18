@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { useLocale } from '../lib/locale';
 
-type Category = 'venue' | 'pistes' | 'scoring';
+type Category = 'venue' | 'pistes';
 type FilterTab = 'all' | Category;
 
 interface GalleryImage {
@@ -17,21 +17,29 @@ const BASE = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/
 
 const GALLERY_IMAGES: GalleryImage[] = [
   { id: 'site_01', src: `${BASE}/site_01_v2.jpg`, category: 'venue', titleZh: '品牌木紋形象牆', titleEn: 'Brand Reception & Logo Wall' },
-  { id: 'site_02', src: `${BASE}/site_02_v2.jpg`, category: 'venue', titleZh: '全景寬敞練劍場地', titleEn: 'Panoramic Training Area' },
-  { id: 'site_03', src: `${BASE}/site_03_v2.jpg`, category: 'venue', titleZh: '明亮透光專業劍道區', titleEn: 'Bright Professional Piste Area' },
-  { id: 'site_04', src: `${BASE}/site_04_v2.jpg`, category: 'venue', titleZh: '專屬金屬劍道特寫', titleEn: 'Custom Metallic Fencing Piste' },
-  { id: 'site_06', src: `${BASE}/site_06_v2.jpg`, category: 'venue', titleZh: '階梯式家長觀賽休息區', titleEn: 'Tiered Spectator & Parent Seating' },
+  { id: 'site_02', src: `${BASE}/site_02_v3.jpeg`, category: 'venue', titleZh: '全景寬敞練劍場地', titleEn: 'Panoramic Training Area' },
+  { id: 'site_03', src: `${BASE}/site_03_v3.jpeg`, category: 'venue', titleZh: '明亮透光專業劍道區', titleEn: 'Bright Professional Piste Area' },
+  { id: 'site_04', src: `${BASE}/site_04_v3.jpeg`, category: 'venue', titleZh: '專屬金屬劍道特寫', titleEn: 'Custom Metallic Fencing Piste' },
+  { id: 'site_05', src: `${BASE}/site_05_v4.jpeg`, category: 'venue', titleZh: '接待處與休息區', titleEn: 'Reception & Rest Area' },
+  { id: 'site_06', src: `${BASE}/site_06_v3.jpeg`, category: 'venue', titleZh: '階梯式家長觀賽休息區', titleEn: 'Tiered Spectator & Parent Seating' },
   { id: 'site_07', src: `${BASE}/site_07_v2.jpg`, category: 'venue', titleZh: '體能與敏捷度訓練器材', titleEn: 'Physical & Agility Training Equipment' },
-  { id: 'electronic_devices_01', src: `${BASE}/electronic_devices_01_v2.jpg`, category: 'scoring', titleZh: '國際賽事級電子計分器', titleEn: 'International Match Electronic Scoring Box' },
-  { id: 'electronic_devices_02', src: `${BASE}/electronic_devices_02_v2.jpg`, category: 'scoring', titleZh: '精密裁判發光指示燈', titleEn: 'Precision Fencing Target & Signal Lights' },
-  { id: 'kendo_01', src: `${BASE}/kendo_01_v2.jpg`, category: 'pistes', titleZh: '國際標準避震防滑金屬劍道', titleEn: 'Standard Shock-Absorbing Metallic Piste' },
-  { id: 'kendo_02', src: `${BASE}/kendo_02_v2.png`, category: 'pistes', titleZh: '高品質金屬網格特寫', titleEn: 'High-Durability Metallic Grid Surface' },
+  { id: 'site_08', src: `${BASE}/site_08_v1.jpeg`, category: 'venue', titleZh: '訓練器材展示區', titleEn: 'Training Equipment Display Area' },
+  { id: 'site_09', src: `${BASE}/site_09_v1.jpeg`, category: 'venue', titleZh: '學員休息與交流區', titleEn: 'Student Lounge & Social Area' },
+  { id: 'kendo_01', src: `${BASE}/kendo_01_v3.jpeg`, category: 'pistes', titleZh: '國際標準避震防滑金屬劍道', titleEn: 'Standard Shock-Absorbing Metallic Piste' },
+  { id: 'kendo_02', src: `${BASE}/kendo_02_v3.jpeg`, category: 'pistes', titleZh: '高品質金屬網格特寫', titleEn: 'High-Durability Metallic Grid Surface' },
+  { id: 'kendo_03', src: `${BASE}/kendo_03_v1.jpeg`, category: 'pistes', titleZh: '專業劍道全景', titleEn: 'Professional Piste Overview' },
+  { id: 'kendo_04', src: `${BASE}/kendo_04_v1.jpeg`, category: 'pistes', titleZh: '劍道連接細節', titleEn: 'Piste Connection Details' },
+  { id: 'kendo_05', src: `${BASE}/kendo_05_v1.jpeg`, category: 'pistes', titleZh: '金屬劍道側面', titleEn: 'Metallic Piste Side View' },
+  { id: 'kendo_06', src: `${BASE}/kendo_06_v1.jpeg`, category: 'pistes', titleZh: '劍道端點特寫', titleEn: 'Piste End Close-up' },
+  { id: 'kendo_07', src: `${BASE}/kendo_07_v1.jpeg`, category: 'pistes', titleZh: '多條劍道並列', titleEn: 'Multiple Pistes Side by Side' },
+  { id: 'kendo_08', src: `${BASE}/kendo_08_v1.jpeg`, category: 'pistes', titleZh: '劍道防護裝置', titleEn: 'Piste Safety Barriers' },
 ];
 
 const HERO_ORDER = [
   'site_02', 'site_03', 'site_01', 'site_06',
-  'kendo_01', 'site_04', 'electronic_devices_01',
-  'site_07', 'kendo_02', 'electronic_devices_02',
+  'kendo_01', 'site_04',
+  'site_07', 'kendo_02',
+  'site_05', 'site_08', 'kendo_03', 'kendo_07',
 ];
 
 const heroSlides = HERO_ORDER.map((id) => GALLERY_IMAGES.find((i) => i.id === id)!).filter(Boolean);
@@ -93,7 +101,6 @@ export default function FacilitiesGallery() {
     { key: 'all', label: t.facilities.gallery.tabs.all },
     { key: 'venue', label: t.facilities.gallery.tabs.venue },
     { key: 'pistes', label: t.facilities.gallery.tabs.pistes },
-    { key: 'scoring', label: t.facilities.gallery.tabs.scoring },
   ];
 
   const loc = (zh: string, en: string) => (locale === 'en' ? en : zh);
