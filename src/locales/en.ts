@@ -197,7 +197,7 @@ export const en: Dict = {
     gallery: {
       sectionLabel: 'Venue Gallery',
       sectionTitle: 'Step Inside FENCING POWER HK LIMITED',
-      sectionSubtitle: 'Explore 17 real‑life photos and experience our professional fencing training environment.',
+      sectionSubtitle: 'Explore 15 real‑life photos and experience our professional fencing training environment.',
       tabs: {
         all: 'All',
         venue: 'Venue',
@@ -208,13 +208,11 @@ export const en: Dict = {
         pistes: 'Pistes',
       },
       images: [
-        { id: 'site_01', title: 'Brand Reception & Logo Wall' },
         { id: 'site_02', title: 'Panoramic Training Area' },
         { id: 'site_03', title: 'Bright Professional Piste Area' },
         { id: 'site_04', title: 'Custom Metallic Fencing Piste' },
         { id: 'site_05', title: 'Reception & Rest Area' },
         { id: 'site_06', title: 'Tiered Spectator & Parent Seating' },
-        { id: 'site_07', title: 'Physical & Agility Training Equipment' },
         { id: 'site_08', title: 'Training Equipment Display Area' },
         { id: 'site_09', title: 'Student Lounge & Social Area' },
         { id: 'kendo_01', title: 'Standard Shock-Absorbing Metallic Piste' },

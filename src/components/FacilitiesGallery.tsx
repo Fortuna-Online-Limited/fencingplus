@@ -16,13 +16,11 @@ interface GalleryImage {
 const BASE = 'https://liqbuhtnlclwwilrvpgs.supabase.co/storage/v1/object/public/Fencing_plus/05_Facilities_Contact/Site_and_Equipment-Photos_of_the_Actual_Site';
 
 const GALLERY_IMAGES: GalleryImage[] = [
-  { id: 'site_01', src: `${BASE}/site_01_v2.jpg`, category: 'venue', titleZh: '品牌木紋形象牆', titleEn: 'Brand Reception & Logo Wall' },
   { id: 'site_02', src: `${BASE}/site_02_v3.jpeg`, category: 'venue', titleZh: '全景寬敞練劍場地', titleEn: 'Panoramic Training Area' },
   { id: 'site_03', src: `${BASE}/site_03_v3.jpeg`, category: 'venue', titleZh: '明亮透光專業劍道區', titleEn: 'Bright Professional Piste Area' },
   { id: 'site_04', src: `${BASE}/site_04_v3.jpeg`, category: 'venue', titleZh: '專屬金屬劍道特寫', titleEn: 'Custom Metallic Fencing Piste' },
   { id: 'site_05', src: `${BASE}/site_05_v4.jpeg`, category: 'venue', titleZh: '接待處與休息區', titleEn: 'Reception & Rest Area' },
   { id: 'site_06', src: `${BASE}/site_06_v3.jpeg`, category: 'venue', titleZh: '階梯式家長觀賽休息區', titleEn: 'Tiered Spectator & Parent Seating' },
-  { id: 'site_07', src: `${BASE}/site_07_v2.jpg`, category: 'venue', titleZh: '體能與敏捷度訓練器材', titleEn: 'Physical & Agility Training Equipment' },
   { id: 'site_08', src: `${BASE}/site_08_v1.jpeg`, category: 'venue', titleZh: '訓練器材展示區', titleEn: 'Training Equipment Display Area' },
   { id: 'site_09', src: `${BASE}/site_09_v1.jpeg`, category: 'venue', titleZh: '學員休息與交流區', titleEn: 'Student Lounge & Social Area' },
   { id: 'kendo_01', src: `${BASE}/kendo_01_v3.jpeg`, category: 'pistes', titleZh: '國際標準避震防滑金屬劍道', titleEn: 'Standard Shock-Absorbing Metallic Piste' },
@@ -36,9 +34,9 @@ const GALLERY_IMAGES: GalleryImage[] = [
 ];
 
 const HERO_ORDER = [
-  'site_02', 'site_03', 'site_01', 'site_06',
+  'site_02', 'site_03', 'site_06',
   'kendo_01', 'site_04',
-  'site_07', 'kendo_02',
+  'kendo_02',
   'site_05', 'site_08', 'kendo_03', 'kendo_07',
 ];
 

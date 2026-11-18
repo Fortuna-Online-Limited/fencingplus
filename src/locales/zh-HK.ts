@@ -195,7 +195,7 @@ export const zhHK = {
     gallery: {
       sectionLabel: '場地實景',
       sectionTitle: '走進 FENCING POWER HK LIMITED',
-      sectionSubtitle: '17 張實景照片，帶您身臨其境感受專業劍擊訓練環境',
+      sectionSubtitle: '15 張實景照片，帶您身臨其境感受專業劍擊訓練環境',
       tabs: {
         all: '全部展示',
         venue: '實景場地',
@@ -206,13 +206,11 @@ export const zhHK = {
         pistes: '專業劍道',
       },
       images: [
-        { id: 'site_01', title: '品牌木紋形象牆' },
         { id: 'site_02', title: '全景寬敞練劍場地' },
         { id: 'site_03', title: '明亮透光專業劍道區' },
         { id: 'site_04', title: '專屬金屬劍道特寫' },
         { id: 'site_05', title: '接待處與休息區' },
         { id: 'site_06', title: '階梯式家長觀賽休息區' },
-        { id: 'site_07', title: '體能與敏捷度訓練器材' },
         { id: 'site_08', title: '訓練器材展示區' },
         { id: 'site_09', title: '學員休息與交流區' },
         { id: 'kendo_01', title: '國際標準避震防滑金屬劍道' },
