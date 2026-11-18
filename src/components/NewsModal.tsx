@@ -104,43 +104,43 @@ export default function NewsModal({ article, onClose }: NewsModalProps) {
                   <img
                     src={media[galleryIndex]}
                     alt={title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain bg-slate-100 cursor-zoom-in transition-transform duration-300 hover:scale-[1.02]"
+                    onClick={() => setLightbox(true)}
                   />
                 )}
                 {media.length > 1 && (
                   <>
                     <button
                       onClick={prev}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-lg transition-all"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-lg transition-all z-10"
                     >
                       <ChevronLeft className="w-5 h-5 text-slate-700" />
                     </button>
                     <button
                       onClick={next}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-lg transition-all"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-lg transition-all z-10"
                     >
                       <ChevronRight className="w-5 h-5 text-slate-700" />
                     </button>
                     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-slate-900/60 rounded-full text-white text-xs font-medium">
                       {galleryIndex + 1} {t.newsModal.of} {media.length}
                     </div>
-                    {!currentIsVideo && (
-                      <button
-                        onClick={() => setLightbox(true)}
-                        className="absolute top-3 right-3 w-9 h-9 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all"
-                        title={t.newsModal.galleryHint}
-                      >
-                        <ZoomIn className="w-4 h-4" />
-                      </button>
-                    )}
                   </>
+                )}
+                {!currentIsVideo && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setLightbox(true); }}
+                    className="absolute top-3 right-14 w-9 h-9 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all z-10"
+                    title={t.newsModal.galleryHint}
+                  >
+                    <ZoomIn className="w-4 h-4" />
+                  </button>
                 )}
               </div>
             )}
             <button
               onClick={onClose}
-              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all"
-              style={{ right: media.length > 1 && !currentIsVideo ? '3.25rem' : '0.75rem' }}
+              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-slate-900/50 hover:bg-slate-900/70 text-white flex items-center justify-center transition-all z-10"
             >
               <X className="w-5 h-5" />
             </button>
