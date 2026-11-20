@@ -223,7 +223,9 @@ export default function TeamPage({ onNavigate }: TeamPageProps) {
                     {displayExp.length > 0 && (
                       <div className="flex-1">
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
-                          {t.team.achievementsLabel}
+                          {coach.coach_name === '王愉龍' || coach.coach_name_en === 'Oscar Wong'
+                            ? t.team.studentHonorsLabel
+                            : t.team.achievementsLabel}
                         </p>
                         <ul className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                           {displayExp.map((item, i) => (

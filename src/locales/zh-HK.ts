@@ -160,6 +160,7 @@ export const zhHK = {
     sectionTitle: '專業背後，都是故事',
     sectionSubtitle: '我們的教練不只是技術的傳授者，更是孩子成長路上的引路人',
     achievementsLabel: '個人獎項',
+    studentHonorsLabel: '學生榮譽獎項',
     philosophySectionLabel: '教學理念',
     philosophyTitle: '每個孩子都有自己的節奏',
     philosophyBody: '我們深信，沒有教不好的學生，只有未找到合適方法的教學。每位教練均接受兒童心理與教學法培訓，擅長以孩子能理解的語言和方式進行教學，在鼓勵與挑戰之間取得平衡，讓每一位學員都能在劍道上找到屬於自己的自信與喜悅。',

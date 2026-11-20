@@ -162,6 +162,7 @@ export const en: Dict = {
     sectionTitle: 'Behind Every Expert, There\'s a Story',
     sectionSubtitle: 'Our coaches are more than instructors — they are mentors who guide children through every step of their growth.',
     achievementsLabel: 'Achievements',
+    studentHonorsLabel: 'Student Honors & Awards',
     philosophySectionLabel: 'Teaching Philosophy',
     philosophyTitle: 'Every Child Has Their Own Pace',
     philosophyBody: 'We believe every child can thrive with the right approach. Our coaches are trained in child psychology and pedagogy — skilled at communicating in ways children understand, balancing encouragement with challenge so every student finds confidence and joy in fencing.',
